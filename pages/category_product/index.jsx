@@ -1,10 +1,11 @@
-import banner from '@/public/lgbanner2.jpg';
-import { NotFoundImage } from '@/src/Assets';
+import {  BannerSevenImage,
+    MobileBannerOneImage, } from '@/src/Assets';
 import useBook from '@/src/Hooks/useBook';
 import RootLayout from '@/src/Layouts/RootLayout';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 const category_product = () => {
     const { bookData } = useBook()
@@ -14,10 +15,34 @@ const category_product = () => {
         return data.category === categoryName;
     });
 
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+      const handleResize = () => {
+        setIsMobile(window.innerWidth <= 768); // Define your mobile breakpoint
+      };
+  
+      handleResize(); // Check the initial screen width
+      window.addEventListener("resize", handleResize); // Listen for window resize events
+  
+      return () => {
+        window.removeEventListener("resize", handleResize); // Remove the event listener when the component unmounts
+      };
+    }, []);
+  
+
     return (
         <RootLayout>
             <div className="md:container">
-                <Image src={banner} width={900} height={1000} className='w-full md:h-[500px] object-cover' />
+                {/* <Image src={banner} width={900} height={1000} className='w-full md:h-[500px] object-cover' />
+                 */}
+                 <Image
+                    src={isMobile ? MobileBannerOneImage : BannerSevenImage}
+                    alt="Banner Image"
+                    className="w-full h-full"
+                    width={isMobile ? 768 : 1920}
+                    height={isMobile ? 768 : 500}
+                  />
                 <br />
                 <h3 className='font-semibold md:text-3xl text-lg'>Category {categoryName}</h3>
                 <div className="grid md:grid-cols-4  md:gap-4 gap-2 mt-4">
