@@ -53,9 +53,9 @@ const AddBook = () => {
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     const updatedFiles = selectedFiles.map((file) => {
-      const publicId = `${cloud_folder}/${file.name.replace(/\s+/g, '_')}`;
-      file.uploadPreset = publicId;
-      return file;
+        const publicId = `${cloud_folder}/${file.name.replace(/\s+/g, '_')}`;
+        file.uploadPreset = publicId;
+        return file;
     });
     setImageFiles(updatedFiles);
   };
@@ -71,6 +71,8 @@ const AddBook = () => {
       for (const imageFile of imageFiles) {
         const formData = new FormData();
         formData.append('file', imageFile);
+        formData.append('upload_preset',
+        `${cloud_folder}/Books/${imageFile?.name}`);
         formData.append('upload_preset', upload_preset);
         formData.append('cloud_name', cloud_name);
 

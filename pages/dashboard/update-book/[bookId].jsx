@@ -8,6 +8,11 @@ import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 
 const UpdateBookPage = () => {
+    const upload_preset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+    const cloud_name = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+    const cloud_api = process.env.NEXT_PUBLIC_CLOUDINARY_API;
+    const cloud_folder = process.env.NEXT_PUBLIC_CLOUDINARY_IMAGE_FOLDER;
+
     const router = useRouter();
     const { bookId } = router.query;
     const [singelBookData, setSingelBookData] = useState({});
@@ -16,10 +21,22 @@ const UpdateBookPage = () => {
     const {
         register,
         handleSubmit,
+        setValue, // Add setValue from useForm
     } = useForm();
     const [loading, setLoading] = useState(false);
-    const [features, setFeatures] = useState([]);
+    const [featuresValue, setFeaturesValue] = useState([]);
 
+    const couponOptions = couponData?.map((couponResponse) => {
+        const { _id, coupon } = couponResponse;
+        return {
+            value: coupon,
+            label: coupon,
+        }
+    })
+
+    const handelCouponChange = (value) => {
+        setCouponSelected(value);
+    }
 
     useEffect(() => {
         if (bookId) {
@@ -33,30 +50,41 @@ const UpdateBookPage = () => {
         }
     }, [bookId]);
 
-    const couponOptions = couponData?.map((couponResponse) => {
-        const { _id, coupon } = couponResponse;
-        return {
-            label: coupon,
-            value: _id,
-        }
-    })
-    const handelCouponChange = (value) => {
-        setCouponSelected(value);
-    }
 
-    const couponDefaultValue = singelBookData?.coupon?.map((couponResponse) => {
-        const { coupon } = couponResponse;
-        return coupon;
-    })
+    const {
+        category,
+        name,
+        price,
+        quantity,
+        discountPercentage,
+        description,
+        language,
+        level,
+        cover,
+        features,
+        author,
+        coupon,
+        image,
+        _id
+    } = singelBookData;
 
-    const upload_preset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
-    const cloud_name = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-    const cloud_api = process.env.NEXT_PUBLIC_CLOUDINARY_API;
-    const cloud_folder = process.env.NEXT_PUBLIC_CLOUDINARY_IMAGE_FOLDER;
+    useEffect(() => {
+        setValue("bookName", name);
+        setValue("bookCategory", category);
+        setValue("bookPrice", price);
+        setValue("bookDiscountPercentage", discountPercentage);
+        setValue("bookAuthor", author);
+        setValue("bookCover", cover);
+        setValue("levelOption", level);
+        setValue("bookQuantity", quantity);
+        setValue("language", language);
+        setValue("bookDescription", description);
+        setValue("bookFeatures", features?.join(', ')); // Join the features array into a string
+        setValue("coupon", coupon);
+
+    }, [name, category, price, discountPercentage, author, cover, level, quantity, language, description, features, coupon, setValue]);
 
     const [imageFiles, setImageFiles] = useState([]);
-    const [uploadedImageUrls, setUploadedImageUrls] = useState([]);
-
     const handleFileChange = (e) => {
         const selectedFiles = Array.from(e.target.files);
         const updatedFiles = selectedFiles.map((file) => {
@@ -70,48 +98,101 @@ const UpdateBookPage = () => {
     const onSubmit = async (valueData) => {
         try {
             setLoading(true);
+            let featuresArray; // Declare it in a higher scope
+
+            // const uploadedUrls = [];
+            // for (const imageFile of imageFiles) {
+            //     const formData = new FormData();
+            //     formData.append('file', imageFile);
+            //     formData.append('upload_preset',
+            //         `${cloud_folder}/Books/${imageFile?.name}`);
+            //     formData.append('upload_preset', upload_preset);
+            //     formData.append('cloud_name', cloud_name);
+
+            //     const imgRes = await fetch(cloud_api, {
+            //         method: 'POST',
+            //         body: formData,
+            //     });
+
+            //     if (!imgRes.ok) {
+            //         const errorResponse = await imgRes.text();
+            //         throw new Error(`Error uploading image: ${imgRes.status} - ${imgRes.statusText}\n${errorResponse}`);
+            //     }
+
+            //     const imgdata = await imgRes.json();
+            //     const imgurl = imgdata?.secure_url;
+            //     if (imgurl) {
+            //         uploadedUrls.push(imgurl);
+            //     } else {
+            //         throw new Error('Failed to retrieve the image URL from Cloudinary response.');
+            //     }
+            // }
+
             const uploadedUrls = [];
-            for (const imageFile of imageFiles) {
-                const formData = new FormData();
-                formData.append('file', imageFile);
-                formData.append('upload_preset', upload_preset);
-                formData.append('cloud_name', cloud_name);
 
-                const imgRes = await fetch(cloud_api, {
-                    method: 'POST',
-                    body: formData,
-                });
+            // Check if new images are uploaded
+            if (imageFiles.length > 0) {
+                for (const imageFile of imageFiles) {
+                    const formData = new FormData();
+                    formData.append('file', imageFile);
+                    formData.append(
+                        'upload_preset',
+                        `${cloud_folder}/Books/${imageFile?.name}`
+                    );
+                    formData.append('upload_preset', upload_preset);
+                    formData.append('cloud_name', cloud_name);
 
-                if (!imgRes.ok) {
-                    const errorResponse = await imgRes.text();
-                    throw new Error(`Error uploading image: ${imgRes.status} - ${imgRes.statusText}\n${errorResponse}`);
+                    const imgRes = await fetch(cloud_api, {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    if (!imgRes.ok) {
+                        const errorResponse = await imgRes.text();
+                        throw new Error(
+                            `Error uploading image: ${imgRes.status} - ${imgRes.statusText}\n${errorResponse}`
+                        );
+                    }
+
+                    const imgdata = await imgRes.json();
+                    const imgurl = imgdata?.secure_url;
+                    if (imgurl) {
+                        uploadedUrls.push(imgurl);
+                    } else {
+                        throw new Error(
+                            'Failed to retrieve the image URL from Cloudinary response.'
+                        );
+                    }
                 }
-
-                const imgdata = await imgRes.json();
-                const imgurl = imgdata?.secure_url;
-                if (imgurl) {
-                    uploadedUrls.push(imgurl);
-                } else {
-                    throw new Error('Failed to retrieve the image URL from Cloudinary response.');
-                }
+            } else {
+                // No new images uploaded, use the existing image URLs
+                uploadedUrls.push(...(image || []));
             }
-            setUploadedImageUrls(uploadedUrls);
+
+
+            // Split the features string into an array
+            if (typeof valueData.bookFeatures === 'string') {
+                featuresArray = valueData.bookFeatures.split(',');
+                // Use featuresArray as needed
+            } else {
+                featuresArray = valueData.bookFeatures;
+            }
 
             const bookUpdateData = {
-                category: valueData.category,
-                name: valueData.name,
-                price: valueData.price,
-                quantity: valueData.quantity,
-                discountPercentage: valueData.discountPercentage,
-                description: valueData.description,
+                name: valueData.bookName,
+                category: valueData.bookCategory,
+                price: valueData.bookPrice,
+                quantity: valueData.bookQuantity,
+                discountPercentage: valueData.bookDiscountPercentage,
+                description: valueData.bookDescription,
                 language: valueData.language,
                 level: valueData.levelOption,
-                cover: valueData.cover,
-                features: features,
-                author: valueData.author,
+                cover: valueData.bookCover,
+                features: featuresArray, // Use the converted array
+                author: valueData.bookAuthor,
                 coupon: couponSelected,
-                image: uploadedUrls || singelBookData?.image,
-            }
+                image: uploadedUrls || image, // Use the uploadedUrls if available, otherwise the existing images
+            };
 
             const res = await fetch(updateBooksUrl(bookId), {
                 method: 'PATCH',
@@ -120,8 +201,10 @@ const UpdateBookPage = () => {
                 },
                 body: JSON.stringify(bookUpdateData),
             });
+
             const dataRes = await res.json();
-            if (!res) {
+
+            if (!res.ok) {
                 Swal.fire({
                     position: "center",
                     timerProgressBar: true,
@@ -155,12 +238,11 @@ const UpdateBookPage = () => {
                     showConfirmButton: false,
                     timer: 3500,
                 });
-                setLoading(false);
-
             }
+
+            setLoading(false);
         } catch (error) {
-            console.error('Error uploading images to Cloudinary:', error);
-        } finally {
+            console.error('Error updating book:', error);
             setLoading(false);
         }
     };
@@ -181,25 +263,26 @@ const UpdateBookPage = () => {
                         >
                             <input
                                 placeholder="Book Name"
-                                name="name"
+                                name="bookName"
                                 type="text"
                                 className=" border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
-                                defaultValue={singelBookData?.name}
-                                {...register("name")}
+                                defaultValue={name}
+                                {...register("bookName")}
                             />
 
                             <select
-                                {...register("category")}
                                 className='border-2 border-gray-300 rounded-md p-2'
-                                defaultValue={singelBookData?.category}
+                                {...register("bookCategory")}
+                                defaultValue={category}
                             >
-                                <option value="">
-                                    {singelBookData?.category}
+                                <option>
+                                    {category || 'Select Category'}
                                 </option>
                                 {categoryData && categoryData.map((categoryResponse) => {
                                     const { _id, category } = categoryResponse;
                                     return (
-                                        <option value={category}
+                                        <option
+                                            value={category}
                                             className='border-2 border-gray-300 rounded-md p-4 my-2'
                                             key={_id}
                                         >{category}</option>
@@ -212,46 +295,47 @@ const UpdateBookPage = () => {
                                 name="price"
                                 type="text"
                                 className=" border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
-                                defaultValue={singelBookData?.price}
-                                {...register("price")}
+                                defaultValue={price}
+                                {...register("bookPrice")}
                             />
                             <input
                                 placeholder="Discount Percentage"
                                 name="discountPercentage"
                                 className=" border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
                                 type="text"
-                                defaultValue={singelBookData?.discountPercentage}
-                                {...register("discountPercentage")}
+                                defaultValue={discountPercentage}
+                                {...register("bookDiscountPercentage")}
                             />
                             <input
                                 placeholder="Author"
                                 type="text"
                                 name="author"
                                 className=" border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
-                                defaultValue={singelBookData?.author}
-                                {...register("author")}
+                                defaultValue={author}
+                                {...register("bookAuthor")}
                             />
                             <input
                                 placeholder="Cover"
                                 className=" border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
                                 type="text"
                                 name="cover"
-                                defaultValue={singelBookData?.cover}
-                                {...register("cover")}
+                                defaultValue={cover}
+                                {...register("bookCover")}
                             />
 
                             <select
                                 {...register("levelOption")}
                                 className='border-2 border-gray-300 rounded-md p-2'
-                                defaultValue={singelBookData?.level}
+                                defaultValue={level}
                             >
                                 <option value="">
-                                    {singelBookData?.level}
+                                    {level || 'Select Level'}
                                 </option>
                                 {levelData && levelData?.map((levelResponse) => {
                                     const { _id, level } = levelResponse;
                                     return (
-                                        <option value={level}
+                                        <option
+                                            value={level}
                                             className='border-2 border-gray-300 rounded-md p-4 my-2'
                                             key={_id}
                                         >{level}</option>
@@ -265,52 +349,52 @@ const UpdateBookPage = () => {
                                     width: '100%',
                                 }}
                                 defaultValue={
-                                    couponDefaultValue
+                                    coupon
                                 }
                                 defaultOpen={true}
                                 onChange={handelCouponChange}
                                 options={couponOptions}
                             />
 
-
                             <input
                                 placeholder="Quantity"
                                 className=" border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
                                 type="text"
                                 name="quantity"
-                                defaultValue={singelBookData?.quantity}
-                                {...register("quantity")}
+                                defaultValue={quantity}
+                                {...register("bookQuantity")}
                             />
                             <input
                                 placeholder="Language"
                                 className=" border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
                                 type="text"
                                 name="language"
-                                defaultValue={singelBookData?.language}
+                                defaultValue={language}
                                 {...register("language")}
                             />
-                            <textarea id="txtid" name="txtname" rows="4" cols="50" maxlength="200"
+                            <textarea id="txtid" name="txtname" rows="4" cols="50" maxLength="200"
                                 placeholder="Description"
-                                defaultValue={singelBookData?.description}
-                                {...register("description")}
+                                defaultValue={description}
+                                {...register("bookDescription")}
                                 className="border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
                             >
                             </textarea>
-                            <textarea name="txtname" rows="4" cols="50" maxlength="200"
-                                placeholder="Features"
-                                defaultValue={singelBookData?.features}
-                                onChange={
-                                    (e) => {
-                                        const featuresArray = e.target.value.split(',');
-                                        setFeatures(featuresArray);
+                            <textarea name="txtname" rows="4" cols="50" maxLength="200"
+                                defaultValue={features}
+                                {...register("bookFeatures", {
+                                    setValueAs: (value) => {
+                                        // Split the value into an array
+                                        const featuresArray = value.split(',');
+                                        // Set the value as the array
+                                        return featuresArray;
                                     }
-                                }
+                                })}
                                 className="border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
                             >
                             </textarea>
                             <div className="w-full h-full">
                                 <div className="rounded-lg shadow-xl bg-gray-50 p-4">
-                                    <label className="inline-block mb-2 text-gray-500">Upload Product Image</label>
+                                    <label className="inline-block mb-2 text-gray-500">Upload book Image</label>
                                     <div className="flex items-center justify-center w-full">
                                         <label className="flex flex-col w-full max-w-xs md:max-w-md h-32 border-4 border-blue-200 border-dashed hover:bg-gray-100 hover:border-gray-300">
                                             <div className="flex flex-col items-center justify-center pt-7">
@@ -337,7 +421,7 @@ const UpdateBookPage = () => {
                                                 className="px-4 pb-4"
                                                 name="images"
                                                 accept="image/*"
-                                                defaultValue={singelBookData?.image}
+                                                defaultValue={image}
                                                 multiple
                                                 onChange={handleFileChange}
                                             />
@@ -346,7 +430,7 @@ const UpdateBookPage = () => {
                                 </div>
                                 <div>
                                     <div className="flex flex-wrap gap-4 my-4 justify-center items-center">
-                                        {singelBookData && singelBookData?.image?.map((uploadedImageUrl, index) => (
+                                        {image && image?.map((uploadedImageUrl, index) => (
                                             <div key={index} className="relative flex  flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
                                                 <a
                                                     className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"
@@ -355,12 +439,31 @@ const UpdateBookPage = () => {
                                                     <img
                                                         className=""
                                                         src={uploadedImageUrl}
-                                                        alt="product image"
+                                                        alt="book image"
                                                     />
                                                 </a>
                                             </div>
                                         ))}
                                     </div>
+                                </div>
+                                <div>
+                                    {/* show selected image  */}
+                                    {
+                                        imageFiles?.map((image, index) => (
+                                            <div key={index} className="relative flex  flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
+                                                <a
+                                                    className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"
+                                                    href="#"
+                                                >
+                                                    <img
+                                                        className=""
+                                                        src={URL.createObjectURL(image)}
+                                                        alt="book image"
+                                                    />
+                                                </a>
+                                            </div>
+                                        ))
+                                    }
                                 </div>
                             </div>
 
