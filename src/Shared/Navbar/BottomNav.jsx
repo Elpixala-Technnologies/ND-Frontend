@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { FaAngleDown } from 'react-icons/fa';
 import { BsFillGridFill } from 'react-icons/bs';
 import Link from 'next/link';
-import { Grid } from '@material-ui/core';
 import useBook from '@/src/Hooks/useBook';
 const BottomNav = () => {
     const [on, setOn] = useState(true)
@@ -12,7 +11,7 @@ const BottomNav = () => {
             <div className="container py-0 h-full mx-auto flex justify-between items-center">
                 <ul className='md:flex h-full items-center gap-5'>
                     <div className="flex md:w-auto w-[100%] justify-between items-center gap-2 ">
-                
+
                         <li className='text-sm flex items-center gap-2 dropdown relative'>
                             <h1 className='flex justify-center gap-4 items-center font-bold text-[1.2rem]'>  <BsFillGridFill /> ALL CATEGORY <FaAngleDown /></h1>
 
@@ -34,35 +33,19 @@ const BottomNav = () => {
                             </div>
                         </li>
                     </div>
-                    {/* <div className={`${on ? 'md:flex  hidden' : ''} items-center gap-3`}>
-                         <li className='hover:bg-[#19343972] text-sm h-full flex items-center p-2 duration-200'>
-                        <Link href="">Boy Fashion</Link>
-                    </li>
-                    <li className='hover:bg-[#19343972] text-sm h-full flex items-center p-2 duration-200'>
-                        <Link href="">Gril Fashion</Link>
-                    </li>
-                    <li className='hover:bg-[#19343972] text-sm h-full flex items-center p-2 duration-200'>
-                        <Link href="">Footwear</Link>
-                    </li>
-                    <li className='hover:bg-[#19343972] text-sm h-full flex items-center p-2 duration-200'>
-                        <Link href="">Toys</Link>
-                    </li>
-                    <li className='hover:bg-[#19343972] text-sm h-full flex items-center p-2 duration-200'>
-                        <Link href="">Feeding</Link>
-                    </li>
-                    <li className='hover:bg-[#19343972] text-sm h-full flex items-center p-2 duration-200'>
-                        <Link href="">Health</Link>
-                    </li>
-                    <li className='hover:bg-[#19343972] text-sm h-full flex items-center p-2 duration-200'>
-                        <Link href="">Health</Link>
-                    </li>
-                    <li className='hover:bg-[#19343972] text-sm h-full flex items-center p-2 duration-200'>
-                        <Link href="">Boutiques</Link>
-                    </li>
-                    <li className='hover:bg-[#19343972] text-sm h-full flex items-center p-2 duration-200'>
-                        <Link href="">Diapering</Link>
-                    </li>
-                    </div> */}
+                    <div className={`${on ? 'md:flex  hidden' : ''} items-center gap-3`}>
+                        {
+                            categoryData && categoryData?.slice(0, 4)?.map((item, index) => {
+                                return (
+                                    <Link href={`/category_product?CategoryName=${item?.category}`} key={index + "category"}>
+                                        <li className='hover:bg-[#19343972] text-sm h-full flex items-center p-2 duration-200'>
+                                            {item?.category}
+                                        </li>
+                                    </Link>
+                                )
+                            })
+                        }
+                    </div>
                 </ul>
             </div>
 
