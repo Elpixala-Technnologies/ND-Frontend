@@ -1,13 +1,16 @@
 import AddCoupon from '@/src/Components/Dashboard/Coupon/AddCoupon/AddCoupon';
 import DashboardLayout from '@/src/Layouts/DashboardLayout';
+import AdminAccessRoute from '@/src/PrivetRoute/AdminAccessRoute';
 import React from 'react';
 
 const CopuonPage = () => {
     return (
         <DashboardLayout>
-            <section className='container'>
-                <AddCoupon />
-            </section>
+            <AdminAccessRoute>
+                <section className='container'>
+                    <AddCoupon />
+                </section>
+            </AdminAccessRoute>
         </DashboardLayout>
     );
 };

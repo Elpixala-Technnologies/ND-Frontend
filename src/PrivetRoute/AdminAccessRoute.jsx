@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../Context/UserContext";
-import useAdmin from "../../Hooks/useAdmin";
+import useAdmin from "../Hooks/useAdmin";
 
 const AdminAccessRoute = ({ children }) => {
   const { user } = useContext(AuthContext);

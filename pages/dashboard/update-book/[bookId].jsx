@@ -1,5 +1,6 @@
 import useBook from '@/src/Hooks/useBook';
 import DashboardLayout from '@/src/Layouts/DashboardLayout';
+import AdminAccessRoute from '@/src/PrivetRoute/AdminAccessRoute';
 import { getSingelBookUrl, updateBooksUrl } from '@/src/Utils/Urls/BooksUrl';
 import { Button, Select } from 'antd';
 import { useRouter } from 'next/router';
@@ -249,235 +250,237 @@ const UpdateBookPage = () => {
 
     return (
         <DashboardLayout>
-            <section>
-                <div>
-                    <h1>
-                        Update Book
-                    </h1>
-                </div>
-                <section className="my-4">
-                    <div className="flex flex-col w-full gap-4 mx-auto add-book-form">
-                        <form
-                            onSubmit={handleSubmit(onSubmit)}
-                            className="add-book-form w-full md:w-full mx-auto flex flex-col gap-4 "
-                        >
-                            <input
-                                placeholder="Book Name"
-                                name="bookName"
-                                type="text"
-                                className=" border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
-                                defaultValue={name}
-                                {...register("bookName")}
-                            />
-
-                            <select
-                                className='border-2 border-gray-300 rounded-md p-2'
-                                {...register("bookCategory")}
-                                defaultValue={category}
-                            >
-                                <option>
-                                    {category || 'Select Category'}
-                                </option>
-                                {categoryData && categoryData.map((categoryResponse) => {
-                                    const { _id, category } = categoryResponse;
-                                    return (
-                                        <option
-                                            value={category}
-                                            className='border-2 border-gray-300 rounded-md p-4 my-2'
-                                            key={_id}
-                                        >{category}</option>
-                                    )
-                                })}
-                            </select>
-
-                            <input
-                                placeholder="Price"
-                                name="price"
-                                type="text"
-                                className=" border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
-                                defaultValue={price}
-                                {...register("bookPrice")}
-                            />
-                            <input
-                                placeholder="Discount Percentage"
-                                name="discountPercentage"
-                                className=" border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
-                                type="text"
-                                defaultValue={discountPercentage}
-                                {...register("bookDiscountPercentage")}
-                            />
-                            <input
-                                placeholder="Author"
-                                type="text"
-                                name="author"
-                                className=" border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
-                                defaultValue={author}
-                                {...register("bookAuthor")}
-                            />
-                            <input
-                                placeholder="Cover"
-                                className=" border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
-                                type="text"
-                                name="cover"
-                                defaultValue={cover}
-                                {...register("bookCover")}
-                            />
-
-                            <select
-                                {...register("levelOption")}
-                                className='border-2 border-gray-300 rounded-md p-2'
-                                defaultValue={level}
-                            >
-                                <option value="">
-                                    {level || 'Select Level'}
-                                </option>
-                                {levelData && levelData?.map((levelResponse) => {
-                                    const { _id, level } = levelResponse;
-                                    return (
-                                        <option
-                                            value={level}
-                                            className='border-2 border-gray-300 rounded-md p-4 my-2'
-                                            key={_id}
-                                        >{level}</option>
-                                    )
-                                })}
-                            </select>
-
-                            <Select
-                                mode="multiple"
-                                style={{
-                                    width: '100%',
-                                }}
-                                defaultValue={
-                                    coupon
-                                }
-                                defaultOpen={true}
-                                onChange={handelCouponChange}
-                                options={couponOptions}
-                            />
-
-                            <input
-                                placeholder="Quantity"
-                                className=" border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
-                                type="text"
-                                name="quantity"
-                                defaultValue={quantity}
-                                {...register("bookQuantity")}
-                            />
-                            <input
-                                placeholder="Language"
-                                className=" border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
-                                type="text"
-                                name="language"
-                                defaultValue={language}
-                                {...register("language")}
-                            />
-                            <textarea id="txtid" name="txtname" rows="4" cols="50" maxLength="200"
-                                placeholder="Description"
-                                defaultValue={description}
-                                {...register("bookDescription")}
-                                className="border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
-                            >
-                            </textarea>
-                            <textarea name="txtname" rows="4" cols="50" maxLength="200"
-                                defaultValue={features}
-                                {...register("bookFeatures", {
-                                    setValueAs: (value) => {
-                                        // Split the value into an array
-                                        const featuresArray = value.split(',');
-                                        // Set the value as the array
-                                        return featuresArray;
-                                    }
-                                })}
-                                className="border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
-                            >
-                            </textarea>
-                            <div className="w-full h-full">
-                                <div className="rounded-lg shadow-xl bg-gray-50 p-4">
-                                    <label className="inline-block mb-2 text-gray-500">Upload book Image</label>
-                                    <div className="flex items-center justify-center w-full">
-                                        <label className="flex flex-col w-full max-w-xs md:max-w-md h-32 border-4 border-blue-200 border-dashed hover:bg-gray-100 hover:border-gray-300">
-                                            <div className="flex flex-col items-center justify-center pt-7">
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    className="w-8 h-8 text-gray-400 group-hover:text-gray-600"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke="currentColor"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        strokeWidth="2"
-                                                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                                                    />
-                                                </svg>
-                                                <p className="pt-1 text-sm tracking-wider text-gray-400 group-hover:text-gray-600">
-                                                    Attach file{' '}
-                                                </p>
-                                            </div>
-                                            <input
-                                                type="file"
-                                                className="px-4 pb-4"
-                                                name="images"
-                                                accept="image/*"
-                                                defaultValue={image}
-                                                multiple
-                                                onChange={handleFileChange}
-                                            />
-                                        </label>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div className="flex flex-wrap gap-4 my-4 justify-center items-center">
-                                        {image && image?.map((uploadedImageUrl, index) => (
-                                            <div key={index} className="relative flex  flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-                                                <a
-                                                    className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"
-                                                    href="#"
-                                                >
-                                                    <img
-                                                        className=""
-                                                        src={uploadedImageUrl}
-                                                        alt="book image"
-                                                    />
-                                                </a>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                                <div>
-                                    {/* show selected image  */}
-                                    {
-                                        imageFiles?.map((image, index) => (
-                                            <div key={index} className="relative flex  flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-                                                <a
-                                                    className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"
-                                                    href="#"
-                                                >
-                                                    <img
-                                                        className=""
-                                                        src={URL.createObjectURL(image)}
-                                                        alt="book image"
-                                                    />
-                                                </a>
-                                            </div>
-                                        ))
-                                    }
-                                </div>
-                            </div>
-
-                            <Button type="default" htmlType="submit" style={{
-                                marginTop: '20px',
-                            }}>
-                                {
-                                    loading ? 'Loading...' : 'Update Book'
-                                }
-                            </Button>
-                        </form>
+            <AdminAccessRoute>
+                <section>
+                    <div>
+                        <h1>
+                            Update Book
+                        </h1>
                     </div>
+                    <section className="my-4">
+                        <div className="flex flex-col w-full gap-4 mx-auto add-book-form">
+                            <form
+                                onSubmit={handleSubmit(onSubmit)}
+                                className="add-book-form w-full md:w-full mx-auto flex flex-col gap-4 "
+                            >
+                                <input
+                                    placeholder="Book Name"
+                                    name="bookName"
+                                    type="text"
+                                    className=" border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
+                                    defaultValue={name}
+                                    {...register("bookName")}
+                                />
+
+                                <select
+                                    className='border-2 border-gray-300 rounded-md p-2'
+                                    {...register("bookCategory")}
+                                    defaultValue={category}
+                                >
+                                    <option>
+                                        {category || 'Select Category'}
+                                    </option>
+                                    {categoryData && categoryData.map((categoryResponse) => {
+                                        const { _id, category } = categoryResponse;
+                                        return (
+                                            <option
+                                                value={category}
+                                                className='border-2 border-gray-300 rounded-md p-4 my-2'
+                                                key={_id}
+                                            >{category}</option>
+                                        )
+                                    })}
+                                </select>
+
+                                <input
+                                    placeholder="Price"
+                                    name="price"
+                                    type="text"
+                                    className=" border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
+                                    defaultValue={price}
+                                    {...register("bookPrice")}
+                                />
+                                <input
+                                    placeholder="Discount Percentage"
+                                    name="discountPercentage"
+                                    className=" border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
+                                    type="text"
+                                    defaultValue={discountPercentage}
+                                    {...register("bookDiscountPercentage")}
+                                />
+                                <input
+                                    placeholder="Author"
+                                    type="text"
+                                    name="author"
+                                    className=" border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
+                                    defaultValue={author}
+                                    {...register("bookAuthor")}
+                                />
+                                <input
+                                    placeholder="Cover"
+                                    className=" border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
+                                    type="text"
+                                    name="cover"
+                                    defaultValue={cover}
+                                    {...register("bookCover")}
+                                />
+
+                                <select
+                                    {...register("levelOption")}
+                                    className='border-2 border-gray-300 rounded-md p-2'
+                                    defaultValue={level}
+                                >
+                                    <option value="">
+                                        {level || 'Select Level'}
+                                    </option>
+                                    {levelData && levelData?.map((levelResponse) => {
+                                        const { _id, level } = levelResponse;
+                                        return (
+                                            <option
+                                                value={level}
+                                                className='border-2 border-gray-300 rounded-md p-4 my-2'
+                                                key={_id}
+                                            >{level}</option>
+                                        )
+                                    })}
+                                </select>
+
+                                <Select
+                                    mode="multiple"
+                                    style={{
+                                        width: '100%',
+                                    }}
+                                    defaultValue={
+                                        coupon
+                                    }
+                                    defaultOpen={true}
+                                    onChange={handelCouponChange}
+                                    options={couponOptions}
+                                />
+
+                                <input
+                                    placeholder="Quantity"
+                                    className=" border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
+                                    type="text"
+                                    name="quantity"
+                                    defaultValue={quantity}
+                                    {...register("bookQuantity")}
+                                />
+                                <input
+                                    placeholder="Language"
+                                    className=" border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
+                                    type="text"
+                                    name="language"
+                                    defaultValue={language}
+                                    {...register("language")}
+                                />
+                                <textarea id="txtid" name="txtname" rows="4" cols="50" maxLength="200"
+                                    placeholder="Description"
+                                    defaultValue={description}
+                                    {...register("bookDescription")}
+                                    className="border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
+                                >
+                                </textarea>
+                                <textarea name="txtname" rows="4" cols="50" maxLength="200"
+                                    defaultValue={features}
+                                    {...register("bookFeatures", {
+                                        setValueAs: (value) => {
+                                            // Split the value into an array
+                                            const featuresArray = value.split(',');
+                                            // Set the value as the array
+                                            return featuresArray;
+                                        }
+                                    })}
+                                    className="border-[2px] border-[#000] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3"
+                                >
+                                </textarea>
+                                <div className="w-full h-full">
+                                    <div className="rounded-lg shadow-xl bg-gray-50 p-4">
+                                        <label className="inline-block mb-2 text-gray-500">Upload book Image</label>
+                                        <div className="flex items-center justify-center w-full">
+                                            <label className="flex flex-col w-full max-w-xs md:max-w-md h-32 border-4 border-blue-200 border-dashed hover:bg-gray-100 hover:border-gray-300">
+                                                <div className="flex flex-col items-center justify-center pt-7">
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        className="w-8 h-8 text-gray-400 group-hover:text-gray-600"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        stroke="currentColor"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth="2"
+                                                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                                                        />
+                                                    </svg>
+                                                    <p className="pt-1 text-sm tracking-wider text-gray-400 group-hover:text-gray-600">
+                                                        Attach file{' '}
+                                                    </p>
+                                                </div>
+                                                <input
+                                                    type="file"
+                                                    className="px-4 pb-4"
+                                                    name="images"
+                                                    accept="image/*"
+                                                    defaultValue={image}
+                                                    multiple
+                                                    onChange={handleFileChange}
+                                                />
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className="flex flex-wrap gap-4 my-4 justify-center items-center">
+                                            {image && image?.map((uploadedImageUrl, index) => (
+                                                <div key={index} className="relative flex  flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
+                                                    <a
+                                                        className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"
+                                                        href="#"
+                                                    >
+                                                        <img
+                                                            className=""
+                                                            src={uploadedImageUrl}
+                                                            alt="book image"
+                                                        />
+                                                    </a>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        {/* show selected image  */}
+                                        {
+                                            imageFiles?.map((image, index) => (
+                                                <div key={index} className="relative flex  flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
+                                                    <a
+                                                        className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"
+                                                        href="#"
+                                                    >
+                                                        <img
+                                                            className=""
+                                                            src={URL.createObjectURL(image)}
+                                                            alt="book image"
+                                                        />
+                                                    </a>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                </div>
+
+                                <Button type="default" htmlType="submit" style={{
+                                    marginTop: '20px',
+                                }}>
+                                    {
+                                        loading ? 'Loading...' : 'Update Book'
+                                    }
+                                </Button>
+                            </form>
+                        </div>
+                    </section>
                 </section>
-            </section>
+            </AdminAccessRoute>
         </DashboardLayout>
     );
 };
