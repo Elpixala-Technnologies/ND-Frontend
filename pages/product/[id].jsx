@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import RootLayout from '@/src/Layouts/RootLayout';
 import RecomendationProduct from '@/src/Components/Shop/RecomendationProduct/RecomendationProduct';
 import CopuonSlider from '@/src/Components/Shop/CopuonSlider/CopuonSlider';
@@ -21,8 +21,7 @@ const ProductDetails = () => {
   const { user } = useContext(AuthContext);
   const router = useRouter();
   const { id } = router.query;
-  const [showImg, setShowImg] = useState('https://firebasestorage.googleapis.com/v0/b/book-e-commerce-dfef2.appspot.com/o/images%2F1679235368340?alt=media&token=b5736d42-dcb3-4863-876f-1af70b31b53a')
-
+  const [selectedImage, setSelectedImage] = useState(null); // State variable to store the selected image URL
 
   let mainBookData;
 
@@ -113,6 +112,12 @@ const ProductDetails = () => {
     }
   };
 
+  useEffect(() => {
+    if (image && image.length > 0) {
+      setSelectedImage(image[0]);
+    }
+  }, [image]);
+
 
 
   return (
@@ -121,9 +126,12 @@ const ProductDetails = () => {
         <div className="container mx-auto mt-3 flex justify-between items-center">
           <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
             <div className="">
+
               <div className="img-box shadow rounded bg-[#f1e8e8] p-2 flex justify-center">
-                {image && image.length > 0 ? (
-                  <Image src={image[0]} alt={name}
+                {selectedImage ? (
+                  <Image
+                    src={selectedImage}
+                    alt={name}
                     width={300}
                     height={300}
                     className='cursor-pointer hover:animate-pulse transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-130'
@@ -143,20 +151,20 @@ const ProductDetails = () => {
                   modules={[]}
                   className="mySwiper"
                 >
-                  {
-                    image && image?.map((img, index) => {
+                  {image &&
+                    image.map((img, index) => {
                       return (
-                        <SwiperSlide key={index} onClick={() => setShowImg(img)}>
+                        <SwiperSlide key={index} onClick={() => setSelectedImage(img)}>
                           <Image
                             src={img}
                             alt={name}
                             width={100}
                             height={100}
-                            className='bg-[#f1e8e8] border-2 border-[#3aa1b8] p-1 rounded cursor-pointer hover:animate-pulse transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-100' />
+                            className='bg-[#f1e8e8] border-2 border-[#3aa1b8] p-1 rounded cursor-pointer hover:animate-pulse transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-100'
+                          />
                         </SwiperSlide>
-                      )
-                    })
-                  }
+                      );
+                    })}
                 </Swiper>
               </div>
 
@@ -167,6 +175,7 @@ const ProductDetails = () => {
                 >
                   Add to Cart
                 </button>
+                <button className="px-4 py-2 bg-blue-500 text-white rounded  hover:bg-blue-600 focus:outline-none cursor-pointer hover:animate-pulse transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-100">Buy</button>
               </div>
             </div>
             <div className="md:col-span-2">
@@ -186,11 +195,6 @@ const ProductDetails = () => {
                 <span className='text-[#eec75b]'>
                   {discountPercentage} % off
                 </span>
-              </div>
-
-
-              <div className="flex  items-center gap-2 mt-2">
-                <button className='bg-[#1db7ff] text-white px-12 py-2 rounded'>Buy</button>
               </div>
               <p className="text-gray-400 text-sm my-4">
                 {description?.slice(0, 200)}...
