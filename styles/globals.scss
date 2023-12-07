@@ -191,7 +191,11 @@ img{
 }
 
 
-
+.homeSliderImage{
+  width: 3000px !important;
+  height: 100% !important;
+  object-fit: cover;
+}
 
 ///////       End of Slider Section     ////////
 

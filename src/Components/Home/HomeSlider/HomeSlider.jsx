@@ -77,7 +77,7 @@ const HeroSlider = () => {
   }, []);
 
   return (
-    <>
+    <div className="w-full">  
       <Swiper
         spaceBetween={30}
         centeredSlides={true}
@@ -97,18 +97,16 @@ const HeroSlider = () => {
                   <Image
                     src={isMobile ? slide?.mobileImage : slide?.desktopImage}
                     alt="Banner Image"
-                    className="w-full h-full"
-                    width={isMobile ? 768 : 1920}
-                    height={isMobile ? 768 : 500}
+                    className="w-full h-full homeSliderImage"
+                    width={ 1920}
+                    height={500}
                   />
-
-
                 </div>
               </SwiperSlide>
             );
           })}
       </Swiper>
-    </>
+    </div>
   );
 };
 

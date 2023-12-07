@@ -115,7 +115,7 @@ const PlayWithWrite = () => {
                                                     </h4>
                                                     <h4 className="text-[1rem] font-regular">{book?.name.slice(0, 20)}</h4>
 
-                                                    <div className='flex items-center gap-4'>
+                                                    {/* <div className='flex items-center gap-4'>
                                                         <h1 className="text-xl font-bold text-slate-900">
                                                             {
                                                                 book?.discountPercentage
@@ -129,7 +129,26 @@ const PlayWithWrite = () => {
                                                         <span className='text-[#eec75b]'>
                                                             {book?.discountPercentage} % off
                                                         </span>
+                                                    </div> */}
+
+                                                    <div className="flex items-center md:flex-row gap-2 md:gap-4">
+                                                        <h1 className="text-lg md:text-xl font-bold text-slate-900">
+                                                            {book?.discountPercentage
+                                                                ? `₹ ${book?.price - (book?.price * book?.discountPercentage) / 100}`
+                                                                : `₹ ${book?.price}`}
+                                                        </h1>
+                                                        {book?.discountPercentage !== "0" && (
+                                                            <>
+                                                                <span className="text-sm md:text-base text-slate-900 line-through mt-1">
+                                                                    ₹ {book?.price}
+                                                                </span>
+                                                                <span className="text-[#eec75b] text-sm md:text-base">
+                                                                    {book?.discountPercentage} % off
+                                                                </span>
+                                                            </>
+                                                        )}
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </Link>

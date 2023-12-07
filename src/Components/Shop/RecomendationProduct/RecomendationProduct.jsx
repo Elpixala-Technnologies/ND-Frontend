@@ -26,7 +26,7 @@ const RecomendationProduct = () => {
         <section className=" mx-2 relative h-full">
             <div className="title my-6 flex justify-between items-center">
                 <h2 className=" text-[1rem] md:text-[1.5rem] text-center md:text-left lg:text-3xl uppercase xxs:text-2xl  text-black font-bold">
-                    Recomendation
+                    Reccomendaded Product
                 </h2>
 
                 <div className="flex  items-center gap-10 top-0">
@@ -102,7 +102,7 @@ const RecomendationProduct = () => {
                                                         {book.category}
                                                     </h4>
                                                     <h4 className="text-lg">{book?.name?.slice(0, 28) + ".."}</h4>
-                                                    <div className='flex items-center gap-4'>
+                                                    {/* <div className='flex items-center gap-4'>
                                                         <h1 className="text-xl font-bold text-slate-900">
                                                             {
                                                                 book?.discountPercentage
@@ -116,7 +116,25 @@ const RecomendationProduct = () => {
                                                         <span className='text-[#eec75b]'>
                                                             {book?.discountPercentage} % off
                                                         </span>
+                                                    </div> */}
+                                                    <div className="flex items-center md:flex-row gap-2 md:gap-4">
+                                                        <h1 className="text-lg md:text-xl font-bold text-slate-900">
+                                                            {book?.discountPercentage
+                                                                ? `₹ ${book?.price - (book?.price * book?.discountPercentage) / 100}`
+                                                                : `₹ ${book?.price}`}
+                                                        </h1>
+                                                        {book?.discountPercentage !== "0" && (
+                                                            <>
+                                                                <span className="text-sm md:text-base text-slate-900 line-through mt-1">
+                                                                    ₹ {book?.price}
+                                                                </span>
+                                                                <span className="text-[#eec75b] text-sm md:text-base">
+                                                                    {book?.discountPercentage} % off
+                                                                </span>
+                                                            </>
+                                                        )}
                                                     </div>
+
                                                 </div>
                                             </div>
                                         </Link>

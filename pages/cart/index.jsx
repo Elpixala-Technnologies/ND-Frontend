@@ -2,6 +2,7 @@ import { AuthContext } from '@/src/Context/UserContext';
 import RootLayout from '@/src/Layouts/RootLayout';
 import { getCartUrl, removeFromCartUrl, updateCartUrl, addToCartUrl } from '@/src/Utils/Urls/BooksUrl'; // Assuming you have addToCartUrl
 import Image from 'next/image';
+import Link from 'next/link';
 import React, { useContext, useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 
@@ -216,7 +217,7 @@ const CartPage = () => {
                                     </p>
                                 </div>
                                 <div className="mt-6 text-center">
-                                    <button
+                                    <Link href="/checkout"
                                         type="button"
                                         className="group inline-flex w-full items-center justify-center rounded-md bg-gray-900 px-6 py-4 text-lg font-semibold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800"
                                     >
@@ -235,7 +236,7 @@ const CartPage = () => {
                                                 d="M13 7l5 5m0 0l-5 5m5-5H6"
                                             />
                                         </svg>
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

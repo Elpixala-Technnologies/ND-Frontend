@@ -6,7 +6,6 @@ import React from "react";
 const ManageCategory = () => {
   const { handelCategoryDelete, refetchCategory,categoryData } = useBook();
 
-
   return (
     <section>
       <section className="container px-4 mx-auto">

@@ -100,31 +100,6 @@ const CouponSlider = ({ coupon, applyCoupon }) => {
             .catch((err) => console.error('Failed to copy:', err));
     };
 
-    const coupons = [
-        {
-            code: 'STEALDEAL20',
-            offer: '20% flat off on all book within the city using HDFC Credit Card',
-            validTill: '20Dec, 2023',
-        },
-        {
-            code: 'STEALDEAL21',
-            offer: '20% flat off on all book within the city using HDFC Credit Card',
-            validTill: '20Dec, 2023',
-        },
-        {
-            code: 'STEALDEAL22',
-            offer: '20% flat off on all book within the city using HDFC Credit Card',
-            validTill: '20Dec, 2023',
-        },
-        {
-            code: 'STEALDEAL23',
-            offer: '20% flat off on all book within the city using HDFC Credit Card',
-            validTill: '20Dec, 2023',
-        },
-    ];
-
-
-
     return (
         <section>
             <div className="container mx-auto">
@@ -134,7 +109,7 @@ const CouponSlider = ({ coupon, applyCoupon }) => {
                     slidesPerView={1}
                     loop={true}
                 >
-                    {coupons.map((coupon, index) => (
+                    {coupon && coupon?.map((coupon, index) => (
                         <SwiperSlide key={index}>
                             <div className="bg-gradient-to-br from-purple-600 to-indigo-600 text-white text-center py-6 px-6 rounded-lg shadow-md relative">
                                 <h3 className="text-2xl font-semibold mb-4">

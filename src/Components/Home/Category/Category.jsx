@@ -1,26 +1,23 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import usePopularCategory from '@/src/Hooks/usePopularCategory';
-import Skeleton from 'react-loading-skeleton'; // Import the Skeleton component
-
+import Skeleton from 'react-loading-skeleton';  
 const Category = () => {
-    const { popularCategoryData, isLoading } = usePopularCategory(); // Assuming your hook provides an isLoading boolean
-
+    const { popularCategoryData, isLoading } = usePopularCategory();  
     return (
         <div className='grid md:grid-cols-3 md:gap-12 gap-2 mt-6 '>
             {isLoading ? (
-                // Render loading skeletons while data is loading
                 <>
                     <Skeleton width={400} height={500} />
                     <Skeleton width={400} height={500} />
                     <Skeleton width={400} height={500} />
                 </>
             ) : (
-                // Render actual data when it's available
                 popularCategoryData?.slice(0, 6)?.map((itm) => (
                     <Link
                         key={itm?._id}
-                        href={`/category_product?CategoryName=${itm?.popularCategory}`}
+                        // href={`/product?CategoryName=${itm?.popularCategory}`}
+                        href={`/product?categoryName=${encodeURIComponent(itm?.popularCategory)}`}
                         className="c-card border border-[#80808057] pb-6 rounded cursor-pointer hover:animate-pulse transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-100"
                     >
                         <Image

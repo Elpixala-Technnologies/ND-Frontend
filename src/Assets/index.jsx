@@ -13,9 +13,9 @@ import BookStoreBannerTwo from "./BooksOffer/book-store-02.png"
 import BookFareBannerOne from "./BooksOffer/bookfare-banner-01.png"
 import BookFareBannerTwo from "./BooksOffer/bookfare-banner-02.png"
 
-import MainLogo from "./Logo/Nd_logo_main.png"
+import MainLogo from "./Logo/ND_logo.png"
 
-import TransParentLogo from "./Logo/NDLogo.png"
+import TransParentLogo from "./Logo/ND_logo.png"
 
 // == mobile banner
 import MobileBannerOneImage from "./MobileBanner/MobileBanner-(1).png"

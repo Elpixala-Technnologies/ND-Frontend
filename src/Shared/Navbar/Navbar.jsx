@@ -24,7 +24,7 @@ const Navbar = () => {
       <div className="container flex items-center justify-between mx-auto">
         <div className="flex items-center gap-4">
           <Link className='text-2xl font-bold text-black' href="/">
-            <Image src={MainLogo} alt="logo" width={130} height={80}
+            <Image src={MainLogo} alt="logo" width={50} height={40}
               className='cursor-pointer hover:scale-105 duration-300 transform'
             />
           </Link>

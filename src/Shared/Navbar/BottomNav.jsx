@@ -7,7 +7,11 @@ const BottomNav = () => {
     const [on, setOn] = useState(true)
     const { categoryData } = useBook()
     return (
-        <div className='bg-[#000000] text-[#fff] py-4 md:px-4 border-b md:h-[50px] flex items-center z-80'>
+        <div className='bg-[#000000] text-[#fff] py-4 md:px-4 border-b md:h-[50px] flex items-center z-80 sticky top-0'
+            style={{
+                zIndex: "9999999"
+            }}
+        >
             <div className="container py-0 h-full mx-auto flex justify-between items-center">
                 <ul className='md:flex h-full items-center gap-5'>
                     <div className="flex md:w-auto w-[100%] justify-between items-center gap-2 ">
@@ -20,7 +24,9 @@ const BottomNav = () => {
                                     {
                                         categoryData && categoryData.map((item, index) => {
                                             return (
-                                                <Link href={`/category_product?CategoryName=${item?.category}`} key={index + "category"}>
+                                                <Link
+                                                    href={`/product?categoryName=${encodeURIComponent(item?.category)}`}
+                                                    key={index + "category"}>
                                                     <li className='p-2 rounded duration-200 hover:bg-[#80808024] text-[#000]' >
                                                         {item?.category}
                                                     </li>
@@ -37,7 +43,9 @@ const BottomNav = () => {
                         {
                             categoryData && categoryData?.slice(0, 4)?.map((item, index) => {
                                 return (
-                                    <Link href={`/category_product?CategoryName=${item?.category}`} key={index + "category"}>
+                                    <Link
+                                        href={`/product?categoryName=${encodeURIComponent(item?.category)}`}
+                                        key={index + "category"}>
                                         <li className='hover:bg-[#19343972] text-sm h-full flex items-center p-2 duration-200'>
                                             {item?.category}
                                         </li>

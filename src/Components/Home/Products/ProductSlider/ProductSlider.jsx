@@ -19,14 +19,14 @@ const ProductSlider = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768); // Define your mobile breakpoint
+      setIsMobile(window.innerWidth <= 768);  
     };
 
-    handleResize(); // Check the initial screen width
-    window.addEventListener('resize', handleResize); // Listen for window resize events
+    handleResize();  
+    window.addEventListener('resize', handleResize);  
 
     return () => {
-      window.removeEventListener('resize', handleResize); // Remove the event listener when the component unmounts
+      window.removeEventListener('resize', handleResize); 
     };
   }, []);
 
@@ -68,10 +68,10 @@ const ProductSlider = () => {
                 <div className="slider-images">
                   <Image
                     src={isMobile ? slide.mobileImage : slide.desktopImage}
-                    alt="Banner Image"
-                    className="w-full h-auto"
-                    width={isMobile ? 768 : 1920}
-                    height={isMobile ? 768 : 500}
+                    alt="Banner Image "
+                    className="w-full h-auto homeSliderImage"
+                    width={1920}
+                    height={500}
                   />
                 </div>
               </SwiperSlide>

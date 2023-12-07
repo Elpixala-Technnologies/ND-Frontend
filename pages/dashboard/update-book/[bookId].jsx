@@ -101,34 +101,6 @@ const UpdateBookPage = () => {
             setLoading(true);
             let featuresArray; // Declare it in a higher scope
 
-            // const uploadedUrls = [];
-            // for (const imageFile of imageFiles) {
-            //     const formData = new FormData();
-            //     formData.append('file', imageFile);
-            //     formData.append('upload_preset',
-            //         `${cloud_folder}/Books/${imageFile?.name}`);
-            //     formData.append('upload_preset', upload_preset);
-            //     formData.append('cloud_name', cloud_name);
-
-            //     const imgRes = await fetch(cloud_api, {
-            //         method: 'POST',
-            //         body: formData,
-            //     });
-
-            //     if (!imgRes.ok) {
-            //         const errorResponse = await imgRes.text();
-            //         throw new Error(`Error uploading image: ${imgRes.status} - ${imgRes.statusText}\n${errorResponse}`);
-            //     }
-
-            //     const imgdata = await imgRes.json();
-            //     const imgurl = imgdata?.secure_url;
-            //     if (imgurl) {
-            //         uploadedUrls.push(imgurl);
-            //     } else {
-            //         throw new Error('Failed to retrieve the image URL from Cloudinary response.');
-            //     }
-            // }
-
             const uploadedUrls = [];
 
             // Check if new images are uploaded
@@ -261,7 +233,7 @@ const UpdateBookPage = () => {
                         <div className="flex flex-col w-full gap-4 mx-auto add-book-form">
                             <form
                                 onSubmit={handleSubmit(onSubmit)}
-                                className="add-book-form w-full md:w-full mx-auto flex flex-col gap-4 "
+                                className="flex flex-col w-full gap-4 mx-auto add-book-form md:w-full "
                             >
                                 <input
                                     placeholder="Book Name"
@@ -273,7 +245,7 @@ const UpdateBookPage = () => {
                                 />
 
                                 <select
-                                    className='border-2 border-gray-300 rounded-md p-2'
+                                    className='p-2 border-2 border-gray-300 rounded-md'
                                     {...register("bookCategory")}
                                     defaultValue={category}
                                 >
@@ -285,7 +257,7 @@ const UpdateBookPage = () => {
                                         return (
                                             <option
                                                 value={category}
-                                                className='border-2 border-gray-300 rounded-md p-4 my-2'
+                                                className='p-4 my-2 border-2 border-gray-300 rounded-md'
                                                 key={_id}
                                             >{category}</option>
                                         )
@@ -327,7 +299,7 @@ const UpdateBookPage = () => {
 
                                 <select
                                     {...register("levelOption")}
-                                    className='border-2 border-gray-300 rounded-md p-2'
+                                    className='p-2 border-2 border-gray-300 rounded-md'
                                     defaultValue={level}
                                 >
                                     <option value="">
@@ -338,7 +310,7 @@ const UpdateBookPage = () => {
                                         return (
                                             <option
                                                 value={level}
-                                                className='border-2 border-gray-300 rounded-md p-4 my-2'
+                                                className='p-4 my-2 border-2 border-gray-300 rounded-md'
                                                 key={_id}
                                             >{level}</option>
                                         )
@@ -395,10 +367,10 @@ const UpdateBookPage = () => {
                                 >
                                 </textarea>
                                 <div className="w-full h-full">
-                                    <div className="rounded-lg shadow-xl bg-gray-50 p-4">
+                                    <div className="p-4 rounded-lg shadow-xl bg-gray-50">
                                         <label className="inline-block mb-2 text-gray-500">Upload book Image</label>
                                         <div className="flex items-center justify-center w-full">
-                                            <label className="flex flex-col w-full max-w-xs md:max-w-md h-32 border-4 border-blue-200 border-dashed hover:bg-gray-100 hover:border-gray-300">
+                                            <label className="flex flex-col w-full h-32 max-w-xs border-4 border-blue-200 border-dashed md:max-w-md hover:bg-gray-100 hover:border-gray-300">
                                                 <div className="flex flex-col items-center justify-center pt-7">
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
@@ -431,11 +403,11 @@ const UpdateBookPage = () => {
                                         </div>
                                     </div>
                                     <div>
-                                        <div className="flex flex-wrap gap-4 my-4 justify-center items-center">
+                                        <div className="flex flex-wrap items-center justify-center gap-4 my-4">
                                             {image && image?.map((uploadedImageUrl, index) => (
-                                                <div key={index} className="relative flex  flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
+                                                <div key={index} className="relative flex flex-col overflow-hidden bg-white border border-gray-100 rounded-lg shadow-md">
                                                     <a
-                                                        className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"
+                                                        className="relative flex mx-3 mt-3 overflow-hidden h-60 rounded-xl"
                                                         href="#"
                                                     >
                                                         <img
@@ -452,9 +424,9 @@ const UpdateBookPage = () => {
                                         {/* show selected image  */}
                                         {
                                             imageFiles?.map((image, index) => (
-                                                <div key={index} className="relative flex  flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
+                                                <div key={index} className="relative flex flex-col overflow-hidden bg-white border border-gray-100 rounded-lg shadow-md">
                                                     <a
-                                                        className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"
+                                                        className="relative flex mx-3 mt-3 overflow-hidden h-60 rounded-xl"
                                                         href="#"
                                                     >
                                                         <img

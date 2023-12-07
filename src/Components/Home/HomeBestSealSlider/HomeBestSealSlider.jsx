@@ -165,7 +165,7 @@ const HomeBestSealSlider = () => {
                   <Image
                     src={isMobile ? slide.mobileImage : slide.desktopImage}
                     alt="Banner Image"
-                    className="w-full h-full"
+                    className="w-full h-full homeSliderImage"
                     width={isMobile ? 768 : 1920}
                     height={isMobile ? 768 : 500}
                   />
