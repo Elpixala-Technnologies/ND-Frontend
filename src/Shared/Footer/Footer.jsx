@@ -65,7 +65,7 @@ const Footer = () => {
 
                 <div className="md:mt-[0] mt-6">
                     <ul>
-                        <li className='font-semibold text-lg text-[#000000]'>
+                        <li className='font-semibold text-lg text-[#fff]'>
                             <Link href="">Follow Us</Link>
                         </li>
                         <li className='mt-3 font-[300]'>
