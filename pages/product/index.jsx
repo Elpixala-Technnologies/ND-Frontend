@@ -132,6 +132,7 @@ const ProductPage = () => {
     };
 
 
+    console.log(bookData, "bookData+++")
 
     return (
         <RootLayout>
