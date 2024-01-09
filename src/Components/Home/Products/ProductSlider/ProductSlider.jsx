@@ -19,33 +19,39 @@ const ProductSlider = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);  
+      setIsMobile(window.innerWidth <= 768);
     };
 
-    handleResize();  
-    window.addEventListener('resize', handleResize);  
+    handleResize();
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize); 
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
   const slidesData = [
+
     {
       id: 1,
-      desktopImage: BannerFiveImage,
-      mobileImage: MobileBannerFiveImage, // Add mobile image for slide 1
+      desktopImage: "https://res.cloudinary.com/dqbwjnwur/image/upload/v1704813668/ND%20Banners/ND%20Books%20PC%20%281903%20x%20755%20px%29/5_bss1sp.png",
+      mobileImage: "https://res.cloudinary.com/dqbwjnwur/image/upload/v1704813671/ND%20Banners/ND%20Books%20Mobile%20%28414%20x%20477%20px%29/5_r2mxgl.png", // Add mobile image for slide 3
     },
     {
       id: 2,
-      desktopImage: BannerThreeImage,
-      mobileImage: MobileBannerThreeImage, // Add mobile image for slide 2
+      desktopImage: "https://res.cloudinary.com/dqbwjnwur/image/upload/v1704813668/ND%20Banners/ND%20Books%20PC%20%281903%20x%20755%20px%29/5_bss1sp.png",
+      mobileImage: "https://res.cloudinary.com/dqbwjnwur/image/upload/v1704813671/ND%20Banners/ND%20Books%20Mobile%20%28414%20x%20477%20px%29/2_tngnvp.png", // Add mobile image for slide 4
     },
     {
       id: 3,
-      desktopImage: BannerFourImage,
-      mobileImage: MobileBannerFourImage, // Add mobile image for slide 3
+      desktopImage: "https://res.cloudinary.com/dqbwjnwur/image/upload/v1704813660/ND%20Banners/ND%20Books%20PC%20%281903%20x%20755%20px%29/4_y7a8ie.png",
+      mobileImage: "https://res.cloudinary.com/dqbwjnwur/image/upload/v1704813660/ND%20Banners/ND%20Books%20Mobile%20%28414%20x%20477%20px%29/3_jnsdog.png", // Add mobile image for slide 5
     },
+    {
+      id: 4,
+      desktopImage: "https://res.cloudinary.com/dqbwjnwur/image/upload/v1704813668/ND%20Banners/ND%20Books%20PC%20%281903%20x%20755%20px%29/1_ftvmfq.png",
+      mobileImage: "https://res.cloudinary.com/dqbwjnwur/image/upload/v1704813660/ND%20Banners/ND%20Books%20Mobile%20%28414%20x%20477%20px%29/5_idlf1l.png", // Add mobile image for slide 6
+    }
   ];
 
   return (

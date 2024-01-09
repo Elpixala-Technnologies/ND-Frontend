@@ -94,53 +94,48 @@ const HomeBestSealSlider = () => {
   const HomeSliderData = [
     {
       id: 1,
-      desktopImage: BannerOneImage,
-      mobileImage: MobileBannerOneImage, // Add mobile image for slide 1
+      desktopImage: "https://res.cloudinary.com/dqbwjnwur/image/upload/v1704813670/ND%20Banners/ND%20Books%20PC%20%281903%20x%20755%20px%29/4_uspbkf.png",
+      mobileImage: "https://res.cloudinary.com/dqbwjnwur/image/upload/v1704813672/ND%20Banners/ND%20Books%20Mobile%20%28414%20x%20477%20px%29/4_fc2wt5.png", // Add mobile image for slide 1
     },
     {
       id: 2,
-      desktopImage: BannerTowImage,
-      mobileImage: MobileBannerTowImage, // Add mobile image for slide 2
+      desktopImage: "https://res.cloudinary.com/dqbwjnwur/image/upload/v1704813669/ND%20Banners/ND%20Books%20PC%20%281903%20x%20755%20px%29/2_ulnaap.png",
+      mobileImage: "https://res.cloudinary.com/dqbwjnwur/image/upload/v1704813671/ND%20Banners/ND%20Books%20Mobile%20%28414%20x%20477%20px%29/3_obdw6l.png", // Add mobile image for slide 2
     },
     {
       id: 3,
-      desktopImage: BannerThreeImage,
-      mobileImage: MobileBannerThreeImage, // Add mobile image for slide 3
+      desktopImage: "https://res.cloudinary.com/dqbwjnwur/image/upload/v1704813668/ND%20Banners/ND%20Books%20PC%20%281903%20x%20755%20px%29/5_bss1sp.png",
+      mobileImage: "https://res.cloudinary.com/dqbwjnwur/image/upload/v1704813671/ND%20Banners/ND%20Books%20Mobile%20%28414%20x%20477%20px%29/5_r2mxgl.png", // Add mobile image for slide 3
     },
     {
       id: 4,
-      desktopImage: BannerFourImage,
-      mobileImage: MobileBannerFourImage, // Add mobile image for slide 4
+      desktopImage: "https://res.cloudinary.com/dqbwjnwur/image/upload/v1704813668/ND%20Banners/ND%20Books%20PC%20%281903%20x%20755%20px%29/5_bss1sp.png",
+      mobileImage: "https://res.cloudinary.com/dqbwjnwur/image/upload/v1704813671/ND%20Banners/ND%20Books%20Mobile%20%28414%20x%20477%20px%29/2_tngnvp.png", // Add mobile image for slide 4
     },
     {
       id: 5,
-      desktopImage: BannerFiveImage,
-      mobileImage: MobileBannerFiveImage, // Add mobile image for slide 5
+      desktopImage: "https://res.cloudinary.com/dqbwjnwur/image/upload/v1704813660/ND%20Banners/ND%20Books%20PC%20%281903%20x%20755%20px%29/4_y7a8ie.png",
+      mobileImage: "https://res.cloudinary.com/dqbwjnwur/image/upload/v1704813660/ND%20Banners/ND%20Books%20Mobile%20%28414%20x%20477%20px%29/3_jnsdog.png", // Add mobile image for slide 5
     },
     {
       id: 6,
-      desktopImage: BannerSixImage,
-      mobileImage: MobileBannerSixImage, // Add mobile image for slide 6
-    },
-    {
-      id: 7,
-      desktopImage: BannerSevenImage,
-      mobileImage: MobileBannerSevenImage, // Add mobile image for slide 7
-    },
+      desktopImage: "https://res.cloudinary.com/dqbwjnwur/image/upload/v1704813668/ND%20Banners/ND%20Books%20PC%20%281903%20x%20755%20px%29/1_ftvmfq.png",
+      mobileImage: "https://res.cloudinary.com/dqbwjnwur/image/upload/v1704813660/ND%20Banners/ND%20Books%20Mobile%20%28414%20x%20477%20px%29/5_idlf1l.png", // Add mobile image for slide 6
+    }
   ];
 
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768); 
+      setIsMobile(window.innerWidth <= 768);
     };
 
-    handleResize(); 
+    handleResize();
     window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener("resize", handleResize); 
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 

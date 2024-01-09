@@ -277,7 +277,7 @@ const Index = () => {
                         />
                       </svg>
                     </div>
-                    <span className="w-5/6 px-4 py-3 font-bold text-center">
+                    <span className="px-4 py-3 text-black font-bold text-center">
                       Sign in with Google
                     </span>
                   </div>
