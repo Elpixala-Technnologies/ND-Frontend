@@ -2,10 +2,13 @@ import { AuthContext } from '@/src/Context/UserContext';
 import RootLayout from '@/src/Layouts/RootLayout';
 import AddressModal from '@/src/Shared/Modal/AddressModal/AddressModal';
 import { getAddressByEmailUrl } from '@/src/Utils/Urls/AddressUrl';
-import { getCartUrl } from '@/src/Utils/Urls/BooksUrl';
+import { addToCartUrl, getCartUrl, removeFromCartUrl, updateCartUrl } from '@/src/Utils/Urls/BooksUrl';
+import { addOrderUrl } from '@/src/Utils/Urls/OrderUrl';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
+import Swal from 'sweetalert2';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -15,7 +18,8 @@ const CheckoutPage = () => {
     const [cartData, setCartData] = useState([]);
     const { user } = useContext(AuthContext);
     const [currentStep, setCurrentStep] = useState(0);
-
+    const [paymentMethod, setPaymentMethod] = useState(null)
+    const router = useRouter();
     const { register, handleSubmit } = useForm();
 
     useEffect(() => {
@@ -54,8 +58,129 @@ const CheckoutPage = () => {
         },
     });
 
-    if (Adddressoaded) {
-        return <div className="flex items-center justify-center h-screen">Loading...</div>;
+
+    const calculateItemPrice = (bookPrice, itemQuantity) => {
+        return bookPrice * itemQuantity;
+    };
+
+    const removeFromCart = async (id) => {
+        const res = await fetch(removeFromCartUrl(id), {
+            method: 'DELETE',
+        });
+        const data = await res.json();
+        console.log(data);
+
+        if (data?.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Your item has been removed',
+                showConfirmButton: false,
+                timer: 1500,
+            });
+            setCartData(cartData.filter((data) => data._id !== id));
+        }
+    };
+
+    const addToCart = async (book) => {
+        const res = await fetch(addToCartUrl(user?.email), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                bookId: book?._id,
+                quantity: 1, // You can start with a quantity of 1
+            }),
+        });
+        const data = await res.json();
+        console.log(data);
+        if (data?.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Item added to cart',
+                showConfirmButton: false,
+                timer: 1500,
+            });
+        }
+    };
+
+    const updateCartItemQuantity = async (id, newQuantity) => {
+        const res = await fetch(updateCartUrl(id), {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                quantity: newQuantity,
+            }),
+        });
+        const data = await res.json();
+        console.log(data);
+        if (data?.success) {
+            // Update the cartData here
+            const updatedCartData = cartData.map((item) => {
+                if (item._id === id) {
+                    return {
+                        ...item,
+                        quantity: newQuantity,
+                    };
+                }
+                return item;
+            });
+            setCartData(updatedCartData);
+        }
+    };
+
+    const totalPrice = cartData?.reduce((acc, curr) => {
+        return acc + calculateItemPrice(curr?.book?.price, curr?.quantity);
+    }, 0);
+
+    const totalQuantity = cartData?.reduce((acc, curr) => {
+        return acc + curr?.quantity;
+    }, 0);
+
+    const subtotal = totalPrice - (totalPrice * 10) / 100;
+
+    const handelOrderNow = async () => {
+        try {
+            const orderData = {
+                book: cartData[0]?._id,
+                quantity: totalQuantity,
+                totalPrice: subtotal,
+                email: user?.email,
+                paymentDetails: paymentMethod,
+                shippingAddress: AddressData[0]?._id,
+                clientName: user?.displayName
+            }
+
+            const response = fetch(addOrderUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderData),
+            })
+
+
+            if (response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Item added to cart',
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+
+                router.push('/paymentsuccess');
+            }
+        } catch (error) {
+            console.log(error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Something Wrang',
+                showConfirmButton: false,
+                timer: 1500,
+            });
+        }
     }
 
     const steps = [
@@ -66,9 +191,9 @@ const CheckoutPage = () => {
 
     return (
         <RootLayout>
-            <div className="container mx-auto px-4">
+            <div className="container mx-auto py-6 px-4">
                 <div className="flex flex-col items-center border-b bg-white py-4 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
-        
+
                     <div className="mt-4 py-2 text-xs sm:mt-0 sm:ml-auto sm:text-base">
                         <div className="relative">
                             <ul className="relative flex w-full items-center justify-between space-x-2 sm:space-x-4">
@@ -105,38 +230,107 @@ const CheckoutPage = () => {
                                     </p>
 
                                     <div className="mt-8 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6 flex flex-col gap-4">
-                                        {
-                                            cartData && cartData?.map((cartValueData) => {
-                                                const { book, _id, quantity, color, size } = cartValueData;
-                                                const itemPrice = book?.price * quantity;
-                                                return (
-                                                    <div className="flex flex-col rounded-lg bg-white sm:flex-row">
-                                                        <img
-                                                            className="m-2 h-24 w-28 rounded-md border object-cover object-center"
-                                                            src={book?.image[0]}
-                                                            alt={book?.name}
-                                                        />
-                                                        <div className="flex w-full flex-col px-4 py-4">
-                                                            <span className="font-semibold">
-                                                                {book?.name}
-                                                            </span>
-                                                            <span className="float-right text-gray-400">
-                                                                Size : {size}
-                                                            </span>
-                                                            <span className="float-right text-gray-400">
-                                                                Color : {color}
-                                                            </span>
-                                                            <span className="float-right text-gray-400">
-                                                                Total Quantity: {quantity}
-                                                            </span>
-                                                            <p className="text-lg font-bold">
-                                                                Price : <span className="text-xs font-normal text-gray-400">₹</span>{" "} {Math.round(itemPrice)}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                );
-                                            })
-                                        }
+                                        <ul className="my-8 w-[60%] flex flex-col gap-4">
+                                            {cartData &&
+                                                cartData?.map((data) => {
+                                                    const { book, _id, image, quantity } = data;
+                                                    const itemPrice = book ? calculateItemPrice(book.price, quantity) : 0;
+                                                    return (
+                                                        <li className="border shadow px-2 rounded flex flex-col space-y-3 py-6 text-left sm:flex-row sm:space-x-5 sm:space-y-0">
+                                                            <div className="shrink-0">
+                                                                <Image
+                                                                    width={100}
+                                                                    height={100} // Add this line to specify the height
+                                                                    className="h-24 w-24 max-w-full rounded-lg object-cover"
+                                                                    src={book?.image[0]}
+                                                                    alt={book?.name}
+                                                                />
+                                                            </div>
+                                                            <div className="relative flex flex-1 flex-col justify-between">
+                                                                <div className="sm:col-gap-5 sm:grid sm:grid-cols-2 flex flex-col">
+                                                                    <div className="pr-8 sm:pr-5">
+                                                                        <p className="text-base font-semibold text-gray-900">
+                                                                            {book?.name}
+                                                                        </p>
+
+                                                                        <p className="text-base  text-gray-900">
+                                                                            Price : Rs. {book?.price}
+                                                                        </p>
+
+                                                                        <p className="text-base  text-gray-900">
+                                                                            {
+                                                                                book?.discountPercentage !== "0" && (
+                                                                                    <span> Discount : Rs. {book?.discountPercentage} % of</span>
+                                                                                )
+                                                                            }
+
+                                                                        </p>
+
+                                                                        <p className="text-base  text-gray-900">
+                                                                            Total Quantity : {quantity}
+                                                                        </p>
+                                                                    </div>
+
+                                                                    <div className="mt-4 flex items-end justify-between sm:mt-0 sm:items-start  sm:justify-end">
+                                                                        <p className="shrink-0 w-20 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-right">
+                                                                            <span className="text-xs font-normal text-gray-400">₹</span>{" "}
+                                                                            {itemPrice}
+                                                                        </p>
+                                                                        <div className="sm:order-1">
+                                                                            <div className="mx-auto flex h-8 items-stretch text-gray-600">
+                                                                                <button
+                                                                                    className="flex items-center justify-center rounded-l-md bg-gray-200 px-4 transition hover:bg-black hover:text-white"
+                                                                                    onClick={() => {
+                                                                                        if (quantity > 1) {
+                                                                                            updateCartItemQuantity(_id, quantity - 1);
+                                                                                        }
+                                                                                    }}
+                                                                                >
+                                                                                    -
+                                                                                </button>
+                                                                                <div className="flex w-full items-center justify-center bg-gray-100 px-4 text-xs uppercase transition">
+                                                                                    {quantity}
+                                                                                </div>
+                                                                                <button
+                                                                                    className="flex items-center justify-center rounded-r-md bg-gray-200 px-4 transition hover:bg-black hover:text-white"
+                                                                                    onClick={() =>
+                                                                                        updateCartItemQuantity(_id, quantity + 1)
+                                                                                    }
+                                                                                >
+                                                                                    +
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="absolute top-0 right-0 flex sm:bottom-0 sm:top-auto">
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => removeFromCart(_id)}
+                                                                        className="flex rounded p-2 text-center text-gray-500 transition-all duration-200 ease-in-out focus:shadow hover:text-gray-900"
+                                                                    >
+                                                                        <svg
+                                                                            className="h-5 w-5"
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            fill="none"
+                                                                            viewBox="0 0 24 24"
+                                                                            stroke="currentColor"
+                                                                        >
+                                                                            <path
+                                                                                strokeLinecap="round"
+                                                                                strokeLinejoin="round"
+                                                                                strokeWidth={2}
+                                                                                d="M6 18L18 6M6 6l12 12"
+                                                                                className=""
+                                                                            />
+                                                                        </svg>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    );
+                                                })}
+                                        </ul>
                                     </div>
                                 </div>
                                 {/* add previuse and next  */}
@@ -145,11 +339,11 @@ const CheckoutPage = () => {
                                     <button
                                         className="mt-4 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white"
                                         onClick={() => setCurrentStep(currentStep + 1)}
+                                        disabled={cartData?.length === 0} // This will disable the button if cardData.length is 0
                                     >
                                         Next
                                     </button>
                                 </div>
-
                             </>
                         )
                     }
@@ -281,6 +475,8 @@ const CheckoutPage = () => {
                         )
                     }
 
+
+
                     {
                         currentStep === 2 && (
                             <>
@@ -289,162 +485,21 @@ const CheckoutPage = () => {
                                     <p className="text-gray-400">
                                         Complete your order by providing your payment details.
                                     </p>
-                                    <div className="">
-                                        <label htmlFor="email" className="mt-4 mb-2 block text-sm font-medium">
-                                            Email
-                                        </label>
-                                        <div className="relative">
-                                            <input
-                                                type="text"
-                                                id="email"
-                                                name="email"
-                                                className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                                                placeholder="your.email@gmail.com"
-                                            />
-                                            <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    className="h-4 w-4 text-gray-400"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke="currentColor"
-                                                    strokeWidth={2}
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
-                                                    />
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <label
-                                            htmlFor="card-holder"
-                                            className="mt-4 mb-2 block text-sm font-medium"
+
+                                    <div className='my-4'>
+                                        <p className="text-xl font-medium">Select Payment Method</p>
+
+                                        <select className="my-2 border w-full p-2"
+                                            onChange={(e) => setPaymentMethod(e.target.value)}
                                         >
-                                            Card Holder
-                                        </label>
-                                        <div className="relative">
-                                            <input
-                                                type="text"
-                                                id="card-holder"
-                                                name="card-holder"
-                                                className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm uppercase shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                                                placeholder="Your full name here"
-                                            />
-                                            <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    className="h-4 w-4 text-gray-400"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke="currentColor"
-                                                    strokeWidth={2}
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"
-                                                    />
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <label
-                                            htmlFor="card-no"
-                                            className="mt-4 mb-2 block text-sm font-medium"
-                                        >
-                                            Card Details
-                                        </label>
-                                        <div className="flex">
-                                            <div className="relative w-7/12 flex-shrink-0">
-                                                <input
-                                                    type="text"
-                                                    id="card-no"
-                                                    name="card-no"
-                                                    className="w-full rounded-md border border-gray-200 px-2 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                                                    placeholder="xxxx-xxxx-xxxx-xxxx"
-                                                />
-                                                <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
-                                                    <svg
-                                                        className="h-4 w-4 text-gray-400"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        width={16}
-                                                        height={16}
-                                                        fill="currentColor"
-                                                        viewBox="0 0 16 16"
-                                                    >
-                                                        <path d="M11 5.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1z" />
-                                                        <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2zm13 2v5H1V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zm-1 9H2a1 1 0 0 1-1-1v-1h14v1a1 1 0 0 1-1 1z" />
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                            <input
-                                                type="text"
-                                                name="credit-expiry"
-                                                className="w-full rounded-md border border-gray-200 px-2 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                                                placeholder="MM/YY"
-                                            />
-                                            <input
-                                                type="text"
-                                                name="credit-cvc"
-                                                className="w-1/6 flex-shrink-0 rounded-md border border-gray-200 px-2 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                                                placeholder="CVC"
-                                            />
-                                        </div>
-                                        <label
-                                            htmlFor="billing-address"
-                                            className="mt-4 mb-2 block text-sm font-medium"
-                                        >
-                                            Billing Address
-                                        </label>
-                                        <div className="flex flex-col sm:flex-row">
-                                            <div className="relative flex-shrink-0 sm:w-7/12">
-                                                <input
-                                                    type="text"
-                                                    id="billing-address"
-                                                    name="billing-address"
-                                                    className="w-full rounded-md border border-gray-200 px-4 py-3 pl-11 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                                                    placeholder="Street Address"
-                                                />
-                                                <div className="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
-                                                    <img
-                                                        className="h-4 w-4 object-contain"
-                                                        src="https://flagpack.xyz/_nuxt/4c829b6c0131de7162790d2f897a90fd.svg"
-                                                        alt=""
-                                                    />
-                                                </div>
-                                            </div>
-                                            <select
-                                                type="text"
-                                                name="billing-state"
-                                                className="w-full rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                                            >
-                                                <option value="State">State</option>
-                                            </select>
-                                            <input
-                                                type="text"
-                                                name="billing-zip"
-                                                className="flex-shrink-0 rounded-md border border-gray-200 px-4 py-3 text-sm shadow-sm outline-none sm:w-1/6 focus:z-10 focus:border-blue-500 focus:ring-blue-500"
-                                                placeholder="ZIP"
-                                            />
-                                        </div>
-                                        {/* Total */}
-                                        <div className="mt-6 border-t border-b py-2">
-                                            <div className="flex items-center justify-between">
-                                                <p className="text-sm font-medium text-gray-900">Subtotal</p>
-                                                <p className="font-semibold text-gray-900">$399.00</p>
-                                            </div>
-                                            <div className="flex items-center justify-between">
-                                                <p className="text-sm font-medium text-gray-900">Shipping</p>
-                                                <p className="font-semibold text-gray-900">$8.00</p>
-                                            </div>
-                                        </div>
-                                        <div className="mt-6 flex items-center justify-between">
-                                            <p className="text-sm font-medium text-gray-900">Total</p>
-                                            <p className="text-2xl font-semibold text-gray-900">$408.00</p>
-                                        </div>
+                                            <option value="">Select Mathod</option>
+                                            <option value="Cash On Delivary">Cash On Delivary</option>
+                                        </select>
                                     </div>
-                                    <button className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white">
+
+                                    <button
+                                        onClick={handelOrderNow}
+                                        className="mt-4 mb-8 text-black rounded-md border  px-6 py-3 font-medium ">
                                         Place Order
                                     </button>
                                 </div>

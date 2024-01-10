@@ -47,7 +47,7 @@ const CartPage = () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                bookId: book._id,
+                bookId: book?._id,
                 quantity: 1, // You can start with a quantity of 1
             }),
         });
@@ -118,8 +118,6 @@ const CartPage = () => {
                                             cartData?.map((data) => {
                                                 const { book, _id, image, quantity } = data;
                                                 const itemPrice = book ? calculateItemPrice(book.price, quantity) : 0;
-
-
                                                 return (
                                                     <li className="flex flex-col space-y-3 py-6 text-left sm:flex-row sm:space-x-5 sm:space-y-0">
                                                         <div className="shrink-0">
@@ -136,6 +134,23 @@ const CartPage = () => {
                                                                 <div className="pr-8 sm:pr-5">
                                                                     <p className="text-base font-semibold text-gray-900">
                                                                         {book?.name}
+                                                                    </p>
+
+                                                                    <p className="text-base  text-gray-900">
+                                                                        Price : Rs. {book?.price}
+                                                                    </p>
+
+                                                                    <p className="text-base  text-gray-900">
+                                                                        {
+                                                                            book?.discountPercentage !== "0" && (
+                                                                                <span> Discount : Rs. {book?.discountPercentage} % of</span>
+                                                                            )
+                                                                        }
+
+                                                                    </p>
+
+                                                                    <p className="text-base  text-gray-900">
+                                                                        Total Quantity : {quantity}
                                                                     </p>
                                                                 </div>
 

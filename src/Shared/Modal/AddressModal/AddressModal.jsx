@@ -22,7 +22,7 @@ const AddressModal = ({
 
     const onSubmit = async (inputValue) => {
         try {
-            const { address, city, country, phone, state, zip , name, lebel} = inputValue;
+            const { address, city, country, phone, state, zip, name, lebel } = inputValue;
             setLoading(true);
 
             const AddressData = {
@@ -97,7 +97,7 @@ const AddressModal = ({
     return (
         <div>
             <Modal title="Add Address" open={isAddressModalOpen} okButtonProps={{ style: { display: 'none' } }} onCancel={handleCancel}>
-                <div className="container">
+                <div className="container w-full my-6">
                     <div className='flex gap-4 flex-col'>
                         <div
                             className='border-2 border-gray-300 rounded-md p-2'

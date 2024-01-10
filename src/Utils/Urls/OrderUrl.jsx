@@ -1,16 +1,16 @@
 import { basedUrl } from "../Network/Network";
 
-export const getOrderUrl = basedUrl + '/order/get-Order'
+export const getOrderUrl = basedUrl + 'orders/get-orders'
 
-export const addOrderUrl = basedUrl + '/order/create'
+export const addOrderUrl = basedUrl + 'orders/create-order'
 
-export const deleteOrderUrl = (id) => basedUrl + `/order/delete/${id}`
+export const deleteOrderUrl = (id) => basedUrl + `orders/delete/${id}`
 
-export const updateOrderUrl = (id) => basedUrl + `/order/update/${id}`
+export const updateOrderUrl = (id) => basedUrl + `orders/update/${id}`
 
-export const getOrderByIdUrl = (id) => basedUrl + `/order/get-singel/${id}`
+export const getOrderByIdUrl = (id) => basedUrl + `orders/get-singel/${id}`
 
-export const getOrderByEmailUrl = (email) => basedUrl + `/order/get-Order/${email}`
+export const getOrderByEmailUrl = (email) => basedUrl + `orders/get-orders/${email}`
 
 
 
