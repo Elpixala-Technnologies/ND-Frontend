@@ -139,14 +139,13 @@ const CheckoutPage = () => {
         return acc + curr?.quantity;
     }, 0);
 
-    const subtotal = totalPrice - (totalPrice * 10) / 100;
-
+    
     const handelOrderNow = async () => {
         try {
             const orderData = {
                 book: cartData?.map((book) =>  book),
                 quantity: totalQuantity,
-                totalPrice: subtotal,
+                totalPrice: totalPrice,
                 email: user?.email,
                 paymentDetails: paymentMethod,
                 shippingAddress: AddressData[0],
@@ -263,7 +262,6 @@ const CheckoutPage = () => {
                                                                                     <span> Discount : Rs. {book?.discountPercentage} % of</span>
                                                                                 )
                                                                             }
-
                                                                         </p>
 
                                                                         <p className="text-base  text-gray-900">
@@ -274,7 +272,7 @@ const CheckoutPage = () => {
                                                                     <div className="mt-4 flex items-end justify-between sm:mt-0 sm:items-start  sm:justify-end">
                                                                         <p className="shrink-0 w-20 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-right">
                                                                             <span className="text-xs font-normal text-gray-400">₹</span>{" "}
-                                                                            {itemPrice}
+                                                                            {totalPrice}
                                                                         </p>
                                                                         <div className="sm:order-1">
                                                                             <div className="mx-auto flex h-8 items-stretch text-gray-600">

@@ -54,49 +54,130 @@ const ProductDetails = () => {
 
   // ====== Add to cart ======
 
+  // const addToCart = async (id) => {
+  //   const convertPrice = parseInt(price);
+  //   // Check if the user is logged in
+  //   if (!user) {
+  //     // User is not logged in, show an alert
+  //     Swal.fire({
+  //       icon: 'error',
+  //       title: 'Please log in to add the book to your cart',
+  //       showConfirmButton: true,
+  //     });
+  //     return;
+  //   }
+
+  //   const res = await fetch(addToCartUrl(id), {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       book: _id,
+  //       quantity: 1,
+  //       totalPrice: convertPrice,
+  //       email: user?.email,
+  //       status: "unpaid"
+  //     }),
+  //   });
+
+  //   const data = await res.json();
+  //   console.log(data);
+
+  //   if (data.success) {
+  //     Swal.fire({
+  //       icon: 'success',
+  //       title: 'Your book added to cart',
+  //       showConfirmButton: false,
+  //       timer: 1500,
+  //     })
+  //     router.push('/cart');
+  //   }
+  // }
+
+  const totalPrice = parseInt(price - (price * discountPercentage) / 100)
+  // Add to cart function
   const addToCart = async (id) => {
-    const convertPrice = parseInt(price);
-    // Check if the user is logged in
+    const convertPrice = parseInt(totalPrice);
     if (!user) {
-      // User is not logged in, show an alert
-      Swal.fire({
-        icon: 'error',
-        title: 'Please log in to add the book to your cart',
-        showConfirmButton: true,
-      });
+      localStorage.setItem('redirectTo', '/cart');
+      localStorage.setItem('itemToAdd', id);
+      router.push('/auth/login');
       return;
     }
 
-    const res = await fetch(addToCartUrl(id), {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        book: _id,
-        quantity: 1,
-        totalPrice: convertPrice,
-        email: user?.email,
-        status: "unpaid"
-      }),
-    });
+    await addItemToCart(id, convertPrice);
+  }
 
-    const data = await res.json();
-    console.log(data);
+  const addItemToCart = async (id, price) => {
+    try {
+      const response = await fetch(addToCartUrl(id), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          book: _id, // Assuming _id is the ID of the book
+          quantity: 1,
+          totalPrice: price,
+          email: user?.email,
+          status: "unpaid"
+        }),
+      });
 
-    if (data.success) {
+      const data = await response.json();
+
+      if (data.success) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Your book has been added to the cart',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        // You can redirect to the cart page or perform any other action
+        router.push('/cart');
+      } else {
+        // Handle the case where adding to cart is unsuccessful
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed to add the book to the cart',
+          text: data.message || 'An error occurred',
+        });
+      }
+    } catch (error) {
+      // Handle any errors that occur during the fetch
+      console.error('Error adding item to cart:', error);
       Swal.fire({
-        icon: 'success',
-        title: 'Your book added to cart',
-        showConfirmButton: false,
-        timer: 1500,
-      })
-      router.push('/cart');
+        icon: 'error',
+        title: 'Error',
+        text: 'An error occurred while adding the book to the cart.',
+      });
     }
   }
 
+  const postLoginRedirect = () => {
+    const redirectTo = localStorage.getItem('redirectTo');
+    const itemToAdd = localStorage.getItem('itemToAdd');
+    if (redirectTo && itemToAdd) {
+      addItemToCart(itemToAdd, /* correct price */);
+      localStorage.removeItem('itemToAdd');
+      router.push(redirectTo);
+      localStorage.removeItem('redirectTo');
+    }
+  }
+
+  useEffect(() => {
+    if (user) {
+      postLoginRedirect();
+    }
+  }, [user]);
+  
+
+
+
+
   const handelBuyeNow = async (id) => {
-    const convertPrice = parseInt(price);
+    const convertPrice = parseInt(totalPrice);
     // Check if the user is logged in
     if (!user) {
       // User is not logged in, show an alert
@@ -135,24 +216,6 @@ const ProductDetails = () => {
       router.push('/checkout');
     }
   }
-
-  const [appliedCoupon, setAppliedCoupon] = useState(null);
-  const [discountedPrice, setDiscountedPrice] = useState(mainBookData?.price || 0);
-
-
-  const applyCoupon = (couponCode) => {
-    // Find the coupon with the given code
-    const appliedCoupon = coupon.find((coupon) => coupon.code === couponCode);
-
-    if (appliedCoupon) {
-      // Calculate the discounted price
-      const discountAmount = (parseInt(price) * appliedCoupon.discountPercentage) / 100;
-      const newPrice = parseInt(price) - discountAmount;
-
-      setAppliedCoupon(couponCode);
-      setDiscountedPrice(newPrice);
-    }
-  };
 
   useEffect(() => {
     if (image && image.length > 0) {

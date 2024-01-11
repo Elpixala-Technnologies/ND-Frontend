@@ -101,9 +101,7 @@ const CartPage = () => {
     const totalQuantity = cartData?.reduce((acc, curr) => {
         return acc + curr?.quantity;
     }, 0);
-
-    const subtotal = totalPrice - (totalPrice * 10) / 100;
-
+ 
     return (
         <RootLayout>
             <section className="min-h-[50vh]">
@@ -216,10 +214,10 @@ const CartPage = () => {
                                 </div>
                                 <div className="mt-6 border-t border-b py-2">
                                     <div className="flex items-center justify-between">
-                                        <p className="text-sm text-gray-400">Subtotal</p>
+                                        <p className="text-sm text-gray-400">Total</p>
                                         <p className="text-lg font-semibold text-gray-900">
                                             <span className="text-xs font-normal text-gray-400">₹</span>{" "}
-                                            {subtotal}
+                                            {totalPrice}
                                         </p>
                                     </div>
                                 </div>
