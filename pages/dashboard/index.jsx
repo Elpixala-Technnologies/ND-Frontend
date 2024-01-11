@@ -152,7 +152,7 @@ const DashboardPage = () => {
                                                                         Delete
                                                                     </button>
 
-                                                                    <Button type="default"
+                                                                    <Button type="default text-white"
                                                                         onClick={() => showUpdateInventoryModal(product)}
                                                                     >
                                                                         {

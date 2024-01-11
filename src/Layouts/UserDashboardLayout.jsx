@@ -84,9 +84,6 @@ const UserdashboardLayout = ({ children }) => {
                         <Menu.Item key="/" icon={<FaThLarge />}>
                             <Link href="/">Home</Link>
                         </Menu.Item>
-                        <Menu.Item key="/userdashboard" icon={<FaThLarge />}>
-                            <Link href="/userdashboard">Profile</Link>
-                        </Menu.Item>
                         <Menu.Item key="/userdashboard/address-book/manage-address-book" icon={<FaCalendarAlt />}>
                             <Link href="/userdashboard/address-book/manage-address-book">Address Book</Link>
                         </Menu.Item>

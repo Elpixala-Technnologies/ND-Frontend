@@ -144,12 +144,12 @@ const CheckoutPage = () => {
     const handelOrderNow = async () => {
         try {
             const orderData = {
-                book: cartData[0]?._id,
+                book: cartData?.map((book) =>  book),
                 quantity: totalQuantity,
                 totalPrice: subtotal,
                 email: user?.email,
                 paymentDetails: paymentMethod,
-                shippingAddress: AddressData[0]?._id,
+                shippingAddress: AddressData[0],
                 clientName: user?.displayName
             }
 

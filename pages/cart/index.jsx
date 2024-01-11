@@ -9,8 +9,7 @@ import Swal from 'sweetalert2';
 const CartPage = () => {
     const { user } = useContext(AuthContext);
     const [cartData, setCartData] = useState([]);
-    const [quantity, setQuantity] = useState(1);
-
+ 
     useEffect(() => {
         if (user) {
             const getCartData = async () => {
@@ -107,9 +106,9 @@ const CartPage = () => {
 
     return (
         <RootLayout>
-            <section className=" ">
+            <section className="min-h-[50vh]">
                 <div className="mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="mx-auto mt-8 max-w-2xl md:mt-12">
+                    <div className="mx-auto mt-8 md:w-[70%] md:mt-12">
                         <div className="bg-white shadow">
                             <div className="px-4 py-6 sm:px-8 sm:py-10">
                                 <div className="flow-root">
@@ -119,7 +118,7 @@ const CartPage = () => {
                                                 const { book, _id, image, quantity } = data;
                                                 const itemPrice = book ? calculateItemPrice(book.price, quantity) : 0;
                                                 return (
-                                                    <li className="flex flex-col space-y-3 py-6 text-left sm:flex-row sm:space-x-5 sm:space-y-0">
+                                                    <li className="flex border p-4 rounded shadow flex-col space-y-3 py-6 text-left sm:flex-row sm:space-x-5 sm:space-y-0">
                                                         <div className="shrink-0">
                                                             <Image
                                                                 width={100}

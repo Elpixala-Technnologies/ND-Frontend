@@ -16,9 +16,7 @@ const Navbar = () => {
   const { handleLogout } = useCommonApiData()
   const userEmail = user?.email;
   const [isAdmin] = useAdmin();
-
-  console.log(isAdmin, 'isAdmin')
-
+ 
   return (
     <nav className="bg-[#ffffff] md:px-4 border-b py-2 flex items-center text-black container">
       <div className="container flex items-center justify-between mx-auto">

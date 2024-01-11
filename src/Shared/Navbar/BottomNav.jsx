@@ -6,6 +6,8 @@ import useBook from '@/src/Hooks/useBook';
 const BottomNav = () => {
     const [on, setOn] = useState(true)
     const { categoryData } = useBook()
+
+    
     return (
         <div className='bg-[#000000] text-[#fff] py-4 md:px-4 border-b md:h-[50px] flex items-center z-80 sticky top-0'
             style={{

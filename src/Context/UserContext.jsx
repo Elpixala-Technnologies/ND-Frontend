@@ -19,8 +19,6 @@ const UserContext = ({ children }) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  console.log(user, "user++")
-
   // Sign Up
   const signUp = (email, password) => {
     setLoading(true);
