@@ -165,7 +165,7 @@ const CheckoutPage = () => {
             if (response) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'Item added to cart',
+                    title: 'Successfully Done',
                     showConfirmButton: false,
                     timer: 1500,
                 });
@@ -219,7 +219,7 @@ const CheckoutPage = () => {
                         </div>
                     </div>
                 </div>
-                <div className='w-[80%] mx-auto'>
+                <div className='w-full md:w-[80%] mx-auto'>
                     {
                         currentStep === 0 && (
                             <>
@@ -230,7 +230,7 @@ const CheckoutPage = () => {
                                     </p>
 
                                     <div className="mt-8 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-6 flex flex-col gap-4">
-                                        <ul className="my-8 w-[60%] flex flex-col gap-4">
+                                        <ul className="my-8 md::w-[60%] flex flex-col gap-4">
                                             {cartData &&
                                                 cartData?.map((data) => {
                                                     const { book, _id, image, quantity } = data;
@@ -303,7 +303,7 @@ const CheckoutPage = () => {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div className="absolute top-0 right-0 flex sm:bottom-0 sm:top-auto">
+                                                                <div className="absolute border rounded border-black top-0 right-0 flex sm:bottom-0 sm:top-auto">
                                                                     <button
                                                                         type="button"
                                                                         onClick={() => removeFromCart(_id)}

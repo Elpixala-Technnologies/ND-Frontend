@@ -39,9 +39,7 @@ const Navbar = () => {
           <li className='border-r px-2 h-full border-[gray] '>
             <Link href="/product">Shop</Link>
           </li>
-          {/* <li className='border-r px-2 h-full border-[gray]'>
-            <Link href="/blog">Blog</Link>
-          </li> */}
+    
           <li className='border-r px-2 h-full border-[gray]'>
             {
               !userEmail ? (
@@ -73,7 +71,7 @@ const Navbar = () => {
 
         {/* shop and menu button group for small device */}
         <div className="flex items-center gap-4 md:hidden">
-          <Link href="">
+          <Link  href="/cart">
             <div className='bg-[#9cb3dd43] w-[40px] rounded-full flex items-center justify-center h-[40px]'>
               <MdOutlineShoppingBag className='text-2xl text-[#335187]' />
             </div>
@@ -86,18 +84,22 @@ const Navbar = () => {
         </div>
 
         {/* side bar for small device */}
-        <aside className={`${open ? 'left-0 ' : 'left-[-250%]'} duration-300 w-full overflow-hidden fixed bg-[#172733] h-screen top-0 p-4 text-white z-10`}>
+        <aside 
+         style={{
+          zIndex: "9999999"
+      }}
+        className={`${open ? 'left-0 ' : 'left-[-250%]'} duration-300 w-full overflow-hidden fixed bg-[#172733] h-screen top-0 p-4 text-white z-10`}>
           <button className='float-right' onClick={() => setOpen(!open)}>
             <Close className='text-5xl' />
           </button><br />
           <ul className="flex flex-col gap-6">
-            <li className="common-hover">
+            <li>
               <Link href="/">Home</Link>
             </li>
-            <li className="common-hover">
+            <li>
               <Link href="/product" >Shop</Link>
             </li>
-            <li className="common-hover">
+            <li >
               <Link href="/blog">Blog</Link>
             </li>
             <li>

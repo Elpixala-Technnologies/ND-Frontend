@@ -11,7 +11,7 @@ const BottomNav = () => {
     return (
         <div className='bg-[#000000] text-[#fff] py-4 md:px-4 border-b md:h-[50px] flex items-center z-80 sticky top-0'
             style={{
-                zIndex: "9999999"
+                zIndex: "9999"
             }}
         >
             <div className="container py-0 h-full mx-auto flex justify-between items-center">
