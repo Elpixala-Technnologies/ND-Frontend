@@ -240,7 +240,7 @@ const CheckoutPage = () => {
                                                                 <Image
                                                                     width={100}
                                                                     height={100} // Add this line to specify the height
-                                                                    className="h-24 w-24 max-w-full rounded-lg object-cover"
+                                                                    className="w-full h-full md:h-24 md:w-24 max-w-full rounded-lg object-cover"
                                                                     src={book?.image[0]}
                                                                     alt={book?.name}
                                                                 />

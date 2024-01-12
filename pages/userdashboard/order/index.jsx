@@ -1,13 +1,14 @@
-import DashboardLayout from '@/src/Layouts/DashboardLayout';
-import AdminAccessRoute from '@/src/PrivetRoute/AdminAccessRoute';
 import React, { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { AuthContext } from '@/src/Context/UserContext';
 import { getOrderByEmailUrl } from '@/src/Utils/Urls/OrderUrl';
+import UserdashboardLayout from '@/src/Layouts/UserDashboardLayout';
+import useOrder from '@/src/Hooks/useOrder';
 
 const OrderForUser = () => {
     const [userOrderData, setUserOrderData] = useState(null)
     const { user } = useContext(AuthContext);
+    const {handelOrderDelete} = useOrder()
 
     useEffect(() => {
         if (user) {
@@ -21,9 +22,8 @@ const OrderForUser = () => {
     }, [user]);
 
     return (
-        <DashboardLayout>
-            <AdminAccessRoute>
-                <section>
+        <UserdashboardLayout>
+           <section>
                     <div>
                         <h1>Total Order</h1>
                     </div>
@@ -114,8 +114,7 @@ const OrderForUser = () => {
                     </section>
 
                 </section>
-            </AdminAccessRoute>
-        </DashboardLayout>
+        </UserdashboardLayout>
     );
 };
 

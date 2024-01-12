@@ -55,6 +55,11 @@ const Navbar = () => {
                       <FaMicrosoft /> Dashboard
                     </Link>
                   }
+                  {
+                    !isAdmin && <Link href="/userdashboard" className="flex items-center justify-center gap-2 border-common-btn common-hover">
+                      <FaMicrosoft /> Dashboard
+                    </Link>
+                  }
                   <button className="flex items-center justify-center gap-2 my-2 border-common-btn common-hover"
                     onClick={() => handleLogout()}
                   >
@@ -113,11 +118,17 @@ const Navbar = () => {
                 ) : (
                   <>
                     {
-                      isAdmin && <Link href="/dashboard" className="flex items-center justify-center gap-2 border-common-btn ">
+                      isAdmin && <Link href="/dashboard" className="flex items-center  gap-2 border-common-btn ">
                         <FaMicrosoft /> Dashboard
                       </Link>
                     }
-                    <button className="flex items-center justify-center w-full gap-2 my-2 border-common-btn"
+                    {
+                    !isAdmin && <Link href="/userdashboard" 
+                    className="flex items-center  gap-2 border-common-btn ">
+                      <FaMicrosoft /> Dashboard
+                    </Link>
+                  }
+                    <button className="flex items-center  w-full gap-2 my-2 border-common-btn"
                       onClick={() => handleLogout()}
                     >
                       <FaPowerOff /> Logout

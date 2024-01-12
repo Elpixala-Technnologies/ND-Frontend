@@ -40,6 +40,7 @@ const useAddress = () => {
                 method: "DELETE",
             });
             const data = await res.json();
+            refetchAddress()
             if (!data) {
                 Swal.fire({
                     position: "center",
@@ -57,6 +58,7 @@ const useAddress = () => {
                     showConfirmButton: false,
                     timer: 3500,
                 });
+                refetchAddress()
             } else {
                 Swal.fire({
                     position: "center",

@@ -57,6 +57,7 @@ const useOrder = () => {
                     showConfirmButton: false,
                     timer: 3500,
                 });
+                refetchOrder()
             } else {
                 Swal.fire({
                     position: "center",

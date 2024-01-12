@@ -121,7 +121,7 @@ const CartPage = () => {
                                                             <Image
                                                                 width={100}
                                                                 height={100} // Add this line to specify the height
-                                                                className="h-24 w-24 max-w-full rounded-lg object-cover"
+                                                                className="h-full w-full md:h-24 md:w-24 max-w-full rounded-lg object-cover"
                                                                 src={book?.image[0]}
                                                                 alt={book?.name}
                                                             />
@@ -187,7 +187,7 @@ const CartPage = () => {
                                                                 <button
                                                                     type="button"
                                                                     onClick={() => removeFromCart(_id)}
-                                                                    className="flex rounded p-2 text-center text-gray-500 transition-all duration-200 ease-in-out focus:shadow hover:text-gray-900"
+                                                                    className="flex border border-black rounded p-2 text-center text-gray-500 transition-all duration-200 ease-in-out focus:shadow hover:text-gray-900"
                                                                 >
                                                                     <svg
                                                                         className="h-5 w-5"

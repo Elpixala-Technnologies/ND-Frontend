@@ -1,8 +1,8 @@
 import useOrder from '@/src/Hooks/useOrder';
-import DashboardLayout from '@/src/Layouts/DashboardLayout';
-import AdminAccessRoute from '@/src/PrivetRoute/AdminAccessRoute';
 import { useRouter } from 'next/router';
 import React from 'react';
+import Link from 'next/link';
+import UserdashboardLayout from '@/src/Layouts/UserDashboardLayout';
 
 const OrderDetailsForUser = () => {
     const { orderData } = useOrder()
@@ -17,9 +17,8 @@ const OrderDetailsForUser = () => {
     }
 
     return (
-        <DashboardLayout>
-            <AdminAccessRoute>
-                <section>
+        <UserdashboardLayout>
+             <section>
                     <div>
                         <h1 className='font-bold text-[2rem]'>Order Details</h1>
                     </div>
@@ -33,9 +32,10 @@ const OrderDetailsForUser = () => {
                                     {
                                         filterdOrder?.dispatchOrder && !filterdOrder?.delevaredOrder && (
                                             <div>
-                                                <h1 className='text-[1.2rem] my-2'>Your Order Is Dispatch</h1>
+                                                <h1 className='font-semibold text-green-500 text-[1.2rem] mb-4 my-2'>Your Order Is Dispatch</h1>
                                                 <Link
                                                     href={filterdOrder?.orderTrackingLink}
+                                                    target={_blank}
                                                     className='text-[1.3rem] border px-6 py-2 rounded'>
                                                     Your Order Tracking Link
                                                 </Link>
@@ -113,8 +113,7 @@ const OrderDetailsForUser = () => {
                         </div>
                     </div>
                 </section>
-            </AdminAccessRoute>
-        </DashboardLayout>
+        </UserdashboardLayout>
     );
 };
 
