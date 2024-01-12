@@ -1,5 +1,5 @@
 # Redirect product detail pages
-/products/*    /products/[productId].html   200
+/products/*    /product/[id].html   200
 
 # Redirect all other requests to index.html, maintaining SPA routing
 /*  /index.html   200
