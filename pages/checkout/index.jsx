@@ -169,6 +169,24 @@ const CheckoutPage = () => {
                     timer: 1500,
                 });
 
+                const responseEmail = await fetch("/api/payment", {
+                    method: "POST",
+                    body: JSON.stringify({
+                      name: user?.displayName,
+                      email: user?.email,
+                      paymentId: paymentMethod,
+                      paymentAmount: totalPrice,
+                      paymentProduct: cartData?.map((book) =>  book),
+                      paymentDate: new Date(),
+                    }),
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                  });
+          
+                  const data = await responseEmail.json();
+                  console.log(data);
+
                 router.push('/paymentsuccess');
             }
         } catch (error) {

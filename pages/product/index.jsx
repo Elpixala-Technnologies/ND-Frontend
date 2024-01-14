@@ -321,7 +321,7 @@ const ProductPage = () => {
                                         type="text"
                                         value={searchQuery}
                                         onChange={handleSearchChange}
-                                        className="w-full px-6 p-2 no-outline focus:outline-none rounded-xl text-black border border-[#999]"
+                                        className="w-full px-6 p-2 no-outline focus:outline-none bg-transparent rounded-xl text-black border border-[#999]"
                                         placeholder='Search ...'
                                     />
                                     <AiOutlineSearch className='text-black text-[1.5rem] mx-6' />

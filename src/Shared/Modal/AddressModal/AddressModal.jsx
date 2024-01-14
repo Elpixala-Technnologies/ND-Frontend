@@ -104,7 +104,7 @@ const AddressModal = ({
                         >
                             <input type="text"
                                 placeholder='Concerned Person'
-                                className='border-2 border-gray-300 rounded-md p-2'
+                                className='border-2 border-gray-300 w-full rounded-md p-2'
                                 {...register("name")}
                             />
                         </div>
@@ -113,7 +113,7 @@ const AddressModal = ({
                         >
                             <input type="text"
                                 placeholder='Home/Office/Hostel etc.'
-                                className='border-2 border-gray-300 rounded-md p-2'
+                                className='border-2 border-gray-300 rounded-md p-2 w-full'
                                 {...register("lebel")}
                             />
                         </div>
@@ -122,7 +122,7 @@ const AddressModal = ({
                         >
                             <input type="text"
                                 placeholder='Address'
-                                className='border-2 border-gray-300 rounded-md p-2'
+                                className='border-2 border-gray-300 rounded-md p-2 w-full'
                                 {...register("address")}
                             />
                         </div>
@@ -132,7 +132,7 @@ const AddressModal = ({
                         >
                             <input type="text"
                                 placeholder='City'
-                                className='border-2 border-gray-300 rounded-md p-2'
+                                className='border-2 border-gray-300 rounded-md p-2 w-full'
                                 {...register("city")}
                             />
                         </div>
@@ -143,7 +143,7 @@ const AddressModal = ({
                         >
                             <input type="text"
                                 placeholder='Country'
-                                className='border-2 border-gray-300 rounded-md p-2'
+                                className='border-2 border-gray-300 rounded-md p-2 w-full'
                                 {...register("country")}
                             />
                         </div>
@@ -151,7 +151,7 @@ const AddressModal = ({
                         <div className='border-2 border-gray-300 rounded-md p-2'>
                             <input type="text"
                                 placeholder='Phone'
-                                className='border-2 border-gray-300 rounded-md p-2'
+                                className='border-2 border-gray-300 rounded-md p-2 w-full'
                                 {...register("phone")}
                             />
                         </div>
@@ -159,7 +159,7 @@ const AddressModal = ({
                         <div className='border-2 border-gray-300 rounded-md p-2'>
                             <input type="text"
                                 placeholder='State'
-                                className='border-2 border-gray-300 rounded-md p-2'
+                                className='border-2 border-gray-300 rounded-md p-2 w-full'
                                 {...register("state")}
                             />
                         </div>
@@ -167,7 +167,7 @@ const AddressModal = ({
                         <div className='border-2 border-gray-300 rounded-md p-2'>
                             <input type="text"
                                 placeholder='Zip'
-                                className='border-2 border-gray-300 rounded-md p-2'
+                                className='border-2 border-gray-300 rounded-md p-2 w-full'
                                 {...register("zip")}
                             />
                         </div>

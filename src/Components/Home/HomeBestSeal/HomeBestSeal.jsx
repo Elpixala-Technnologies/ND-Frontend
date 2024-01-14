@@ -9,7 +9,7 @@ const HomeBestSeal = () => {
     const { bookData, isLoading } = useBook(); // Assuming your hook provides an isLoading boolean
 
     return (
-        <div className="grid md:grid-cols-4  gap-4 mt-4">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 sm:grid-col-1  gap-4 mt-4">
             {isLoading ? (
                 // Render loading skeletons while data is loading
                 <>
@@ -33,7 +33,7 @@ const HomeBestSeal = () => {
                                     width={400}
                                     height={600}
                                     alt="Description"
-                                    className='md:h-[360px] h-full rounded'
+                                    className='md:h-[360px] w-full h-full rounded'
                                 />
                             </div>
 

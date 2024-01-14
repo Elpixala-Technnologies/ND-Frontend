@@ -22,6 +22,7 @@
     "axios": "^1.5.0",
     "firebase": "^10.4.0",
     "next": "latest",
+    "nodemailer": "^6.9.8",
     "react": "latest",
     "react-dom": "latest",
     "react-hook-form": "^7.46.2",

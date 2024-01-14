@@ -17,8 +17,9 @@ const PaymentSuccess = () => {
                             Payment Done!
                         </h3>
                         <p className="text-gray-600 my-2">
-                            Thank you for completing your order.
+                            Thank you for completing your order. 
                         </p>
+                        <p className='my-2'>Check Your Email To Get Your Order Detail</p>
                         <p> Have a great day!</p>
                         <div className="py-10 text-center">
                             <Link
