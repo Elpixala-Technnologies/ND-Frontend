@@ -109,42 +109,42 @@ const UpdateAddressModal = ({
             <div className="container">
                 <div className='flex gap-4 flex-col'>
                     <div
-                        className='border-2 border-gray-300 rounded-md p-2'
+                        className='border-2 w-full border-gray-300 rounded-md p-2'
                     >
                         <input type="text"
                             placeholder='Concerned Person'
-                            className='border-2 border-gray-300 rounded-md p-2'
+                            className='border-2 w-full border-gray-300 rounded-md p-2'
                             defaultValue={name}
                             {...register("name")}
                         />
                     </div>
                     <div
-                        className='border-2 border-gray-300 rounded-md p-2'
+                        className='border-2 w-full border-gray-300 rounded-md p-2'
                     >
                         <input type="text"
                             placeholder='Home/Office/Hostel etc.'
-                            className='border-2 border-gray-300 rounded-md p-2'
+                            className='border-2 w-full border-gray-300 rounded-md p-2'
                             defaultValue={level}
                             {...register("level")}
                         />
                     </div>
                     <div
-                        className='border-2 border-gray-300 rounded-md p-2'
+                        className='border-2 w-full border-gray-300 rounded-md p-2'
                     >
                         <input type="text"
                             placeholder='Address'
-                            className='border-2 border-gray-300 rounded-md p-2'
+                            className='border-2 w-full border-gray-300 rounded-md p-2'
                             defaultValue={address}
                             {...register("address")}
                         />
                     </div>
 
                     <div
-                        className='border-2 border-gray-300 rounded-md p-2'
+                        className='border-2 w-full border-gray-300 rounded-md p-2'
                     >
                         <input type="text"
                             placeholder='City'
-                            className='border-2 border-gray-300 rounded-md p-2'
+                            className='border-2 w-full border-gray-300 rounded-md p-2'
                             defaultValue={city}
                             {...register("city")}
                         />
@@ -152,38 +152,38 @@ const UpdateAddressModal = ({
 
 
                     <div
-                        className='border-2 border-gray-300 rounded-md p-2'
+                        className='border-2 w-full border-gray-300 rounded-md p-2'
                     >
                         <input type="text"
                             placeholder='Country'
-                            className='border-2 border-gray-300 rounded-md p-2'
+                            className='border-2 w-full border-gray-300 rounded-md p-2'
                             defaultValue={country}
                             {...register("country")}
                         />
                     </div>
 
-                    <div className='border-2 border-gray-300 rounded-md p-2'>
+                    <div className='border-2 w-full border-gray-300 rounded-md p-2'>
                         <input type="text"
                             placeholder='Phone'
-                            className='border-2 border-gray-300 rounded-md p-2'
+                            className='border-2 w-full border-gray-300 rounded-md p-2'
                             defaultValue={phone}
                             {...register("phone")}
                         />
                     </div>
 
-                    <div className='border-2 border-gray-300 rounded-md p-2'>
+                    <div className='border-2 w-full border-gray-300 rounded-md p-2'>
                         <input type="text"
                             placeholder='State'
-                            className='border-2 border-gray-300 rounded-md p-2'
+                            className='border-2 w-full border-gray-300 rounded-md p-2'
                             defaultValue={state}
                             {...register("state")}
                         />
                     </div>
 
-                    <div className='border-2 border-gray-300 rounded-md p-2'>
+                    <div className='border-2 w-full border-gray-300 rounded-md p-2'>
                         <input type="text"
                             placeholder='Zip'
-                            className='border-2 border-gray-300 rounded-md p-2'
+                            className='border-2 w-full border-gray-300 rounded-md p-2'
                             defaultValue={zip}
                             {...register("zip")}
                         />

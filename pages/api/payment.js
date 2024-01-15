@@ -26,14 +26,13 @@ export default async function handler(req, res) {
          <p><strong>PaymentId: </strong></p>
          <p><strong>PaymentAmount: </strong></p>
           <p><strong>PaymentDate: </strong></p>
-          <p><strong>PaymentProduct: </strong></p>
-
+     
          </div>
          <div style="text-align:end;">
          <p>${name}</p>
          <p>${email}</p>
          <p>${paymentId}</p>
-         <p>${paymentAmount}</p>
+         <p>Rs. ${paymentAmount}</p>
           <p>${paymentDate}</p>
 
          </div>

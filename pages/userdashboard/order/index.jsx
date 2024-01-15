@@ -1,25 +1,105 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { AuthContext } from '@/src/Context/UserContext';
-import { getOrderByEmailUrl } from '@/src/Utils/Urls/OrderUrl';
+import { getOrderByEmailUrl ,deleteOrderUrl} from '@/src/Utils/Urls/OrderUrl';
 import UserdashboardLayout from '@/src/Layouts/UserDashboardLayout';
 import useOrder from '@/src/Hooks/useOrder';
+import { useQuery } from "@tanstack/react-query";
+import Swal from "sweetalert2";
 
 const OrderForUser = () => {
-    const [userOrderData, setUserOrderData] = useState(null)
+    // const [userOrderData, setUserOrderData] = useState(null)
     const { user } = useContext(AuthContext);
-    const {handelOrderDelete} = useOrder()
+    // const {handelOrderDelete} = useOrder()
 
-    useEffect(() => {
-        if (user) {
-            const getOrderData = async () => {
+    // useEffect(() => {
+    //     if (user) {
+    //         const getOrderData = async () => {
+    //             const res = await fetch(getOrderByEmailUrl(user?.email));
+    //             const data = await res.json();
+    //             setUserOrderData(data?.data);
+    //         };
+    //         getOrderData();
+    //     }
+    // }, [user]);
+
+    const {
+        data: userOrderData,
+        isLoading: userOrderLoaded,
+        refetch: refetchUserOrder,
+    } = useQuery({
+        queryKey: ["userOrderData"],
+        queryFn: async () => {
+            try {
                 const res = await fetch(getOrderByEmailUrl(user?.email));
+                if (!res.ok) {
+                    throw new Error("Failed to fetch data");
+                }
                 const data = await res.json();
-                setUserOrderData(data?.data);
-            };
-            getOrderData();
+                return data.data;
+            } catch (error) {
+                throw error;
+            }
+        },
+    });
+
+
+    const handelOrderDelete = async (id) => {
+        const confirmed = await Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        });
+
+        if (confirmed.isConfirmed) {
+            const res = await fetch(deleteOrderUrl(id), {
+                method: "DELETE",
+            });
+            const data = await res.json();
+            if (!data) {
+                Swal.fire({
+                    position: "center",
+                    timerProgressBar: true,
+                    title: data.message,
+                    iconColor: "#ED1C24",
+                    toast: true,
+                    icon: "error",
+                    showClass: {
+                        popup: "animate__animated animate__fadeInRight",
+                    },
+                    hideClass: {
+                        popup: "animate__animated animate__fadeOutRight",
+                    },
+                    showConfirmButton: false,
+                    timer: 3500,
+                });
+                refetchUserOrder()
+            } else {
+                Swal.fire({
+                    position: "center",
+                    timerProgressBar: true,
+                    title: "Successfully Delete !",
+                    iconColor: "#ED1C24",
+                    toast: true,
+                    icon: "success",
+                    showClass: {
+                        popup: "animate__animated animate__fadeInRight",
+                    },
+                    hideClass: {
+                        popup: "animate__animated animate__fadeOutRight",
+                    },
+                    showConfirmButton: false,
+                    timer: 3500,
+                });
+                refetchUserOrder();
+            }
         }
-    }, [user]);
+    };
+
 
     return (
         <UserdashboardLayout>

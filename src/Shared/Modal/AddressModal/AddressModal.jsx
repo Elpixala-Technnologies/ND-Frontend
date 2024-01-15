@@ -11,14 +11,14 @@ const AddressModal = ({
     setIsAddressModalOpen,
     refetchUserAdddress
 }) => {
-    const { handleSubmit, register } = useForm();
+    const { handleSubmit, register, formState: { errors } } = useForm(); // Destructuring errors from formState
+
     const [loading, setLoading] = useState(false);
     const { user } = useContext(AuthContext);
     const userEmail = user?.email;
     const handleCancel = () => {
         setIsAddressModalOpen(false);
     }
-
 
     const onSubmit = async (inputValue) => {
         try {
@@ -93,6 +93,15 @@ const AddressModal = ({
         }
     };
 
+    
+    const validateIndianMobile = (value) => {
+        const regex = /^[6-9]\d{9}$/; // Regular expression for Indian mobile number
+        return (
+          regex.test(value) || "Invalid Indian mobile number (10 digits required)"
+        );
+    };
+
+
 
     return (
         <div>
@@ -100,7 +109,7 @@ const AddressModal = ({
                 <div className="container w-full my-6">
                     <div className='flex gap-4 flex-col'>
                         <div
-                            className='border-2 border-gray-300 rounded-md p-2'
+                            className='border-2 w-full border-gray-300 rounded-md p-2'
                         >
                             <input type="text"
                                 placeholder='Concerned Person'
@@ -109,7 +118,7 @@ const AddressModal = ({
                             />
                         </div>
                         <div
-                            className='border-2 border-gray-300 rounded-md p-2'
+                            className='border-2 w-full border-gray-300 rounded-md p-2'
                         >
                             <input type="text"
                                 placeholder='Home/Office/Hostel etc.'
@@ -118,7 +127,7 @@ const AddressModal = ({
                             />
                         </div>
                         <div
-                            className='border-2 border-gray-300 rounded-md p-2'
+                            className='border-2 w-full border-gray-300 rounded-md p-2'
                         >
                             <input type="text"
                                 placeholder='Address'
@@ -128,7 +137,7 @@ const AddressModal = ({
                         </div>
 
                         <div
-                            className='border-2 border-gray-300 rounded-md p-2'
+                            className='border-2 w-full border-gray-300 rounded-md p-2'
                         >
                             <input type="text"
                                 placeholder='City'
@@ -139,7 +148,7 @@ const AddressModal = ({
 
 
                         <div
-                            className='border-2 border-gray-300 rounded-md p-2'
+                            className='border-2 w-full border-gray-300 rounded-md p-2'
                         >
                             <input type="text"
                                 placeholder='Country'
@@ -148,15 +157,38 @@ const AddressModal = ({
                             />
                         </div>
 
-                        <div className='border-2 border-gray-300 rounded-md p-2'>
+                        {/* <div className='border-2 w-full border-gray-300 rounded-md p-2'>
                             <input type="text"
                                 placeholder='Phone'
                                 className='border-2 border-gray-300 rounded-md p-2 w-full'
                                 {...register("phone")}
                             />
+                        </div> */}
+
+                        <div className='border-2 w-full border-gray-300 rounded-md p-2'>
+                            <input
+                            type="text"
+                            placeholder='Phone'
+                            className={`border-2 border-gray-300 rounded-md p-2 w-full ${errors.phone ? 'border-red-500' : ''}`}
+                            {...register("phone", {
+                                required: "Mobile number is required",
+                                minLength: {
+                                value: 10,
+                                message: "Mobile number must be 10 digits",
+                                },
+                                maxLength: {
+                                value: 10,
+                                message: "Mobile number must be 10 digits",
+                                },
+                                validate: validateIndianMobile,
+                            })}
+                            />
+                            {errors.phone && (
+                            <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
+                            )}
                         </div>
 
-                        <div className='border-2 border-gray-300 rounded-md p-2'>
+                        <div className='border-2 w-full border-gray-300 rounded-md p-2'>
                             <input type="text"
                                 placeholder='State'
                                 className='border-2 border-gray-300 rounded-md p-2 w-full'
@@ -164,7 +196,7 @@ const AddressModal = ({
                             />
                         </div>
 
-                        <div className='border-2 border-gray-300 rounded-md p-2'>
+                        <div className='border-2 w-full border-gray-300 rounded-md p-2'>
                             <input type="text"
                                 placeholder='Zip'
                                 className='border-2 border-gray-300 rounded-md p-2 w-full'
