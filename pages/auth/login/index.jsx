@@ -29,9 +29,8 @@ const LoginPage = () => {
   const onSubmit = async (data) => {
     try {
       signIn(data.email, data.password).then((result) => {
-        const user = result.user;
         Swal.fire({
-          position: "top-end",
+          position: "center",
           timerProgressBar: true,
           title: "Successfully Login Done !",
           iconColor: "#ED1C24",
@@ -55,7 +54,7 @@ const LoginPage = () => {
       })
         .catch((err) => {
           Swal.fire({
-            position: "top-end",
+            position: "center",
             timerProgressBar: true,
             title: err.message,
             iconColor: "#ED1C24",
@@ -73,7 +72,7 @@ const LoginPage = () => {
         });
     } catch (error) {
       Swal.fire({
-        position: "top-end",
+        position: "center",
         timerProgressBar: true,
         title: error.message,
         iconColor: "#ED1C24",
@@ -96,7 +95,7 @@ const LoginPage = () => {
       .then(() => {
         router.push("/");
         Swal.fire({
-          position: "top-end",
+          position: "center",
           timerProgressBar: true,
           title: "Successfully Login!",
           iconColor: "#ED1C24",

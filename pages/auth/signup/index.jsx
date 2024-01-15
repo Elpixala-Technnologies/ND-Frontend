@@ -10,6 +10,8 @@ import Image from "next/image";
 import RootLayout from "@/src/Layouts/RootLayout";
 import { signupUrl } from "@/src/Utils/Urls/AuthUrl";
 import { AuthBannerImage,AuthLoginUser } from "@/src/Assets";
+import TextField from "@material-ui/core/TextField";
+import InputAdornment from "@material-ui/core/InputAdornment";
 
 const Index = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -23,14 +25,14 @@ const Index = () => {
   const [mobile, setmobile] = useState("");
   const [isError, setIsError] = useState(false);
   const pattern = new RegExp(/^\d{1,10}$/);
-
+ 
   const passwordVisible = () => {
     setShowPassword(showPassword ? false : true);
   };
   const cPasswordVisible = () => {
     setShowCPassword(showCPassword ? false : true);
   };
-  const { signUp, updateUserDetails, signInWithGoogle } =
+  const { signUp, updateUserDetails, signInWithGoogle,logOut } =
     useContext(AuthContext);
 
   const saveUserDataToDatabase = async (userData) => {
@@ -48,7 +50,7 @@ const Index = () => {
       .then(() => {
         router.push("/");
         Swal.fire({
-          position: "top-end",
+          position: "center",
           timerProgressBar: true,
           title: "Successfully Login!",
           iconColor: "#ED1C24",
@@ -76,7 +78,7 @@ const Index = () => {
 
   const signUpHandler = async (dataValue) => {
     const role = "user";
-    const { firstName, lastName, email, phone, password } = dataValue;
+    const { firstName, lastName, email,  password } = dataValue;
     signUp(email, password)
       .then((userCredential) => {
         // Signed in
@@ -84,7 +86,7 @@ const Index = () => {
 
         const profileInfo = {
           displayName: firstName + lastName,
-          phoneNumber: phone,
+          phoneNumber: mobile,
           role: role,
         };
         updateUserDetails(profileInfo)
@@ -94,15 +96,15 @@ const Index = () => {
                 .post(signupUrl, {
                   name: firstName + lastName,
                   email: email,
-                  phone: phone,
+                  phone: mobile,
                   role: role,
                 })
                 .then((response) => {
                   console.log(response);
                   Swal.fire({
-                    position: "top-end",
+                    position: "center",
                     timerProgressBar: true,
-                    title: "Successfully Login Done !",
+                    title: "Successfully Signup Done !",
                     iconColor: "#ED1C24",
                     toast: true,
                     icon: "success",
@@ -115,8 +117,8 @@ const Index = () => {
                     showConfirmButton: false,
                     timer: 3500,
                   });
+                  logOut()
                   router.push("/auth/login");
-
                 })
                 .catch((error) => {
                   console.log("error", error);
@@ -147,6 +149,8 @@ const Index = () => {
         });
       });
   };
+
+   
 
   return (
     <RootLayout>
@@ -182,7 +186,7 @@ const Index = () => {
                         {...register("lastName")}
                       />
                     </div>
-                    <div>
+                    {/* <div>
                       <input
                         text="text"
                         name="phone"
@@ -190,8 +194,38 @@ const Index = () => {
                         className="text-[15px] w-full font-[500] shadow-md rounded-lg px-2.5 py-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         {...register("phone")}
                       />
-                    </div>
-                    
+                    </div> */}
+
+                    <div>
+                      <TextField
+                          type="tel"
+                          error={isError}
+                          value={mobile}
+                          style={{"width": "100%"}}
+                          label="Enter Phone Number"
+                          onChange={(e) => {
+                              const value = e.target.value;
+                              if (/^\d{0,10}$/.test(value)) {
+                                  setmobile(value);
+                                  setIsError(value.length !== 10);
+                              }
+                          }}
+                          InputProps={{
+                              startAdornment: (
+                                  <InputAdornment position="start">
+                                      +91
+                                  </InputAdornment>
+                              ),
+                          }}
+                      />
+                      <h3>
+                          Your Mobile Number is:
+                          {isError ? " Invalid" : " +91" + mobile}
+                      </h3>
+                  </div>
+
+
+           
                     <input
                       text="email"
                       name="email"

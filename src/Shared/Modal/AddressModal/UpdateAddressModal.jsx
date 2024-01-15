@@ -5,6 +5,9 @@ import { Modal } from 'antd';
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
+import TextField from "@material-ui/core/TextField";
+import InputAdornment from "@material-ui/core/InputAdornment";
+
 
 const UpdateAddressModal = ({
     isUpdateAddressModalOpen,
@@ -15,6 +18,8 @@ const UpdateAddressModal = ({
     const handleCancel = () => {
         setIsUpdateAddressModalOpen(false);
     }
+    const [mobile, setmobile] = useState("");
+    const [isError, setIsError] = useState(false);
 
     const { handleSubmit, register, setValue } = useForm();
     const [loading, setLoading] = useState(false);
@@ -34,7 +39,7 @@ const UpdateAddressModal = ({
 
     const onSubmit = async (inputValue) => {
         try {
-            const { address, city, country, phone, state, zip , name, level} = inputValue;
+            const { address, city, country, state, zip , name, level} = inputValue;
             setLoading(true);
 
             const response = await fetch(updateAddressUrl(_id), {
@@ -46,7 +51,7 @@ const UpdateAddressModal = ({
                     address,
                     city,
                     country,
-                    phone,
+                    phone: mobile,
                     state,
                     zip,
                     name,
@@ -162,14 +167,42 @@ const UpdateAddressModal = ({
                         />
                     </div>
 
-                    <div className='border-2 w-full border-gray-300 rounded-md p-2'>
+                    {/* <div className='border-2 w-full border-gray-300 rounded-md p-2'>
                         <input type="text"
                             placeholder='Phone'
                             className='border-2 w-full border-gray-300 rounded-md p-2'
                             defaultValue={phone}
                             {...register("phone")}
                         />
-                    </div>
+                    </div> */}
+
+                    <div>
+                      <TextField
+                          type="tel"
+                          error={isError}
+                          value={mobile}
+                          style={{"width": "100%"}}
+                          label="Enter Phone Number"
+                          onChange={(e) => {
+                              const value = e.target.value;
+                              if (/^\d{0,10}$/.test(value)) {
+                                  setmobile(value);
+                                  setIsError(value.length !== 10);
+                              }
+                          }}
+                          InputProps={{
+                              startAdornment: (
+                                  <InputAdornment position="start">
+                                      +91
+                                  </InputAdornment>
+                              ),
+                          }}
+                      />
+                      <h3>
+                          Your Mobile Number is:
+                          {isError ? " Invalid" : " +91" + mobile}
+                      </h3>
+                  </div>
 
                     <div className='border-2 w-full border-gray-300 rounded-md p-2'>
                         <input type="text"

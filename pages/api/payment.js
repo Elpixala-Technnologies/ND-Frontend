@@ -39,7 +39,7 @@ export default async function handler(req, res) {
          </div>
         </div>
             `,
-  };
+   };
 
   try {
     await transporter.sendMail(mailOptions);
