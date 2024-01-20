@@ -38,27 +38,27 @@ const UserContext = ({ children }) => {
   //   setLoading(true);
   //   return signInWithEmailAndPassword(auth, email, password);
   // };
-
+ 
   const signIn = async (email, password) => {
     setLoading(true);
+  
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      // Check if email is verified
+  
       if (!userCredential.user.emailVerified) {
-        // Email not verified, display a message and sign out the user
-        signOut(auth); // Make sure to import signOut from Firebase auth
-        Swal.fire({
-          icon: 'error',
-          title: 'Email Not Verified',
-          text: 'Please verify your email before logging in.',
-        });
+        signOut(auth);
         throw new Error('Email not verified');
       }
-      // Email is verified, proceed with login
+  
       setUser(userCredential.user);
       setLoading(false);
+  
+      return { success: true };
     } catch (error) {
-      setError(error.message);
+      setLoading(false);
+  
+      // Return an error object
+      return { success: false, error: error.message };
     }
   };
   

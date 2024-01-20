@@ -25,10 +25,12 @@ const LoginPage = () => {
   const router = useRouter();
 
   const redirect = router.query.redirect;
-
+ 
   const onSubmit = async (data) => {
     try {
-      signIn(data.email, data.password).then((result) => {
+      const result = await signIn(data.email, data.password);
+   
+      if (result.success) {
         Swal.fire({
           position: "center",
           timerProgressBar: true,
@@ -46,35 +48,37 @@ const LoginPage = () => {
           timer: 3500,
         });
 
+  
         if (redirect) {
           router.push(`/${redirect}`);
         } else {
           router.push("/");
         }
-      })
-        .catch((err) => {
-          Swal.fire({
-            position: "center",
-            timerProgressBar: true,
-            title: err.message,
-            iconColor: "#ED1C24",
-            toast: true,
-            icon: "error",
-            showClass: {
-              popup: "animate__animated animate__fadeInRight",
-            },
-            hideClass: {
-              popup: "animate__animated animate__fadeOutRight",
-            },
-            showConfirmButton: false,
-            timer: 3500,
-          });
+      } else {
+        // If there is an error, show the error message
+        Swal.fire({
+          position: "center",
+          timerProgressBar: true,
+          title: result.error,
+          iconColor: "#ED1C24",
+          toast: true,
+          icon: "error",
+          showClass: {
+            popup: "animate__animated animate__fadeInRight",
+          },
+          hideClass: {
+            popup: "animate__animated animate__fadeOutRight",
+          },
+          showConfirmButton: false,
+          timer: 3500,
         });
+      }
     } catch (error) {
+      // Handle unexpected errors here
       Swal.fire({
         position: "center",
         timerProgressBar: true,
-        title: error.message,
+        title: error,
         iconColor: "#ED1C24",
         toast: true,
         icon: "error",
@@ -89,6 +93,7 @@ const LoginPage = () => {
       });
     }
   };
+  
 
   const handleGoogleSingnIn = () => {
     signInWithGoogle()
