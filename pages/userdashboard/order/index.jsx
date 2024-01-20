@@ -167,7 +167,9 @@ const OrderForUser = () => {
 
                                                                 <td className="px-4 py-4 text-sm whitespace-nowrap">
                                                                     <div className="flex items-center gap-x-6">
-                                                                        <button
+                                                                        {
+                                                                            !order?.dispatchOrder ? (
+                                                                                <button
                                                                             className="text-red-500 transition-colors duration-200 hover:text-indigo-500 focus:outline-none"
                                                                             onClick={() =>
                                                                                 handelOrderDelete(order?._id)
@@ -175,6 +177,13 @@ const OrderForUser = () => {
                                                                         >
                                                                             Delete
                                                                         </button>
+                                                                            ) : (
+                                                                                <div className='text-white'>
+                                                                                   Your Order Is Dispatch
+                                                                                </div>
+                                                                            ) 
+                                                                        }
+                                                                       
 
                                                                         <Link
                                                                             href={`/userdashboard/order/${order?._id}`}

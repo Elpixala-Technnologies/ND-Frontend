@@ -148,7 +148,7 @@ const CheckoutPage = () => {
                 totalPrice: totalPrice,
                 email: user?.email,
                 paymentDetails: paymentMethod,
-                shippingAddress: AddressData[0] | {},
+                shippingAddress: AddressData[0],
                 clientName: user?.displayName
             }
 
@@ -380,7 +380,7 @@ const CheckoutPage = () => {
 
                                     <div className='flex flex-col gap-4 border p-2 rounded'>
                                         {
-                                            AddressData && AddressData?.map((addressValueData) => {
+                                           AddressData?.map((addressValueData) => {
                                                 return (
                                                     <div className='flex gap-4 flex-col my-4'>
                                                         <div
