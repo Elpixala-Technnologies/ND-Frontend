@@ -4,6 +4,7 @@ export default async function handler(req, res) {
   const { name, email, paymentId, paymentAmount, paymentDate, paymentProduct } =
     req.body;
 
+
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -18,27 +19,35 @@ export default async function handler(req, res) {
     subject: "Payment Successfull Done + Thank you for your order " + name,
     text: `Name: ${name}\nEmail: ${email}\n PaymentId: ${paymentId}\n PaymentAmount: ${paymentAmount}`,
     html: `<div style="background-color: #f9fafb;width: 600px;">
-         <h1 style="text-align:center;font-size:18px;font-weight:700;padding-top:15px">Payment  Info </h1>
-         <div style="display:flex;justify-content:center; margin-left:100px">
-         <div style="text-align:start;">
-         <p><strong>Name: </strong></p>
-         <p><strong>Email: </strong></p>
-         <p><strong>PaymentId: </strong></p>
-         <p><strong>PaymentAmount: </strong></p>
-          <p><strong>PaymentDate: </strong></p>
-     
-         </div>
-         <div style="text-align:end;">
-         <p>${name}</p>
-         <p>${email}</p>
-         <p>${paymentId}</p>
-         <p>Rs. ${paymentAmount}</p>
-          <p>${paymentDate}</p>
+  <h1 style="text-align:center;font-size:18px;font-weight:700;padding-top:15px">Payment Info</h1>
+  <div style="display:flex;justify-content:center; margin-left:100px">
+    <div style="text-align:start;">
+      <p><strong>Name: </strong></p>
+      <p><strong>Email: </strong></p>
+      <p><strong>PaymentId: </strong></p>
+      <p><strong>PaymentAmount: </strong></p>
+      <p><strong>PaymentDate: </strong></p>
+      <p><strong>Ordered Products: </strong></p>
+    </div>
+    <div style="text-align:end;">
+      <p>${name}</p>
+      <p>${email}</p>
+      <p>${paymentId}</p>
+      <p>Rs. ${paymentAmount}</p>
+      <p>${paymentDate}</p>
+      <ul>
+        ${paymentProduct.map(product => `
+          <li>
+            <p><strong>Book Name: </strong>${product.book.name}</p>
+            <p><strong>Quantity: </strong>${product.quantity}</p>
+            <p><strong>Total Price: </strong>Rs. ${product.totalPrice}</p>
+          </li>
+        `).join('')}
+      </ul>
+    </div>
+  </div>
+</div>`,
 
-         </div>
-         </div>
-        </div>
-            `,
    };
 
   try {
