@@ -1,14 +1,37 @@
+import { AuthContext } from '@/src/Context/UserContext';
 import useOrder from '@/src/Hooks/useOrder';
 import DashboardLayout from '@/src/Layouts/DashboardLayout';
 import AdminAccessRoute from '@/src/PrivetRoute/AdminAccessRoute';
 import { updateOrderUrl } from '@/src/Utils/Urls/OrderUrl';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Swal from 'sweetalert2';
 
+const sendEmail = async (email, subject, htmlContent) => {
+    try {
+      const response = await fetch('/api/sendEmail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, subject, htmlContent }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        console.log(data.message);
+      } else {
+        console.error('Failed to send email:', data.message);
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+    }
+  };
 
 const OrderDetails = () => {
     const { orderData, refetchOrder } = useOrder()
+    const { user } = useContext(AuthContext);
     const router = useRouter();
     const { orderId } = router?.query;
 
@@ -26,24 +49,129 @@ const OrderDetails = () => {
 
     const [isDelevaredOrder, setIsDelevaredOrder] = useState(false);
 
+    // const handelUpdateDispatchOrder = async () => {
+    //     try {
+    //         const dispatchData = {
+    //             dispatchOrder: isDispatchOrder || filterdOrder?.dispatchOrder,
+    //             orderTrackingLink: trakingLink || filterdOrder?.orderTrackingLink, // Use existing link if new one is not provided
+    //             delevaredOrder: isDelevaredOrder || filterdOrder?.delevaredOrder,
+    //         }
+
+    //         const response = await fetch(updateOrderUrl(orderId), { // Added await here
+    //             method: 'PATCH',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify(dispatchData),
+    //         });
+
+    //         const data = await response.json()
+
+    //         if (isDispatchOrder) {
+    //             // Send email for order dispatch
+    //             const dispatchEmailSubject = "Your order has been dispatched!";
+    //             const dispatchEmailContent = `<p>Your order with ID ${orderId} has been dispatched. It will be on its way to you soon!</p>`;
+    //             await sendEmail(filterdOrder?.email, dispatchEmailSubject, dispatchEmailContent);
+    //           } else if (isDelevaredOrder) {
+    //             // Send email for order delivery
+    //             const deliveryEmailSubject = "Your order has been delivered!";
+    //             const deliveryEmailContent = `<p>Your order with ID ${orderId} has been delivered. We hope you enjoy your purchase!</p>`;
+    //             await sendEmail(filterdOrder?.email, deliveryEmailSubject, deliveryEmailContent);
+    //           }
+
+    //         refetchOrder()
+    //         Swal.fire({
+    //             position: "center",
+    //             timerProgressBar: true,
+    //             title: "Successfully Update !",
+    //             iconColor: "#ED1C24",
+    //             toast: true,
+    //             icon: "success",
+    //             showClass: {
+    //                 popup: "animate__animated animate__fadeInRight",
+    //             },
+    //             hideClass: {
+    //                 popup: "animate__animated animate__fadeOutRight",
+    //             },
+    //             showConfirmButton: false,
+    //             timer: 3500,
+    //         });
+
+    //     } catch (error) {
+    //         Swal.fire({
+    //             position: "center",
+    //             timerProgressBar: true,
+    //             title: "Something Wrang !",
+    //             iconColor: "#ED1C24",
+    //             toast: true,
+    //             icon: "error",
+    //             showClass: {
+    //                 popup: "animate__animated animate__fadeInRight",
+    //             },
+    //             hideClass: {
+    //                 popup: "animate__animated animate__fadeOutRight",
+    //             },
+    //             showConfirmButton: false,
+    //             timer: 3500,
+    //         });
+    //     }
+    // }
+ 
     const handelUpdateDispatchOrder = async () => {
         try {
             const dispatchData = {
                 dispatchOrder: isDispatchOrder || filterdOrder?.dispatchOrder,
-                orderTrackingLink: trakingLink || filterdOrder?.orderTrackingLink, // Use existing link if new one is not provided
+                orderTrackingLink: trakingLink || filterdOrder?.orderTrackingLink,
                 delevaredOrder: isDelevaredOrder || filterdOrder?.delevaredOrder,
-            }
-
-            const response = await fetch(updateOrderUrl(orderId), { // Added await here
+            };
+    
+            const response = await fetch(updateOrderUrl(orderId), {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(dispatchData),
             });
-
-            const data = await response.json()
-            refetchOrder()
+    
+            const data = await response.json();
+    
+            if (isDispatchOrder && !isDelevaredOrder) {
+                const response = await fetch('/api/dispatch', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        email: filterdOrder?.email, 
+                        name:  filterdOrder.clientName,
+                        totalPrice: filterdOrder.totalPrice,
+                        filterdOrder: filterdOrder, 
+                        orderTrackingLink: trakingLink,
+                    }),
+                  });
+              
+                  const data = await response.json();
+ 
+              
+            } else if (isDelevaredOrder) {
+                const response = await fetch('/api/delivery', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        email: filterdOrder?.email, 
+                        name:  filterdOrder.clientName,
+                        totalPrice: filterdOrder.totalPrice,
+                        filterdOrder: filterdOrder, 
+                    }),
+                  });
+              
+                  const data = await response.json();
+                 
+            }
+    
+            refetchOrder();
             Swal.fire({
                 position: "center",
                 timerProgressBar: true,
@@ -60,7 +188,7 @@ const OrderDetails = () => {
                 showConfirmButton: false,
                 timer: 3500,
             });
-
+    
         } catch (error) {
             Swal.fire({
                 position: "center",
@@ -80,6 +208,7 @@ const OrderDetails = () => {
             });
         }
     }
+    
 
 
     return (
