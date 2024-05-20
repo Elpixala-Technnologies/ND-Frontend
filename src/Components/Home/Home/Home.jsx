@@ -16,10 +16,12 @@ const Home = () => {
       <HomeSlider />
       <section className="container">
         {/* ====== Home Slider ======= */}
-        <h1 className="text-2xl text-center mt-8 font-semibold">Popular Categories</h1><br />
+       <section className="my-8">
+       <h1 className="text-3xl text-center mt-8 font-semibold">Popular Categories</h1><br />
         <Category />
+       </section>
 
-        <div className="mt-8">
+        <div className="mt-48">
             <HomeBestSealSlider />
 
         </div>

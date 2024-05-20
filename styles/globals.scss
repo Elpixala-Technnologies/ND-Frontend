@@ -62,7 +62,7 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 
-img{
+img {
   max-width: 100%;
   // height: auto;
   // object-fit: cover
@@ -74,6 +74,7 @@ img{
     max-width: 1080px;
     padding-right: 1rem;
     padding-left: 1rem;
+
     @screen sm {
       max-width: 720px;
     }
@@ -85,6 +86,7 @@ img{
     @apply px-4 py-2 rounded-md text-white;
     background-color: #000;
     @apply transition-all duration-300;
+
     &:hover {
       background-color: #fff;
       color: #000;
@@ -96,6 +98,7 @@ img{
   @apply px-4 py-2 rounded-md text-white;
   background-color: #000;
   @apply transition-all duration-300;
+
   &:hover {
     background-color: #fff;
     color: #000;
@@ -104,47 +107,51 @@ img{
 }
 
 .border-common-btn {
-  @apply px-4 py-1 rounded-md ;
+  @apply px-4 py-1 rounded-md;
   border: 2px solid #000;
-  color:inherit;
+  color: inherit;
   @apply transition-all duration-300;
+
   &:hover {
     background-color: #fff;
     color: #000;
-    border: 2px solid rgba(0,0,0,0.5);
+    border: 2px solid rgba(0, 0, 0, 0.5);
   }
 }
 
-.hover{
+.hover {
   @apply transition-all duration-300;
+
   &:hover {
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+
   }
 }
 
-.text-hover{
+.text-hover {
   @apply transition-all duration-300;
+
   &:hover {
-        color: inherit;
-        box-shadow: 0 0 10px rgba(227, 224, 224, 0.51)  
+    color: inherit;
+    box-shadow: 0 0 10px rgba(227, 224, 224, 0.51)
   }
 }
 
-.common-hover{
+.common-hover {
   @apply transition-all duration-300;
+
   &:hover {
-        color: inherit;
-        box-shadow: 0 0 10px rgba(221, 218, 218, 0.51);  
+    color: inherit;
+    box-shadow: 0 0 10px rgba(221, 218, 218, 0.51);
   }
-  
-} 
+
+}
 
 
 // dropdown
-.dropdown:hover .dropdown-menu{
+.dropdown:hover .dropdown-menu {
   display: block;
-  z-index:99999 ;
+  z-index: 99999;
 }
 
 /* tile uploaded pictures */
@@ -191,7 +198,7 @@ img{
 }
 
 
-.homeSliderImage{
+.homeSliderImage {
   width: 3000px !important;
   height: 100% !important;
   object-fit: cover;
@@ -199,3 +206,190 @@ img{
 
 ///////       End of Slider Section     ////////
 
+.card {
+  .book {
+    position: relative;
+    border-radius: 10px;
+    width: 220px;
+    height: 300px;
+    background-color: white;
+    -webkit-box-shadow: 1px 1px 12px #000;
+    box-shadow: 1px 1px 12px #000;
+    -webkit-transform: preserve-3d;
+    -ms-transform: preserve-3d;
+    transform: preserve-3d;
+    -webkit-perspective: 2000px;
+    perspective: 2000px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    color: #000;
+  }
+
+  @media (max-width: 320px) {
+    .book {
+      width: 200px;
+      height: 280px;
+    }
+  }
+
+  /* Mobile devices */
+  @media (max-width: 480px) {
+    .book {
+      width: 240px;
+      height: 320px;
+    }
+  }
+
+  /* Tablet devices */
+  @media (max-width: 768px) {
+    .book {
+      width: 280px;
+      height: 360px;
+    }
+  }
+
+  /* Large displays */
+  @media (min-width: 992px) {
+    .book {
+      width: 300px;
+      height: 420px;
+    }
+  }
+
+  /* Extra large displays */
+  @media (min-width: 1200px) {
+    .book {
+      width: 380px;
+      height: 400px;
+    }
+  }
+
+  .cover {
+    top: 0;
+    position: absolute;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    cursor: pointer;
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+    -webkit-transform-origin: 0;
+    -ms-transform-origin: 0;
+    transform-origin: 0;
+    -webkit-box-shadow: 1px 1px 12px #000;
+    box-shadow: 1px 1px 12px #000;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: start;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: start;
+  }
+
+  .book:hover .cover {
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+    -webkit-transform: rotatey(-80deg);
+    -ms-transform: rotatey(-80deg);
+    transform: rotatey(-80deg);
+  }
+  .button {
+    --😀: #ffffff;
+    --😀😀: #4836bb;
+    --😀😀😀: #654dff63;
+    cursor: pointer;
+    width: 184px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    font-size: 1.125em;
+    font-weight: 400;
+    letter-spacing: 2px;
+    color: #000;
+    background: var(--😀);
+    border: 2px solid var(--😀😀);
+    border-radius: .75rem;
+    box-shadow: 0 8px 0 var(--😀😀);
+    transform: skew(-10deg);
+    transition: all .1s ease;
+    filter: drop-shadow(0 15px 20px var(--😀😀😀));
+  }
+  
+  .button:active {
+    letter-spacing: 0px;
+    transform: skew(-10deg) translateY(8px);
+    box-shadow: 0 0 0 var(--😀😀😀);
+  }
+
+  .cta {
+    position: relative;
+    margin: auto;
+    padding: 8px 18px;
+    transition: all 0.2s ease;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+  
+  .cta:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    border-radius: 50px;
+    background: #b1dae7;
+    width: 45px;
+    height: 45px;
+    transition: all 0.3s ease;
+  }
+  
+  .cta span {
+    position: relative;
+    font-family: "Ubuntu", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #234567;
+  }
+  
+  .cta svg {
+    position: relative;
+    top: 0;
+    margin-left: 10px;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke: #234567;
+    stroke-width: 2;
+    transform: translateX(-5px);
+    transition: all 0.3s ease;
+  }
+  
+  .cta:hover:before {
+    width: 100%;
+    background: #b1dae7;
+  }
+  
+  .cta:hover svg {
+    transform: translateX(0);
+  }
+  
+  .cta:active {
+    transform: scale(0.95);
+  }
+  
+}
