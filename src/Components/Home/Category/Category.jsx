@@ -28,7 +28,7 @@ const Category = () => {
                             <div class="book">
                                 <div className='text-center pl-10 flex flex-col items-center justify-center gap-8 w-full'>
                                     <span className='sp-1 md:block hidden text-gray-500 md:text-md font-semibold'>
-                                        {itm?.popularCategoryDetail.slice(0, 70) + '...'}
+                                        {itm?.popularCategoryDetail}
                                     </span>
 
                                     {/* <button class="button">

@@ -26,10 +26,6 @@ const Navbar = () => {
               className='cursor-pointer hover:scale-105 duration-300 transform'
             />
           </Link>
-          <div className=" md:flex hidden border border-[#c4c4c4] items-center  p-1 rounded-md gap-2 common-hover">
-            <input type="text" className='w-[300px] pl-2 py-1 bg-transparent text-black' placeholder='Search' />
-            <Search className='text-[#595959]' />
-          </div>
         </div>
 
         <ul className="items-center hidden space-x-6 md:flex">

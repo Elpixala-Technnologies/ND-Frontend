@@ -7,7 +7,7 @@ const RootLayout = ({ children }) => {
     return (
         <main>
             <Navbar />
-            <BottomNav />
+            {/* <BottomNav /> */}
             <section>
                 {children}
             </section>

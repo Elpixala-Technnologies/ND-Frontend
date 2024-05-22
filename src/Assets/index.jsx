@@ -33,6 +33,9 @@ import MobileBannerTwelveImage from "./MobileBanner/MobileBanner-(12).png"
 import MobileBannerThirteenImage from "./MobileBanner/MobileBanner-(13).png"
 import MobileBannerFourteenImage from "./MobileBanner/MobileBanner-(14).png"
 
+
+import Childern from "./Logo/Childern.svg"
+
 import AuthLoginUser from "./Auth/user.png"
 
 
@@ -40,7 +43,7 @@ export {
     PreLoaderIcon,
     AuthBannerImage,
     NotFoundImage,
-
+    Childern,
     BannerOneImage,
     BannerTowImage,
     BannerThreeImage,

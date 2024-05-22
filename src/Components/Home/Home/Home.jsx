@@ -8,25 +8,27 @@ import HomeAddCard from "../HomeAddCard/HomeAddCard";
 import PlayWithWrite from "../PlayWithWrite/PlayWithWrite";
 import AllInOneCategory from "../AllInOne/AllInOneCategory";
 import { BookStoreBannerOne } from "@/src/Assets";
+import HeroSection from "../HeroSection/HeroSection";
 
 const Home = () => {
 
   return (
     <>
-      <HomeSlider />
+      {/* <HomeSlider /> */}
       <section className="container">
+        <HeroSection />
         {/* ====== Home Slider ======= */}
-       <section className="my-8">
-       <h1 className="text-3xl text-center mt-8 font-semibold">Popular Categories</h1><br />
-        <Category />
-       </section>
+        <section className="my-8 mt-16">
+          <h1 className="text-3xl text-center mt-8 font-semibold">Popular Categories</h1><br />
+          <Category />
+        </section>
 
-        <div className="mt-48">
-            <HomeBestSealSlider />
+        <div className="mt-20">
+          <HomeBestSealSlider />
 
         </div>
         <div>
-          <h1 className="text-2xl text-start mt-8 font-semibold">Our Best Sellers</h1>
+          <h1 className="text-2xl text-start mt-16 font-semibold">Our Best Sellers</h1>
           <HomeBestSeal />
         </div>
         <br />
