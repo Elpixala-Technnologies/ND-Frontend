@@ -148,23 +148,22 @@ const PlayWithWrite = () => {
                                 slidesPerView: 3,
                                 spaceBetween: 50,
                             },
+                            
                         }}
-                        spaceBetween={40}
+                        spaceBetween={32}
                         slidesPerView={4}
                         onSlideChange={() => { }}
                         onSwiper={(swiper) => { }}
                     >
-                        <div className="flex justify-center items-center gap-4 w-full">
+                        <div className="flex justify-center items-center">
                             {filterBookData &&
                                 filterBookData.map((book) => (
-                                    <SwiperSlide className="cursor-grab py-10 pr-10" key={book.id}>
+                                    <SwiperSlide className="py-10  w-fit " key={book.id}>
                                         <div className="playWithWrite ">
-                                            <div className="card bg-white pt-2 px-2 pb-6 my-4 mx-2 shadow-lg cursor-pointer flex flex-col items-start rounded">
-                                                <div className="bg-transparent  w-full h-2/3 rounded-3xl">
-                                                    <Image
+                                            <div className="card bg-white pt-2  pb-6 my-4  shadow-lg cursor-pointer flex flex-col items-start rounded">
+                                                <div className="bg-transparent w-full h-2/3 rounded-3xl">
+                                                    <img
                                                         src={book?.image[0] || bookImg}
-                                                        width={1200}
-                                                        height={1200}
                                                         alt="Description"
                                                         className='rounded-3xl'
                                                     />

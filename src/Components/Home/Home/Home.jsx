@@ -9,6 +9,7 @@ import PlayWithWrite from "../PlayWithWrite/PlayWithWrite";
 import AllInOneCategory from "../AllInOne/AllInOneCategory";
 import { BookStoreBannerOne } from "@/src/Assets";
 import HeroSection from "../HeroSection/HeroSection";
+import BookComponent from "../../BookSalePage/BookSalePage";
 
 const Home = () => {
 
@@ -18,13 +19,15 @@ const Home = () => {
       <section className="container">
         <HeroSection />
         {/* ====== Home Slider ======= */}
-        <section className="my-8 mt-16">
+        <section className="my-16 mt-16">
           <h1 className="text-3xl text-center mt-8 font-semibold">Popular Categories</h1><br />
           <Category />
         </section>
 
-        <div className="mt-20">
-          <HomeBestSealSlider />
+        <div className="my-20">
+          {/* <HomeBestSealSlider /> */}
+          <h2 className=' top-5 left-5 text-3xl font-bold'>NEW ARRIVAL</h2>
+          <BookComponent />
 
         </div>
         <div>
