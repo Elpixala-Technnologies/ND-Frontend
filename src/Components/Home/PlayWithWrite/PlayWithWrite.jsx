@@ -90,7 +90,7 @@ const PlayWithWrite = () => {
     return (
         <section className=" mx-2 relative h-full">
             <div className="title mt-6 flex justify-between items-center">
-                <h2 className=" text-[1rem] md:text-[1.5rem] text-center md:text-left lg:text-3xl xxs:text-2xl  text-black font-bold">
+                <h2 className="text-3xl text-center md:text-left lg:text-3xl xxs:text-2xl  text-black font-bold">
                     PlayWay Writing
                 </h2>
 

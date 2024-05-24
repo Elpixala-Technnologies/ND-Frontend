@@ -69,7 +69,7 @@ const HomeAddCard = () => {
 
     return (
         <>
-            <h1 className="text-3xl font-semibold mt-12">Book of the year</h1>
+            <h1 className="text-3xl font-bold mt-12">Book of the year</h1>
             <p className="text-gray-600 md:w-[700px] mt-2">
                 ND is a leading global provider of e-books for libraries and schools. Our mission is simple: to create the best content for our customers around the world. We are a team of passionate people who work hard, have fun, and are committed to helping our customers succeed.
             </p>

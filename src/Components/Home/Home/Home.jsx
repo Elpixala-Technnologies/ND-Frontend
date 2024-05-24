@@ -10,6 +10,8 @@ import AllInOneCategory from "../AllInOne/AllInOneCategory";
 import { BookStoreBannerOne } from "@/src/Assets";
 import HeroSection from "../HeroSection/HeroSection";
 import BookComponent from "../../BookSalePage/BookSalePage";
+import TestimonialSection from "../Testimonials/Testimonials";
+import Faq from "../Faq/faq";
 
 const Home = () => {
 
@@ -20,7 +22,7 @@ const Home = () => {
         <HeroSection />
         {/* ====== Home Slider ======= */}
         <section className="my-16 mt-16">
-          <h1 className="text-3xl text-center mt-8 font-semibold">Popular Categories</h1><br />
+          <h1 className="text-3xl text-center mt-8 font-bold">Popular Categories</h1><br />
           <Category />
         </section>
 
@@ -31,7 +33,7 @@ const Home = () => {
 
         </div>
         <div>
-          <h1 className="text-2xl text-start mt-16 font-semibold">Our Best Sellers</h1>
+          <h1 className="text-start mt-16 font-bold text-3xl">Our Best Sellers</h1>
           <HomeBestSeal />
         </div>
         <br />
@@ -43,6 +45,13 @@ const Home = () => {
         <HomeAddBanner />
         <div className="my-4">
           <AllInOneCategory />
+        </div>
+
+        <div className="my-4">
+          <TestimonialSection />
+        </div>
+        <div className="my-4">
+          <Faq/>
         </div>
       </section>
     </>
