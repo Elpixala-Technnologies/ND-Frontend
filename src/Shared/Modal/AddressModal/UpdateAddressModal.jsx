@@ -227,7 +227,7 @@ const UpdateAddressModal = ({
                             marginTop: '20px',
                         }}
                         onClick={handleSubmit(onSubmit)}
-                        className="common-btn"
+                        className="border-2 border-black  rounded-lg p-2 hover:text-white hover:bg-black" 
                     >
                         {
                             loading ? 'Loading...' : 'Update Address'

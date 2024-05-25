@@ -35,11 +35,13 @@ import MobileBannerFourteenImage from "./MobileBanner/MobileBanner-(14).png"
 
 
 import Childern from "./Logo/Childern.svg"
+import AddTOCart from "./Logo/addCart.svg"
 
 import AuthLoginUser from "./Auth/user.png"
 
 
 export {
+    AddTOCart,
     PreLoaderIcon,
     AuthBannerImage,
     NotFoundImage,

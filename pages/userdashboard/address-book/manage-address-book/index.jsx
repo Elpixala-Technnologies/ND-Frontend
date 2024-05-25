@@ -52,10 +52,21 @@ const ManageAdressBookPage = () => {
         return <div>Loading...</div>;
     }
 
+    console.log(UserAdddressData,"UserAdddressData")
+
 
     return (
         <UserdashboardLayout>
             <div className="container">
+            {UserAdddressData?.length === 0 ? (
+                <div>
+                    <h1 className="text-2xl font-bold mb-4">No Address Found</h1>
+                </div>
+            ): (
+                <div>
+                    <h1 className="text-2xl font-bold mb-4">Manage Address</h1>
+                </div>
+            )}
                 <div>
                     <button
                         onClick={handleAddressModal}
@@ -125,7 +136,7 @@ const ManageAdressBookPage = () => {
                                             onClick={
                                                 () => handleUpdateAddressModal(addressValueData)
                                             }
-                                            className="common-btn"
+                                            className="border-2 border-black  rounded-lg p-2 hover:text-white hover:bg-black" 
                                         >
                                             Update Address
                                         </button>
@@ -137,7 +148,7 @@ const ManageAdressBookPage = () => {
                                             onClick={
                                                 () => handeladdressDelete(addressValueData?._id)
                                             }
-                                            className="common-btn"
+                                            className="border-2 border-black  rounded-lg p-2 hover:text-white hover:bg-black" 
                                         >
                                             Delete Address
                                         </button>

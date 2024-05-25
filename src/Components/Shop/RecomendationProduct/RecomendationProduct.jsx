@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useContext, useRef } from "react";
 import bookImg from '@/public/banner 07.png';
 import { Navigation, Pagination, Scrollbar, A11y, Autoplay } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -7,6 +7,9 @@ import { TbArrowBigLeft, TbArrowBigRight } from "react-icons/tb";
 import Link from "next/link";
 import { NotFoundImage } from "@/src/Assets";
 import useBook from "@/src/Hooks/useBook";
+import { AuthContext } from "@/src/Context/UserContext";
+import Swal from 'sweetalert2';
+import { addToCartUrl } from '@/src/Utils/Urls/BooksUrl';
 
 const RecomendationProduct = () => {
     const sliderRef = useRef(null);
@@ -21,6 +24,63 @@ const RecomendationProduct = () => {
     }, []);
 
     const { bookData } = useBook()
+
+    const { user } = useContext(AuthContext);
+
+    // Add to cart function
+    const addToCart = async (id, price) => {
+        try {
+            if (!user) {
+                localStorage.setItem('redirectTo', '/cart');
+                localStorage.setItem('itemToAdd', id);
+                // Redirect to login page if user is not logged in
+                window.location.href = '/auth/login';
+                return;
+            }
+
+            const response = await fetch(addToCartUrl(id), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    book: id,
+                    quantity: 1,
+                    totalPrice: price,
+                    email: user.email,
+                    status: "unpaid"
+                }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Your book has been added to the cart',
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+                // // Redirect to the cart page after adding the book to the cart
+                // window.location.href = '/cart';
+            } else {
+                // Handle the case where adding to cart is unsuccessful
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed to add the book to the cart',
+                    text: data.message || 'An error occurred',
+                });
+            }
+        } catch (error) {
+            // Handle any errors that occur during the fetch
+            console.error('Error adding item to cart:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An error occurred while adding the book to the cart.',
+            });
+        }
+    };
 
     return (
         <section className=" mx-2 relative h-full">
@@ -84,25 +144,27 @@ const RecomendationProduct = () => {
                         {bookData &&
                             bookData.map((book) => {
                                 return (
-                                    <SwiperSlide className="cursor-grab" key={book._id}>
-                                        <Link href={`/product/${book?._id}`}>
-                                            <div className="card w-full bg-white px-3 py-2 my-4 mx-2 shadow-lg hover rounded cursor-pointer hover:animate-pulse transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-100">
-                                                <div className="bg-[#e1e6e9]  ">
-                                                    <Image
-                                                        src={book?.image[0] || NotFoundImage}
-                                                        width={300}
-                                                        height={400}
-                                                        alt={book?.name}
-                                                        className='md:h-[360px] h-[350px] rounded'
-                                                    />
-                                                </div>
+                                    <SwiperSlide className="" key={book._id}>
 
-                                                <div className="pb-4 text-left">
-                                                    <h4 className='font-bold my-2'>
+                                        <div className="card w-full bg-gradient-to-tr from-gray-50 to-gray-300 p-6 my-4 mx-2 shadow-lg hover rounded-3xl">
+                                            <div className="bg-[#e1e6e9]  ">
+                                                <Image
+                                                    src={book?.image[0] || NotFoundImage}
+                                                    width={300}
+                                                    height={400}
+                                                    alt={book?.name}
+                                                    className='md:h-[360px] h-[350px] rounded'
+                                                />
+                                            </div>
+
+                                            <div className="pb-4 text-left">
+                                                <Link href={`/product/${book?._id}`} className="cursor-pointer">
+                                                    <h4 className='font-bold mt-2'>
                                                         {book.category}
                                                     </h4>
                                                     <h4 className="text-lg">{book?.name?.slice(0, 28) + ".."}</h4>
-                                                    {/* <div className='flex items-center gap-4'>
+                                                </Link>
+                                                {/* <div className='flex items-center gap-4'>
                                                         <h1 className="text-xl font-bold text-slate-900">
                                                             {
                                                                 book?.discountPercentage
@@ -117,27 +179,37 @@ const RecomendationProduct = () => {
                                                             {book?.discountPercentage} % off
                                                         </span>
                                                     </div> */}
-                                                    <div className="flex items-center md:flex-row gap-2 md:gap-4">
-                                                        <h1 className="text-lg md:text-xl font-bold text-slate-900">
-                                                            {book?.discountPercentage
-                                                                ? `₹ ${book?.price - (book?.price * book?.discountPercentage) / 100}`
-                                                                : `₹ ${book?.price}`}
-                                                        </h1>
-                                                        {book?.discountPercentage !== "0" && (
-                                                            <>
-                                                                <span className="text-sm md:text-base text-slate-900 line-through mt-1">
-                                                                    ₹ {book?.price}
-                                                                </span>
-                                                                <span className="text-[#eec75b] text-sm md:text-base">
-                                                                    {book?.discountPercentage} % off
-                                                                </span>
-                                                            </>
-                                                        )}
-                                                    </div>
 
+                                                <div className="flex items-center md:flex-row gap-2 md:gap-4">
+                                                    <h1 className="text-lg md:text-xl font-bold text-slate-900">
+                                                        {book?.discountPercentage
+                                                            ? `₹ ${book?.price - (book?.price * book?.discountPercentage) / 100}`
+                                                            : `₹ ${book?.price}`}
+                                                    </h1>
+                                                    {book?.discountPercentage !== "0" && (
+                                                        <>
+                                                            <span className="text-sm md:text-base text-slate-900 line-through mt-1">
+                                                                ₹ {book?.price}
+                                                            </span>
+                                                            <span className="text-[#eec75b] text-sm md:text-base">
+                                                                {book?.discountPercentage} % off
+                                                            </span>
+                                                        </>
+                                                    )}
                                                 </div>
+
+                                                <div className="w-full flex items-center justify-start mt-2 hoverButton">
+                                                    <button onClick={() => addToCart(book._id, book.price)}>
+                                                        <span class="shadow"></span>
+                                                        <span class="edge"></span>
+                                                        <span class="front text"> Buy Now
+                                                        </span>
+                                                    </button>
+                                                </div>
+
                                             </div>
-                                        </Link>
+                                        </div>
+
                                     </SwiperSlide>
                                 );
                             })}

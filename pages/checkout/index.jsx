@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { FaCheck } from 'react-icons/fa';
 
 const CheckoutPage = () => {
     const [isAddressModalOpen,
@@ -139,11 +140,11 @@ const CheckoutPage = () => {
         return acc + curr?.quantity;
     }, 0);
 
-    
+
     const handelOrderNow = async () => {
         try {
             const orderData = {
-                book: cartData?.map((book) =>  book),
+                book: cartData?.map((book) => book),
                 quantity: totalQuantity,
                 totalPrice: totalPrice,
                 email: user?.email,
@@ -172,20 +173,20 @@ const CheckoutPage = () => {
                 const responseEmail = await fetch("/api/payment", {
                     method: "POST",
                     body: JSON.stringify({
-                      name: user?.displayName,
-                      email: user?.email,
-                      paymentId: paymentMethod,
-                      paymentAmount: totalPrice,
-                      paymentProduct: cartData?.map((book) =>  book),
-                      paymentDate: new Date(),
+                        name: user?.displayName,
+                        email: user?.email,
+                        paymentId: paymentMethod,
+                        paymentAmount: totalPrice,
+                        paymentProduct: cartData?.map((book) => book),
+                        paymentDate: new Date(),
                     }),
                     headers: {
-                      "Content-Type": "application/json",
+                        "Content-Type": "application/json",
                     },
-                  });
-          
-                  const data = await responseEmail.json();
-                  console.log(data);
+                });
+
+                const data = await responseEmail.json();
+                console.log(data);
 
                 router.push('/paymentsuccess');
             }
@@ -206,6 +207,21 @@ const CheckoutPage = () => {
         { label: 'Payment', icon: 'credit-card' },
     ];
 
+
+    const [showAlert, setShowAlert] = useState(false);
+    const handleNext = () => {
+        if (AddressData.length === 0) {
+            setShowAlert(true);
+        } else {
+            setCurrentStep(currentStep + 1);
+        }
+    };
+    const closeAlert = () => {
+        setShowAlert(false);
+    };
+
+
+
     return (
         <RootLayout>
             <div className="container mx-auto py-6 px-4">
@@ -225,9 +241,7 @@ const CheckoutPage = () => {
                                                 } text-xs font-semibold`}
                                             href="#"
                                         >
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                                <path strokeLinecap="round" strokeLinejoin="round" d={index < currentStep ? 'M5 13l4 4L19 7' : 'M5 13l4 4M19 7l-4 4'} />
-                                            </svg>
+                                            <FaCheck />
                                         </a>
                                         <span className={`font-semibold ${index === currentStep ? 'text-gray-900' : 'text-gray-500'}`}>{step.label}</span>
                                     </li>
@@ -287,11 +301,34 @@ const CheckoutPage = () => {
                                                                         </p>
                                                                     </div>
 
-                                                                    <div className="mt-4 flex items-end justify-between sm:mt-0 sm:items-start  sm:justify-end">
-                                                                        <p className="shrink-0 w-20 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-right">
-                                                                            <span className="text-xs font-normal text-gray-400">₹</span>{" "}
-                                                                            {totalPrice}
-                                                                        </p>
+                                                                    <div className="mt-4 flex items-center justify-evenly">
+                                                                        <div className="shrink-0 w-1/4 text-base font-semibold text-gray-900 sm:order-2 sm:ml-8 sm:text-right flex gap-4 items-center">
+                                                                            <span className="font-normal text-gray-700">₹{totalPrice}</span>{" "}
+
+                                                                            <div className=" border rounded border-black flex sm:bottom-0 sm:top-auto">
+                                                                                <button
+                                                                                    type="button"
+                                                                                    onClick={() => removeFromCart(_id)}
+                                                                                    className="flex rounded p-1 text-center text-gray-500 transition-all duration-200 ease-in-out focus:shadow hover:text-gray-900"
+                                                                                >
+                                                                                    <svg
+                                                                                        className="h-5 w-5"
+                                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                                        fill="none"
+                                                                                        viewBox="0 0 24 24"
+                                                                                        stroke="currentColor"
+                                                                                    >
+                                                                                        <path
+                                                                                            strokeLinecap="round"
+                                                                                            strokeLinejoin="round"
+                                                                                            strokeWidth={2}
+                                                                                            d="M6 18L18 6M6 6l12 12"
+                                                                                            className=""
+                                                                                        />
+                                                                                    </svg>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
                                                                         <div className="sm:order-1">
                                                                             <div className="mx-auto flex h-8 items-stretch text-gray-600">
                                                                                 <button
@@ -319,29 +356,7 @@ const CheckoutPage = () => {
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div className="absolute border rounded border-black top-0 right-0 flex sm:bottom-0 sm:top-auto">
-                                                                    <button
-                                                                        type="button"
-                                                                        onClick={() => removeFromCart(_id)}
-                                                                        className="flex rounded p-2 text-center text-gray-500 transition-all duration-200 ease-in-out focus:shadow hover:text-gray-900"
-                                                                    >
-                                                                        <svg
-                                                                            className="h-5 w-5"
-                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                            fill="none"
-                                                                            viewBox="0 0 24 24"
-                                                                            stroke="currentColor"
-                                                                        >
-                                                                            <path
-                                                                                strokeLinecap="round"
-                                                                                strokeLinejoin="round"
-                                                                                strokeWidth={2}
-                                                                                d="M6 18L18 6M6 6l12 12"
-                                                                                className=""
-                                                                            />
-                                                                        </svg>
-                                                                    </button>
-                                                                </div>
+
                                                             </div>
                                                         </li>
                                                     );
@@ -363,7 +378,6 @@ const CheckoutPage = () => {
                             </>
                         )
                     }
-
                     {
                         currentStep === 1 && (
                             <>
@@ -380,96 +394,26 @@ const CheckoutPage = () => {
 
                                     <div className='flex flex-col gap-4 border p-2 rounded'>
                                         {
-                                            AddressData && AddressData?.map((addressValueData) => {
-                                                return (
-                                                    <div className='flex gap-4 flex-col my-4'>
-                                                        <div
-                                                            className='border-2 border-gray-300 rounded-md p-2 flex gap-2 items-center'
-                                                        >
+                                            AddressData && AddressData.map((addressValueData, index) => (
+                                                <div key={index} className='flex gap-4 flex-col my-4'>
+                                                    {/* Input fields for address details */}
+                                                    {Object.keys(addressValueData).map((key) => (
+                                                        <div key={key} className='border-2 border-gray-300 rounded-md p-2 flex gap-2 items-center'>
                                                             <input
                                                                 type="text"
                                                                 className="border-2 border-gray-300 rounded-md p-2 w-full"
-                                                                defaultValue={addressValueData.name}
-                                                                {...register("name")}
+                                                                defaultValue={addressValueData[key]}
+                                                                {...register(key)}
                                                             />
                                                         </div>
-                                                        <div
-                                                            className='border-2 border-gray-300 rounded-md p-2 flex gap-2 items-center'
-                                                        >
-                                                            <input type="text"
-                                                                className="border-2 border-gray-300 rounded-md p-2 w-full"
-                                                                defaultValue={addressValueData.level}
-                                                                {...register("level")}
-                                                            />
-                                                        </div>
-                                                        <div
-                                                            className='border-2 border-gray-300 rounded-md p-2 flex gap-2 items-center'
-                                                        >
-                                                            <input type="text"
-                                                                className="border-2 border-gray-300 rounded-md p-2 w-full"
-                                                                defaultValue={addressValueData.address}
-                                                                {...register("address")}
-                                                            />
-                                                        </div>
-
-                                                        <div
-                                                            className='border-2 border-gray-300 rounded-md p-2 flex gap-2 items-center'
-                                                        >
-                                                            <input type="text"
-                                                                className="border-2 border-gray-300 rounded-md p-2 w-full"
-                                                                defaultValue={addressValueData.city}
-                                                                {...register("city")}
-                                                            />
-                                                        </div>
-
-                                                        <div
-                                                            className='border-2 border-gray-300 rounded-md p-2 flex gap-2 items-center'
-                                                        >
-                                                            <input type="text"
-                                                                className="border-2 border-gray-300 rounded-md p-2 w-full"
-                                                                defaultValue={addressValueData.state}
-                                                                {...register("state")}
-                                                            />
-                                                        </div>
-
-                                                        <div
-                                                            className='border-2 border-gray-300 rounded-md p-2 flex gap-2 items-center'
-                                                        >
-                                                            <input type="text"
-                                                                className="border-2 border-gray-300 rounded-md p-2 w-full"
-                                                                defaultValue={addressValueData.zip}
-                                                                {...register("zip")}
-                                                            />
-                                                        </div>
-
-                                                        <div
-                                                            className='border-2 border-gray-300 rounded-md p-2 flex gap-2 items-center'
-                                                        >
-                                                            <input type="text"
-                                                                className="border-2 border-gray-300 rounded-md p-2 w-full"
-                                                                defaultValue={addressValueData.country}
-                                                                {...register("country")}
-                                                            />
-                                                        </div>
-
-                                                        <div
-                                                            className='border-2 border-gray-300 rounded-md p-2 flex gap-2 items-center'
-                                                        >
-                                                            <input type="text"
-                                                                className="border-2 border-gray-300 rounded-md p-2 w-full"
-                                                                defaultValue={addressValueData.phone}
-                                                                {...register("phone")}
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                )
-                                            })
+                                                    ))}
+                                                </div>
+                                            ))
                                         }
                                     </div>
                                 </div>
 
                                 <div className='flex gap-2 justify-center my-4'>
-                                    {/* === add previuse and next = */}
                                     <button
                                         className="mt-4 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white"
                                         onClick={() => setCurrentStep(currentStep - 1)}
@@ -479,17 +423,26 @@ const CheckoutPage = () => {
 
                                     <button
                                         className='mt-4 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white'
-                                        onClick={() => setCurrentStep(currentStep + 1)}
+                                        onClick={handleNext}
                                     >
-                                        <a className="mt-4 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white">
-                                            Next
-                                        </a>
+                                        Next
                                     </button>
                                 </div>
 
+                                {showAlert && (
+                                    <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
+                                        <div className="bg-white p-4 rounded shadow-md">
+                                            <p>Please enter a shipping address</p>
+                                            <button className="mt-4 rounded-md bg-gray-900 px-6 py-3 font-medium text-white" onClick={closeAlert}>
+                                                Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
                             </>
                         )
                     }
+
 
 
 
@@ -502,26 +455,28 @@ const CheckoutPage = () => {
                                         Complete your order by providing your payment details.
                                     </p>
 
-                                    <div className='my-4'>
+                                    <div className='my-4 w-1/2'>
                                         <p className="text-xl font-medium">Select Payment Method</p>
 
-                                        <select className="my-2 border w-full p-2"
+                                        <select
+                                            className="my-2 border p-2 w-1/2 "
                                             onChange={(e) => setPaymentMethod(e.target.value)}
                                         >
-                                            <option value="">Select Mathod</option>
-                                            <option value="Cash On Delivary">Cash On Delivary</option>
+                                            <option value="">Select Method</option>
+                                            <option value="Cash On Delivery">Cash On Delivery</option>
                                         </select>
                                     </div>
 
                                     <button
                                         onClick={handelOrderNow}
-                                        className="mt-4 mb-8 text-black rounded-md border  px-6 py-3 font-medium ">
+                                        className={`mt-4 mb-8 text-black rounded-md border px-6 py-3 font-medium ${!paymentMethod ? 'bg-gray-300 cursor-not-allowed' : 'bg-green-500'}`}
+                                        disabled={!paymentMethod}
+                                    >
                                         Place Order
                                     </button>
                                 </div>
 
                                 <div className='flex gap-2 justify-center my-4'>
-                                    {/* === add previuse and next = */}
                                     <button
                                         className="mt-4 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white"
                                         onClick={() => setCurrentStep(currentStep - 1)}
@@ -532,6 +487,7 @@ const CheckoutPage = () => {
                             </>
                         )
                     }
+
                 </div>
 
             </div>

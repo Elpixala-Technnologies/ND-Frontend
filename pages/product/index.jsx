@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useMemo } from 'react';
+import React, { Fragment, useState, useEffect, useMemo, useContext } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
 import { FunnelIcon, } from '@heroicons/react/20/solid'
@@ -10,6 +10,9 @@ import { MdExpandMore, MdExpandLess } from 'react-icons/md';
 import useBook from '@/src/Hooks/useBook';
 import ProductSlider from '@/src/Components/Home/Products/ProductSlider/ProductSlider';
 import { useRouter } from 'next/router';
+import { AuthContext } from '@/src/Context/UserContext';
+import { addToCartUrl } from '@/src/Utils/Urls/BooksUrl';
+import Swal from 'sweetalert2';
 
 const sortOptions = [
     { name: 'Price: Low to High', href: '#', current: false },
@@ -34,7 +37,7 @@ const ProductPage = () => {
         color: false,
         price: false,
     };
-    const [activeFilter, setActiveFilter] = useState(null);
+    const [activeFilter, setActiveFilter] = useState('category');
     // const handleToggleFilter = (filter) => {
     //     if (activeFilter === filter) {
     //         setActiveFilter(null);
@@ -64,7 +67,7 @@ const ProductPage = () => {
     // }, [router.query]);
 
     const handleToggleFilter = (filter) => {
-        if (activeFilter === filter || (filter === 'category' && selectedCategory)) {
+        if (activeFilter === filter) {
             setActiveFilter(null);
         } else {
             setActiveFilter(filter);
@@ -129,6 +132,64 @@ const ProductPage = () => {
 
     const changePage = (page) => {
         setCurrentPage(page);
+        window.scrollTo(0, 0); 
+    };
+
+    const { user } = useContext(AuthContext);
+
+    // Add to cart function
+    const addToCart = async (id, price) => {
+        try {
+            if (!user) {
+                localStorage.setItem('redirectTo', '/cart');
+                localStorage.setItem('itemToAdd', id);
+                // Redirect to login page if user is not logged in
+                window.location.href = '/auth/login';
+                return;
+            }
+
+            const response = await fetch(addToCartUrl(id), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    book: id,
+                    quantity: 1,
+                    totalPrice: price,
+                    email: user.email,
+                    status: "unpaid"
+                }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Your book has been added to the cart',
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+                // // Redirect to the cart page after adding the book to the cart
+                // window.location.href = '/cart';
+            } else {
+                // Handle the case where adding to cart is unsuccessful
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed to add the book to the cart',
+                    text: data.message || 'An error occurred',
+                });
+            }
+        } catch (error) {
+            // Handle any errors that occur during the fetch
+            console.error('Error adding item to cart:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An error occurred while adding the book to the cart.',
+            });
+        }
     };
 
 
@@ -136,7 +197,7 @@ const ProductPage = () => {
     return (
         <RootLayout>
             <div>
-                <ProductSlider /> <br />
+                {/* <ProductSlider /> <br /> */}
             </div>
             <div className="container bg-[#fff]">
                 {/* Mobile filter dialog */}
@@ -274,25 +335,32 @@ const ProductPage = () => {
 
                         <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
                             <div className="hidden lg:block">
-
-                                <div className="border-b border-gray-200 py-6">
+                                <div className="py-6 w-full ">
+                                    <button
+                                        className=" font-semibold w-full flex gap-4 border p-2 rounded-lg justify-between items-center"
+                                        onClick={() => selectedCategory && clearFilter()}
+                                    >
+                                        Reset Filters
+                                    </button>
+                                </div>
+                                <div className="p-4 px-2 border border-gray-300 rounded-2xl">
                                     <button onClick={() => handleToggleFilter('category')} className="font-semibold w-full flex gap-4 justify-between items-center">
                                         Category
-                                        {activeFilter === 'category' ? <MdExpandLess className='text-2xl' /> : <MdExpandMore className='text-2xl' />}
+                                        {activeFilter === 'category' ? <MdExpandLess className="text-2xl" /> : <MdExpandMore className="text-2xl" />}
                                     </button>
                                     {activeFilter === 'category' && (
-                                        <div className="space-y-4">
+                                        <div className="space-y-6 border-t-2 border-gray-400 pt-2 mt-2">
                                             {categoryData && categoryData.length > 0 ? (
                                                 categoryData.map((category) => (
                                                     <li key={category._id} className="cursor-pointer mt-2 flex items-center gap-2">
                                                         <input
                                                             type="checkbox"
                                                             id={category?.category}
-                                                            className="form-checkbox h-5 w-5 text-blue-600"
+                                                            className="form-checkbox h-3 w-3 text-blue-600 p-2"  
                                                             checked={selectedCategory === category?.category}
                                                             onChange={() => setSelectedCategory(category?.category)}
                                                         />
-                                                        <label htmlFor={category?.category} className="text-gray-700 cursor-pointer">
+                                                        <label htmlFor={category?.category} className="text-gray-700 cursor-pointer pl-2">
                                                             {category?.category}
                                                         </label>
                                                     </li>
@@ -303,72 +371,79 @@ const ProductPage = () => {
                                         </div>
                                     )}
                                 </div>
-                                <div className="border-b border-gray-200 py-6">
-                                    <button
-                                        className=" font-semibold w-full flex gap-4 border p-2 rounded justify-between items-center"
-                                        onClick={() => selectedCategory && clearFilter()}
-                                    >
-                                        Reset Filters
-                                    </button>
-                                </div>
+
+
 
                             </div>
 
                             {/* Product grid */}
                             <div className="lg:col-span-3">
                                 <li className="flex items-center my-4 rounded-xl border border-[#999] relative  gap-2 w-full">
+                                    <AiOutlineSearch className='text-black text-2xl mx-6' />
                                     <input
                                         type="text"
                                         value={searchQuery}
                                         onChange={handleSearchChange}
-                                        className="w-full px-6 p-2 no-outline focus:outline-none bg-transparent rounded-xl text-black border border-[#999]"
+                                        className="w-full py-4 no-outline focus:outline-none bg-transparent rounded-xl text-black border border-[#999]"
                                         placeholder='Search ...'
                                     />
-                                    <AiOutlineSearch className='text-black text-[1.5rem] mx-6' />
                                 </li>
                                 <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
                                     <div className="lg:col-span-4">
                                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3">
                                             {currentBooks && currentBooks.map((book) => {
                                                 return (
-                                                    <Link key={book?.id} href={`/product/${book?.id}`}>
-                                                        <div className="card w-full bg-white px-3 pt-2 shadow-lg cursor-pointer hover:animate-pulse transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-100 rounded">
-                                                            <div className="bg-[#ebeef0]">
-                                                                <Image
-                                                                    src={book?.image[0]}
-                                                                    width={400}
-                                                                    height={500}
-                                                                    alt={book?.name}
-                                                                    className=" rounded w-full h-full"
-                                                                />
-                                                            </div>
 
-                                                            <div className="pb-4">
-                                                                <h4 className='font-bold my-2'>
+                                                    <div className="card w-full bg-gradient-to-r from-slate-100 to-slate-200 p-4 shadow-lg transform hover:-translate-y-1 hover:scale-100  rounded-3xl flex flex-col justify-between">
+                                                        <div className="bg-[#ebeef0]">
+                                                            <Image
+                                                                src={book?.image[0]}
+                                                                width={400}
+                                                                height={500}
+                                                                alt={book?.name}
+                                                                className=" rounded-3xl w-full h-full"
+                                                            />
+                                                        </div>
+
+                                                        <div className="pb-4 mt-2">
+                                                            <Link key={book?.id} href={`/product/${book?.id}`}>
+                                                                <h4 className='font-bold line-clamp-1'>
                                                                     {book.category}
                                                                 </h4>
-                                                                <h4 className="text-lg">{book?.name?.slice(0, 28) + ".."}</h4>
-                                                                <div className="flex items-center md:flex-row gap-2 md:gap-4">
-                                                                    <h1 className="text-lg md:text-xl font-bold text-slate-900">
-                                                                        {book?.discountPercentage
-                                                                            ? `₹ ${book?.price - (book?.price * book?.discountPercentage) / 100}`
-                                                                            : `₹ ${book?.price}`}
-                                                                    </h1>
-                                                                    {book?.discountPercentage !== "0" && (
-                                                                        <>
-                                                                            <span className="text-sm md:text-base text-slate-900 line-through mt-1">
-                                                                                ₹ {book?.price}
-                                                                            </span>
-                                                                            <span className="text-[#eec75b] text-sm md:text-base">
-                                                                                {book?.discountPercentage} % off
-                                                                            </span>
-                                                                        </>
-                                                                    )}
-                                                                </div>
 
+                                                                <h4 className="text-lg line-clamp-1">{book?.name?.slice(0, 28) + ".."}</h4>
+                                                            </Link>
+                                                            <div className="flex items-center md:flex-row gap-2 md:gap-4">
+                                                                <h1 className="text-lg md:text-xl font-bold text-slate-900">
+                                                                    {book?.discountPercentage
+                                                                        ? `₹ ${book?.price - (book?.price * book?.discountPercentage) / 100}`
+                                                                        : `₹ ${book?.price}`}
+                                                                </h1>
+                                                                {book?.discountPercentage !== "0" && (
+                                                                    <>
+                                                                        <span className="text-sm md:text-base text-slate-900 line-through mt-1">
+                                                                            ₹ {book?.price}
+                                                                        </span>
+                                                                        <span className="text-red-500 text-sm md:text-base">
+                                                                            {book?.discountPercentage} % off
+                                                                        </span>
+                                                                    </>
+                                                                )}
                                                             </div>
+
+
+                                                            <div className="w-full flex items-center justify-start mt-2 hoverButton">
+                                                                <button onClick={() => addToCart(book._id, book.price)}>
+                                                                    <span class="shadow"></span>
+                                                                    <span class="edge"></span>
+                                                                    <span class="front text"> Buy Now
+                                                                    </span>
+                                                                </button>
+                                                            </div>
+
                                                         </div>
-                                                    </Link>
+                                                    </div>
+
                                                 )
                                             })}
                                         </div>
@@ -382,7 +457,7 @@ const ProductPage = () => {
                                             <button
                                                 key={i}
                                                 onClick={() => changePage(i + 1)}
-                                                className={`mx-2 px-4 py-2 rounded-md ${currentPage === i + 1
+                                                className={`mx-2 px-4 py-2 rounded-full ${currentPage === i + 1
                                                     ? 'bg-blue-500 text-white'
                                                     : 'bg-gray-200 hover:bg-gray-300 text-gray-800'
                                                     }`}
