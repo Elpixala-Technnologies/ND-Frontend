@@ -86,7 +86,7 @@ const RecomendationProduct = () => {
         <section className=" mx-2 relative h-full">
             <div className="title my-6 flex justify-between items-center">
                 <h2 className=" text-[1rem] md:text-[1.5rem] text-center md:text-left lg:text-3xl uppercase xxs:text-2xl  text-black font-bold">
-                    Reccomendaded Product
+                    Recomended Product
                 </h2>
 
                 <div className="flex  items-center gap-10 top-0">
