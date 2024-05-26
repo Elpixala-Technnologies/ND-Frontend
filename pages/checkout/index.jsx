@@ -252,9 +252,10 @@ const CheckoutPage = () => {
                 </div>
                 <div className='w-full md:w-[80%] mx-auto'>
                     {
-                        currentStep === 0 && (
+                        cartData.length>0 && currentStep === 0 ? (
                             <>
                                 <div className="px-4 pt-8">
+                                
                                     <p className="text-xl font-medium">Order Summary</p>
                                     <p className="text-gray-400">
                                         Check your items. And select a suitable shipping method.
@@ -376,7 +377,22 @@ const CheckoutPage = () => {
                                     </button>
                                 </div>
                             </>
-                        )
+                        ):<>
+                            <div className='px-4 pt-8 w-full'>
+                                <p className="text-xl font-medium">No Product Added</p>
+                                <div>
+                                    <button
+                                        className="mt-4 mb-2 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white"
+                                        
+                                        
+                                    >
+                                        <Link href="/product">
+                                        Add Products
+                                        </Link>
+                                    </button>
+                                </div>
+                            </div>
+                        </>
                     }
                     {
                         currentStep === 1 && (

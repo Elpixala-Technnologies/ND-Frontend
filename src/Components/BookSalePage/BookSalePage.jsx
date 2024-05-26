@@ -30,6 +30,7 @@ const BookComponent = () => {
     const highestDiscountBook = findBookWithHighestDiscount(bookData);
 
     const { user } = useContext(AuthContext);
+    
 
     // Add to cart function
     const addToCart = async (id, price) => {

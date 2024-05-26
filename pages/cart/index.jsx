@@ -1,10 +1,14 @@
 import { AuthContext } from '@/src/Context/UserContext';
+import { useCart } from '@/src/Context/cartContext';
 import RootLayout from '@/src/Layouts/RootLayout';
 import { getCartUrl, removeFromCartUrl, updateCartUrl, addToCartUrl } from '@/src/Utils/Urls/BooksUrl'; // Assuming you have addToCartUrl
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useContext, useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
+
+
+
 
 const CartPage = () => {
     const { user } = useContext(AuthContext);
@@ -38,31 +42,6 @@ const CartPage = () => {
             setCartData(cartData.filter((data) => data._id !== id));
         }
     };
-
-    const addToCart = async (book) => {
-        const res = await fetch(addToCartUrl(user?.email), {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                bookId: book?._id,
-                quantity: 1, // You can start with a quantity of 1
-            }),
-        });
-        const data = await res.json();
-        console.log(data);
-        if (data?.success) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Item added to cart',
-                showConfirmButton: false,
-                timer: 1500,
-            });
-            // You may want to update the cartData here as well
-        }
-    };
-
     const updateCartItemQuantity = async (id, newQuantity) => {
         const res = await fetch(updateCartUrl(id), {
             method: 'PATCH',

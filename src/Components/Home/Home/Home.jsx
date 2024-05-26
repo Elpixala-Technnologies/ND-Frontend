@@ -21,7 +21,7 @@ const Home = () => {
       <section className="container">
         <HeroSection />
         {/* ====== Home Slider ======= */}
-        <section className="my-16 mt-16">
+        <section className="my-16 mt-16 flex flex-col items-center">
           <h1 className="text-3xl text-center mt-8 font-bold">Popular Categories</h1><br />
           <Category />
         </section>

@@ -5,10 +5,12 @@ import useCommonApiData from '@/src/Hooks/useCommonApiData';
 import { Close, Search } from '@material-ui/icons';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { FaMicrosoft, FaPowerOff, FaUserAlt } from 'react-icons/fa';
 import { MdOutlineShoppingBag } from 'react-icons/md';
+import { addToCartUrl, getCartUrl, removeFromCartUrl, updateCartUrl } from '@/src/Utils/Urls/BooksUrl';
+import { useCart } from '@/src/Context/cartContext';
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -16,6 +18,7 @@ const Navbar = () => {
   const { handleLogout } = useCommonApiData()
   const userEmail = user?.email;
   const [isAdmin] = useAdmin();
+  const { cartData } = useCart();
  
   return (
     <nav className="bg-[#ffffff] md:px-4 border-b py-2 flex items-center text-black container">
@@ -65,9 +68,11 @@ const Navbar = () => {
               )
             }
           </li>
-          <Link href="/cart" className='bg-[#9cb3dd43] w-[40px] rounded-full flex items-center justify-center h-[40px] common-hover' >
-            <MdOutlineShoppingBag className='text-2xl text-[#335187]' />
+          <Link href="/cart" className='bg-[#9cb3dd43] w-[40px] rounded-full flex items-center justify-center h-[40px] common-hover relative' >
+            <MdOutlineShoppingBag className='text-2xl text-[#335187] ' />
+            <p className='absolute -top-2 -right-3 text-xs bg-red-500 text-white p-1 px-2 rounded-full'>{cartData.length}</p>
           </Link>
+          
         </ul>
 
         {/* shop and menu button group for small device */}
