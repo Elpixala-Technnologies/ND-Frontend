@@ -52,8 +52,6 @@ const ManageAdressBookPage = () => {
         return <div>Loading...</div>;
     }
 
-    console.log(UserAdddressData,"UserAdddressData")
-
 
     return (
         <UserdashboardLayout>

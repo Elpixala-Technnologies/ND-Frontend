@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaCheck } from 'react-icons/fa';
+import axios from 'axios';
 
 const CheckoutPage = () => {
     const [isAddressModalOpen,
@@ -218,6 +219,30 @@ const CheckoutPage = () => {
     };
     const closeAlert = () => {
         setShowAlert(false);
+    };
+    
+    const getSessionId = async () => {
+       try {
+
+        let res = await axios.get("http://localhost:3000/payment")
+       if(res.data && res.data.payment_session_id) {
+           console.log(res.data)
+       }
+        
+       } catch (error) {
+        console.log(error)
+       }
+    }
+
+    const handelClick = async(e) => {
+        e.preventDefault();
+
+        try {
+            let sessionId = await getSessionId()
+        
+        } catch (error) {
+            console.log(error)
+        }
     };
 
 
@@ -471,6 +496,14 @@ const CheckoutPage = () => {
                                         Complete your order by providing your payment details.
                                     </p>
 
+                                    <button
+                                        onClick={handelClick}
+                                        className={`mt-4 mb-8 text-black rounded-md border px-6 py-3 font-medium `}
+                                        
+                                    >
+                                        pay now 
+                                    </button>
+
                                     <div className='my-4 w-1/2'>
                                         <p className="text-xl font-medium">Select Payment Method</p>
 
@@ -482,6 +515,7 @@ const CheckoutPage = () => {
                                             <option value="Cash On Delivery">Cash On Delivery</option>
                                         </select>
                                     </div>
+
 
                                     <button
                                         onClick={handelOrderNow}

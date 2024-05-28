@@ -5,10 +5,10 @@ const Faq = () => {
         <div className='flex flex-col items-center py-16 gap-6 bg-gradient-to-tr from-gray-600 via-gray-300 to-gray-50 rounded-3xl'> 
         <div className='flex flex-col items-center'>
         <h2 className='text-3xl'>FAQs</h2>
-        <h2 className='text-5xl text-semi-bold'>Frequently Asked Questions</h2>
+       
         <span className='text-xl'>Frequently Asked Questions About US: Answers to Common Concerns and Inquiries.</span>
         </div>
-            <div className='faq'>
+            <div className='faq mx-auto'>
                 <input id='faq-a' type='checkbox' />
                 <label htmlFor='faq-a'>
                     <p className="faq-heading">What are the shipping options and delivery times?</p>

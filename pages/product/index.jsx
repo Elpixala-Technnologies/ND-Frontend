@@ -357,11 +357,11 @@ const ProductPage = () => {
                                                             type="checkbox"
                                                             id={category?.category}
                                                             className="form-checkbox h-3 w-3 text-blue-600 p-2"  
-                                                            checked={selectedCategory === category?.category}
+                                                            checked={selectedCategory  === category?.category}
                                                             onChange={() => setSelectedCategory(category?.category)}
                                                         />
                                                         <label htmlFor={category?.category} className="text-gray-700 cursor-pointer pl-2">
-                                                            {category?.category}
+                                                            {category?.category }
                                                         </label>
                                                     </li>
                                                 ))

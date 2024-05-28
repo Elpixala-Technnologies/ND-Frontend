@@ -50,7 +50,7 @@ const Home = () => {
         <div className="my-4">
           <TestimonialSection />
         </div>
-        <div className="my-4">
+        <div className="my-4 mb-20">
           <Faq/>
         </div>
       </section>

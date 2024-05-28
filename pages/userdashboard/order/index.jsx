@@ -107,7 +107,7 @@ const OrderForUser = () => {
         <UserdashboardLayout>
             <section>
                 <div>
-                    {userOrderData?.length > 0 ? <h1 className='text-3xl font-bold my-5'>Your Orders</h1> : <h1 className='text-3xl font-bold my-5'>No Orders Yet</h1>}
+                    {userOrderData?.length > 0 ? <h1 className='text-3xl font-bold my-5 mx-2'>Your Orders</h1> : <h1 className='text-3xl font-bold my-5 mx-2'>No Orders Yet</h1>}
                 </div>
 
                 {/* ============ */}
