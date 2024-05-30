@@ -7,14 +7,16 @@ import { CartProvider } from "../Context/cartContext";
 const RootLayout = ({ children }) => {
     return (
         <CartProvider>
-        <main>
+        <main className="">
 
+            <div className="max-w-[1200px] mx-auto">
             <Navbar />
+            </div>
             {/* <BottomNav /> */}
-            <section>
+            <section className="max-w-[1200px] mx-auto">
                 {children}
             </section>
-            <div>
+            <div className="">
                 <Footer />
             </div>
         </main>

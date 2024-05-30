@@ -194,7 +194,7 @@ const UserDashboard = () => {
                                         >
                                             <span className="text-xl font-light">Address: &nbsp;</span>
                                             <span className="text-xl flex items-center border  border-gray-300 p-2 w-full rounded-lg bg-white text-gray-400">
-                                                {addressValueData?.address}
+                                                {addressValueData?.address || "Not Provided"}
 
                                             </span>
                                         </div>
@@ -204,7 +204,7 @@ const UserDashboard = () => {
                                         >
                                             <span className="text-xl font-light">City: &nbsp;</span>
                                             <span className="text-xl flex items-center border  border-gray-300 p-2 w-full rounded-lg bg-white text-gray-400">
-                                                {addressValueData?.city}
+                                                {addressValueData?.city || "Not Provided"}
 
                                             </span>
                                         </div>
@@ -215,7 +215,7 @@ const UserDashboard = () => {
                                         >
                                             <span className="text-xl font-light">Country: &nbsp;</span>
                                             <span className="text-xl flex items-center border  border-gray-300 p-2 w-full rounded-lg bg-white text-gray-400">
-                                                {addressValueData?.country}
+                                                {addressValueData?.country || "Not Provided"}
 
                                             </span>
                                         </div>
@@ -223,14 +223,14 @@ const UserDashboard = () => {
                                         <div className=''>
                                             <span className="text-xl font-light">State &nbsp;</span>
                                             <span className="text-xl flex items-center border  border-gray-300 p-2 w-full rounded-lg bg-white text-gray-400">
-                                                {addressValueData?.state}
+                                                {addressValueData?.state || "Not Provided"}
                                             </span>
                                         </div>
 
                                         <div className=''>
                                             <span className="text-xl font-light">Zip: &nbsp;</span>
                                             <span className="text-xl flex items-center border  border-gray-300 p-2 w-full rounded-lg bg-white text-gray-400">
-                                                {addressValueData?.zip}
+                                                {addressValueData?.zip || "Not Provided"}
 
                                             </span>
                                         </div>
