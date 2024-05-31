@@ -44,7 +44,7 @@ const Footer = () => {
                             <span className="font-[400]">Address</span>
                             <br />
                             <small>
-                                Padma Chand Marg Darynganj
+                                Padma Chand Marg Daryaganj
                             </small> <br />
                             <small>
                                 Delhi-110002
