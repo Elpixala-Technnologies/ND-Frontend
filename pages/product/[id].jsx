@@ -232,14 +232,14 @@ const ProductDetails = () => {
           <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
             <div className="">
 
-              <div className="img-box shadow rounded bg-[#f1e8e8] p-2 flex justify-center">
+              <div className="img-box rounded-lg bg-gradient-to-r from-gray-100 to-gray-300 p-6 flex justify-center shadow-lg shadow-gray-400">
                 {selectedImage ? (
                   <Image
                     src={selectedImage}
                     alt={name}
                     width={300}
                     height={300}
-                    className='cursor-pointer hover:animate-pulse transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-130 w-full h-full'
+                    className='cursor-pointer  w-full h-full rounded-xl'
                   />
                 ) : (
                   <p>No image available</p>
@@ -265,7 +265,7 @@ const ProductDetails = () => {
                             alt={name}
                             width={100}
                             height={100}
-                            className='bg-[#f1e8e8] border-2 border-[#3aa1b8] p-1 rounded cursor-pointer hover:animate-pulse transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-100 w-full h-full object-cover'
+                            className='bg-[#f1e8e8] p-1 rounded-lg cursor-pointer w-full h-full object-cover'
                           />
                         </SwiperSlide>
                       );
@@ -284,7 +284,7 @@ const ProductDetails = () => {
                 </h1>
                 {discountPercentage !== "0" && (
                   <>
-                    <span className="text-sm md:text-base text-slate-900 line-through mt-1">
+                    <span className="text-sm md:text-base text-slate-900 line-through">
                       ₹ {price}
                     </span>
                     <span className="text-[#eec75b] text-sm md:text-base">
@@ -301,10 +301,10 @@ const ProductDetails = () => {
 
 
 
-              <div className="mt-4 flex flex-col  items-center  space-y-4 border-t border-b py-4  w-full">
+              <div className="mt-4 flex flex-col items-center space-y-4  py-4  w-full">
                 <div className='w-full'>
                   <button
-                    className="font-semibold hover:before:bg-blackborder-black relative h-[50px] w-full rounded overflow-hidden border border-black bg-white px-3 text-black shadow-2xl transition-all before:absolute before:bottom-0 before:left-0 before:top-0 before:z-0 before:h-full before:w-0 before:bg-black before:transition-all before:duration-500 hover:text-white hover:shadow-white hover:before:left-0 hover:before:w-full"
+                    className="w-1/2 font-semibold h-[50px] rounded overflow-hidden border border-black bg-white px-3 text-black shadow-2xl transition-all "
                     onClick={() => addToCart(_id)}
                   >
                     <span className="relative z-10 flex items-center gap-2 justify-center">
@@ -315,7 +315,7 @@ const ProductDetails = () => {
 
                 <div className='w-full'>
                   <button
-                    className="font-semibold hover:before:bg-blackborder-black relative h-[50px] w-full rounded overflow-hidden border border-black bg-black px-3 text-white shadow-2xl transition-all before:absolute before:bottom-0 before:left-0 before:top-0 before:z-0 before:h-full before:w-0 before:bg-white before:transition-all before:duration-500 hover:text-black hover:shadow-white hover:before:left-0 hover:before:w-full"
+                    className="font-semibold  h-[50px] w-1/2 rounded overflow-hidden border border-black bg-black px-3 text-white shadow-2xl transition-all before:w-0 "
                     onClick={() => handelBuyeNow(_id)}
                   >
                     <span className="relative z-10 flex items-center gap-2 justify-center">
@@ -324,10 +324,6 @@ const ProductDetails = () => {
                   </button>
                 </div>
               </div>
-
-
-
-              <hr />
               <div className='my-4'>
                 {
                   coupon && coupon?.map((coupon, index) => {

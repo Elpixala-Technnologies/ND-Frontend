@@ -9,7 +9,7 @@ import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
 
-const UpdateAddressModal = ({
+const ProfileModal = ({
     isUpdateAddressModalOpen,
     setIsUpdateAddressModalOpen,
     addressDataValue,
@@ -77,7 +77,7 @@ const UpdateAddressModal = ({
                         popup: "animate__animated animate__fadeOutRight",
                     },
                     showConfirmButton: false,
-                    timer: 3500,
+                    timer: 1500,
                 });
             } else {
                 Swal.fire({
@@ -94,10 +94,11 @@ const UpdateAddressModal = ({
                         popup: 'animate__animated animate__fadeOutRight',
                     },
                     showConfirmButton: false,
-                    timer: 3500,
+                    timer: 1500,
                 });
                 refetchUserAdddress();
                 setLoading(false);
+                handleCancel();
             }
 
         } catch (error) {
@@ -113,26 +114,7 @@ const UpdateAddressModal = ({
         <Modal title="Update Address" open={isUpdateAddressModalOpen} okButtonProps={{ style: { display: 'none' } }} onCancel={handleCancel}>
             <div className="container">
                 <div className='flex gap-4 flex-col'>
-                    <div
-                        className='border-2 w-full border-gray-300 rounded-md p-2'
-                    >
-                        <input type="text"
-                            placeholder='Concerned Person'
-                            className='border-2 w-full border-gray-300 rounded-md p-2'
-                            defaultValue={name}
-                            {...register("name")}
-                        />
-                    </div>
-                    <div
-                        className='border-2 w-full border-gray-300 rounded-md p-2'
-                    >
-                        <input type="text"
-                            placeholder='Home/Office/Hostel etc.'
-                            className='border-2 w-full border-gray-300 rounded-md p-2'
-                            defaultValue={level}
-                            {...register("level")}
-                        />
-                    </div>
+                   
                     <div
                         className='border-2 w-full border-gray-300 rounded-md p-2'
                     >
@@ -230,7 +212,7 @@ const UpdateAddressModal = ({
                         className="border-2 border-black  rounded-lg p-2 hover:text-white hover:bg-black" 
                     >
                         {
-                            loading ? 'Loading...' : 'Update Address'
+                            loading ? 'Loading...' : 'Update '
                         }
                     </button>
                 </div>
@@ -239,4 +221,4 @@ const UpdateAddressModal = ({
     );
 };
 
-export default UpdateAddressModal;
+export default ProfileModal;

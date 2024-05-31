@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useContext, useRef } from "react";
 import { Navigation, Pagination, Scrollbar, A11y, Autoplay } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { TbArrowBigLeft, TbArrowBigRight } from "react-icons/tb";
@@ -7,6 +7,9 @@ import useBook from "@/src/Hooks/useBook";
 import bookImg from '@/public/banner 07.png';
 import Skeleton from 'react-loading-skeleton'; // Import the Skeleton component
 import Image from "next/image";
+import { addToCartUrl } from '@/src/Utils/Urls/BooksUrl';
+import Swal from 'sweetalert2';
+import { AuthContext } from '@/src/Context/UserContext';
 
 const AllInOneCategory = () => {
     const { bookData, isLoading } = useBook();
@@ -26,10 +29,68 @@ const AllInOneCategory = () => {
         return data.category === "ALL in One";
     });
 
+    const { user } = useContext(AuthContext);
+
+    // Add to cart function
+    const addToCart = async (id, price) => {
+        try {
+            if (!user) {
+                localStorage.setItem('redirectTo', '/cart');
+                localStorage.setItem('itemToAdd', id);
+                // Redirect to login page if user is not logged in
+                window.location.href = '/auth/login';
+                return;
+            }
+
+            const response = await fetch(addToCartUrl(id), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    book: id,
+                    quantity: 1,
+                    totalPrice: price,
+                    email: user.email,
+                    status: "unpaid"
+                }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Your book has been added to the cart',
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+                // // Redirect to the cart page after adding the book to the cart
+                // window.location.href = '/cart';
+            } else {
+                // Handle the case where adding to cart is unsuccessful
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed to add the book to the cart',
+                    text: data.message || 'An error occurred',
+                });
+            }
+        } catch (error) {
+            // Handle any errors that occur during the fetch
+            console.error('Error adding item to cart:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An error occurred while adding the book to the cart.',
+            });
+        }
+    };
+
+
     return (
-        <section className="mx-2 relative h-full">
+        <section className="mx-2 my-10 relative h-full">
             <div className="title my-6 flex justify-between items-center">
-                <h2 className="text-[1rem] md:text-[1.5rem] text-center md:text-left lg:text-3xl xxs:text-2xl text-black font-bold">
+                <h2 className="text-3xl text-center md:text-left lg:text-3xl xxs:text-2xl text-black font-bold">
                     All In One (KINDERGARTEN)
                 </h2>
 
@@ -78,7 +139,7 @@ const AllInOneCategory = () => {
                             spaceBetween: 50,
                         },
                     }}
-                    spaceBetween={50}
+                    spaceBetween={32}
                     slidesPerView={3}
                     onSlideChange={() => { }}
                     onSwiper={(swiper) => { }}
@@ -103,59 +164,61 @@ const AllInOneCategory = () => {
                             : // Render actual data when it's available
                             filterBookData &&
                             filterBookData.map((book) => (
-                                <SwiperSlide className="cursor-grab" key={book.id}>
-                                    <Link href={`/product/${book?.id}`}>
-                                        <div className="card bg-white w-full pt-2 px-2 pb-6 my-4 mx-2 shadow-lg cursor-pointer hover:animate-pulse transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-100 rounded">
-                                            <div className="bg-[#e1e6e9]  ">
-                                                <Image
-                                                    src={book?.image[0] || bookImg}
-                                                    width={400}
-                                                    height={600}
-                                                    alt="Description"
-                                                    className="md:h-[360px] h-full w-full rounded"
-                                                />
-                                            </div>
-                                            <div className="md:p-4 text-left">
-                                                <h4 className="font-bold my-2">{book.category}</h4>
-                                                <h4 className="text-[1rem] font-regular">
-                                                    {book?.name.slice(0, 20)}
-                                                </h4>
-                                                {/* <div className="flex items-center gap-4">
-                                                    <h1 className="text-xl font-bold text-slate-900">
-                                                        {book?.discountPercentage
-                                                            ? `₹ ${book?.price -
-                                                            (book?.price * book?.discountPercentage) / 100
-                                                            }`
-                                                            : `₹ ${book?.price}`}
-                                                    </h1>
-                                                    <span className="text-sm text-slate-900 line-through mt-1">
-                                                        ₹ {book?.price}
-                                                    </span>
-                                                    <span className="text-[#eec75b]">
-                                                        {book?.discountPercentage} % off
-                                                    </span>
-                                                </div> */}
-                                                <div className="flex items-center md:flex-row gap-2 md:gap-4">
-                                                    <h1 className="text-lg md:text-xl font-bold text-slate-900">
-                                                        {book?.discountPercentage
-                                                            ? `₹ ${book?.price - (book?.price * book?.discountPercentage) / 100}`
-                                                            : `₹ ${book?.price}`}
-                                                    </h1>
-                                                    {book?.discountPercentage !== "0" && (
-                                                        <>
-                                                            <span className="text-sm md:text-base text-slate-900 line-through mt-1">
-                                                                ₹ {book?.price}
-                                                            </span>
-                                                            <span className="text-[#eec75b] text-sm md:text-base">
-                                                                {book?.discountPercentage} % off
-                                                            </span>
-                                                        </>
-                                                    )}
+                                <SwiperSlide className=" py-10 " key={book.id}>
+                                <div className="playWithWrite ">
+                                            <div className="card bg-white pt-2  pb-6 my-4 shadow-lg cursor-pointer flex flex-col items-start rounded">
+                                                <div className="bg-transparent  w-full h-2/3 rounded-3xl flex items-start">
+                                                    <Image
+                                                        src={book?.image[0] || bookImg}
+                                                        width={1200}
+                                                        height={1200}
+                                                        alt="Description"
+                                                        className='rounded-3xl'
+                                                    />
                                                 </div>
 
+                                                <div className="px-4 text-start flex flex-col items-start justify-start w-full pb-4 gap-1 pt-2">
+                                                    <Link href={`/product/${book?.id}`} >
+                                                        <h4 className='font-bold  line-clamp-1'>
+                                                            {book.category}
+                                                        </h4>
+                                                        <h4 className="text-[1rem] font-regular line-clamp-1">{book?.name}</h4>
+                                                    </Link>
+
+
+                                                    <div className="flex items-center md:flex-row gap-2 md:gap-4">
+                                                        <h1 className="text-lg md:text-xl font-bold text-slate-900">
+                                                            {book?.discountPercentage
+                                                                ? `₹ ${book?.price - (book?.price * book?.discountPercentage) / 100}`
+                                                                : `₹ ${book?.price}`}
+                                                        </h1>
+                                                        {book?.discountPercentage !== "0" && (
+                                                            <>
+                                                                <span className="text-sm md:text-base text-slate-900 line-through mt-1">
+                                                                    ₹ {book?.price}
+                                                                </span>
+                                                                <span className="text-[#eec75b] text-sm md:text-base">
+                                                                    {book?.discountPercentage} % off
+                                                                </span>
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                    <div className="w-full addcart flex items-start justify-start mt-2">
+                                                        <button class="CartBtn"
+                                                            onClick={() => addToCart(book._id, book.price)}
+                                                        >
+                                                            <span class="IconContainer">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512" fill="rgb(255, 255, 255)" class="cart"><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"></path></svg>
+                                                            </span>
+                                                            <p class="text ">Add to Cart</p>
+                                                        </button>
+                                                    </div>
+
+                                                </div>
                                             </div>
+
+
                                         </div>
-                                    </Link>
                                 </SwiperSlide>
                             ))}
                     </div>
