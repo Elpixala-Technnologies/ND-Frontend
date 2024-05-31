@@ -107,11 +107,6 @@ const UpdateBookModal = ({ setIsUpdateBookModalOpen, isUpdateBookModalOpen, book
                 image: uploadedUrls,
             }
 
-            console.log(valueData, "+++++++++ valueData");
-
-
-            console.log(bookUpdateData, "+++++++++ bookUpdateData");
-
             const res = await fetch(updateBooksUrl(bookData?._id), {
                 method: 'patch',
                 headers: {
@@ -119,9 +114,6 @@ const UpdateBookModal = ({ setIsUpdateBookModalOpen, isUpdateBookModalOpen, book
                 },
                 body: JSON.stringify(bookUpdateData),
             });
-            // const dataRes = await res.json();
-            // console.log(dataRes);
-            console.log(res);
             if (!res) {
                 Swal.fire({
                     position: "center",

@@ -17,7 +17,6 @@ const UpdateCouponModal = ({ isCouponModalOpen, setIsCouponModalOpen, couponData
         setIsCouponModalOpen(false);
     };
     const onSubmit = async (data) => {
-        console.log(data);
         const res = await fetch(updateCouponUrl(_id), {
             method: 'PATCH',
             headers: {

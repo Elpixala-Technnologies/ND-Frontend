@@ -35,7 +35,6 @@ const CartPage = () => {
       method: "DELETE",
     });
     const data = await res.json();
-    console.log(data);
 
     if (data?.success) {
       Swal.fire({
@@ -58,9 +57,7 @@ const CartPage = () => {
       }),
     });
     const data = await res.json();
-    console.log(data);
     if (data?.success) {
-      // Update the cartData here
       const updatedCartData = cartData.map((item) => {
         if (item._id === id) {
           return {

@@ -5,6 +5,6 @@ const nextConfig = {
     domains: ['firebasestorage.googleapis.com', "res.cloudinary.com"],
     unoptimized: true,
   }
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

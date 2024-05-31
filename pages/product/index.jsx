@@ -8,7 +8,6 @@ import RootLayout from '@/src/Layouts/RootLayout';
 import Image from 'next/image';
 import { MdExpandMore, MdExpandLess } from 'react-icons/md';
 import useBook from '@/src/Hooks/useBook';
-import ProductSlider from '@/src/Components/Home/Products/ProductSlider/ProductSlider';
 import { useRouter } from 'next/router';
 import { AuthContext } from '@/src/Context/UserContext';
 import { addToCartUrl } from '@/src/Utils/Urls/BooksUrl';

@@ -18,7 +18,6 @@ const AddLavelModal = ({ setIsLevelModalOpen, isLevelModalOpen }) => {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
     const res = await fetch(createLevelUrl, {
       method: 'POST',
       headers: {
@@ -29,10 +28,7 @@ const AddLavelModal = ({ setIsLevelModalOpen, isLevelModalOpen }) => {
       }),
     });
 
-    console.log(res);
-
     const dataRes = await res.json();
-    console.log(dataRes);
 
     if (!dataRes) {
       Swal.fire({

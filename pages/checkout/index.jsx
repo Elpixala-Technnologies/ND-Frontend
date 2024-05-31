@@ -70,7 +70,6 @@ const CheckoutPage = () => {
             method: 'DELETE',
         });
         const data = await res.json();
-        console.log(data);
 
         if (data?.success) {
             Swal.fire({
@@ -95,7 +94,6 @@ const CheckoutPage = () => {
             }),
         });
         const data = await res.json();
-        console.log(data);
         if (data?.success) {
             Swal.fire({
                 icon: 'success',
@@ -117,7 +115,6 @@ const CheckoutPage = () => {
             }),
         });
         const data = await res.json();
-        console.log(data);
         if (data?.success) {
             // Update the cartData here
             const updatedCartData = cartData.map((item) => {
@@ -187,8 +184,6 @@ const CheckoutPage = () => {
                 });
 
                 const data = await responseEmail.json();
-                console.log(data);
-
                 router.push('/paymentsuccess');
             }
         } catch (error) {

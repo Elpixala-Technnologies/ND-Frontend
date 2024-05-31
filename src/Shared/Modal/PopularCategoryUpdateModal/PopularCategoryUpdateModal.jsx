@@ -36,7 +36,6 @@ const PopularCategoryUpdateModal = ({ isPopularCategoryModalOpen, setIsPopularCa
     const [imageFile, setImageFile] = useState("");
 
     const onSubmit = async (data) => {
-        console.log(data);
 
         setLoading(true);
         const imageUploadData = new FormData();

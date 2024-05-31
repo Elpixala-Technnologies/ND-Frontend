@@ -81,7 +81,6 @@ const UserContext = ({ children }) => {
     sendEmailVerification(userCredential.user)
       .then(() => {
         console.log("Verification email sent.");
-        
       })
       .catch((error) => {
         setError(error.message);

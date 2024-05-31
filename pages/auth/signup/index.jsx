@@ -10,8 +10,8 @@ import Image from "next/image";
 import RootLayout from "@/src/Layouts/RootLayout";
 import { signupUrl } from "@/src/Utils/Urls/AuthUrl";
 import { AuthBannerImage,AuthLoginUser } from "@/src/Assets";
-import TextField from "@material-ui/core/TextField";
-import InputAdornment from "@material-ui/core/InputAdornment";
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
 
 const Index = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -38,7 +38,6 @@ const Index = () => {
   const saveUserDataToDatabase = async (userData) => {
     try {
       const response = await axios.post(signupUrl, userData);
-      console.log(response.data);
     } catch (error) {
       console.error("Error saving user data:", error);
       throw error;
@@ -100,7 +99,6 @@ const Index = () => {
                   role: role,
                 })
                 .then((response) => {
-                  console.log(response);
                   Swal.fire({
                     position: "center",
                     timerProgressBar: true,
@@ -140,7 +138,6 @@ const Index = () => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
         Swal.fire({
           icon: "error",
           title: errorMessage,
@@ -157,7 +154,7 @@ const Index = () => {
       <div className="md:px-16 container">
         <div className="">
           <div className="w-full bg-white md:py-20 md:px-16  flex justify-center items-center md:flex-row flex-col gap-6">
-            <div className="shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-6  w-full p-4">
+            <div className="shadow-[0_8px_30px_rgb(0,0,0,0.12)] w-full p-4">
               <div className="xxs:px-[25px] xs:px-[30px] sm:px-[30px] md:px-[30px] lg:px-[28px] xl:px-[40px] py-10  bg-[#f7f7f7] shadow-md rounded-lg">
                 <h4 className="xs:text-2xl xxs:text-md sm:text-3xl md:text-3xl">
                   Account details

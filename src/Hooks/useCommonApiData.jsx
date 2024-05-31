@@ -34,7 +34,6 @@ const useCommonApiData = () => {
           })
           .catch((error) => {
             const errorMessage = error.message;
-            console.log(errorMessage);
             Swal.fire({
               icon: "error",
               title: "Oops...",

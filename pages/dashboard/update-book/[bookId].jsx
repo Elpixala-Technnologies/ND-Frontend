@@ -45,7 +45,6 @@ const UpdateBookPage = () => {
                 const reqBook = await fetch(getSingelBookUrl(bookId));
                 const resBook = await reqBook.json();
                 setSingelBookData(resBook?.data);
-                console.log(resBook);
             }
             getBook();
         }

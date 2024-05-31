@@ -59,11 +59,7 @@ const AddBook = () => {
     });
     setImageFiles(updatedFiles);
   };
-
-  console.log(categoryIds, "categoryIds")
-
-
-
+  
   const onSubmit = async () => {
     try {
       setLoading(true);

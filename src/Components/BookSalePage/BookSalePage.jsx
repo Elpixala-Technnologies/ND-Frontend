@@ -6,7 +6,6 @@ import { AuthContext } from '@/src/Context/UserContext';
 
 const BookComponent = () => {
     const { bookData, isLoading } = useBook();
-    console.log(bookData, "bookData")
     const shuffleArray = (array) => {
         return array.sort(() => Math.random() - 0.5);
     };

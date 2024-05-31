@@ -10,7 +10,6 @@ import 'swiper/css/pagination';
 import { useContext, useEffect, useState } from 'react';
 import RootLayout from '@/src/Layouts/RootLayout';
 import RecomendationProduct from '@/src/Components/Shop/RecomendationProduct/RecomendationProduct';
-import CopuonSlider from '@/src/Components/Shop/CopuonSlider/CopuonSlider';
 import useBook from '@/src/Hooks/useBook';
 import { addToCartUrl } from '@/src/Utils/Urls/BooksUrl';
 import Swal from 'sweetalert2';
@@ -51,49 +50,6 @@ const ProductDetails = () => {
     image,
     _id,
   } = mainBookData || {};
-
-  // ====== Add to cart ======
-
-  // const addToCart = async (id) => {
-  //   const convertPrice = parseInt(price);
-  //   // Check if the user is logged in
-  //   if (!user) {
-  //     // User is not logged in, show an alert
-  //     Swal.fire({
-  //       icon: 'error',
-  //       title: 'Please log in to add the book to your cart',
-  //       showConfirmButton: true,
-  //     });
-  //     return;
-  //   }
-
-  //   const res = await fetch(addToCartUrl(id), {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       book: _id,
-  //       quantity: 1,
-  //       totalPrice: convertPrice,
-  //       email: user?.email,
-  //       status: "unpaid"
-  //     }),
-  //   });
-
-  //   const data = await res.json();
-  //   console.log(data);
-
-  //   if (data.success) {
-  //     Swal.fire({
-  //       icon: 'success',
-  //       title: 'Your book added to cart',
-  //       showConfirmButton: false,
-  //       timer: 1500,
-  //     })
-  //     router.push('/cart');
-  //   }
-  // }
 
   const totalPrice = parseInt(price - (price * discountPercentage) / 100)
   // Add to cart function
@@ -204,7 +160,6 @@ const ProductDetails = () => {
     });
 
     const data = await res.json();
-    console.log(data);
 
     if (data.success) {
       Swal.fire({

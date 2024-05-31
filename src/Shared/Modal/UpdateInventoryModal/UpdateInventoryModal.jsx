@@ -27,7 +27,6 @@ const UpdateInventoryModal = ({
 
     const onSubmit = async (data) => {
         const { discount, price, quantity } = data;
-        console.log(data);
 
         try {
             setIsLoading(true);

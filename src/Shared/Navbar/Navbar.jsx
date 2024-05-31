@@ -2,19 +2,14 @@ import { MainLogo } from "@/src/Assets";
 import { AuthContext } from "@/src/Context/UserContext";
 import useAdmin from "@/src/Hooks/useAdmin";
 import useCommonApiData from "@/src/Hooks/useCommonApiData";
-import { Close, Search } from "@material-ui/icons";
+import Close from "@mui/icons-material/Close";
+import Search from "@mui/icons-material/Search";
 import Image from "next/image";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaMicrosoft, FaPowerOff, FaUserAlt } from "react-icons/fa";
 import { MdOutlineAccountBox, MdOutlineShoppingBag, MdProductionQuantityLimits } from "react-icons/md";
-import {
-  addToCartUrl,
-  getCartUrl,
-  removeFromCartUrl,
-  updateCartUrl,
-} from "@/src/Utils/Urls/BooksUrl";
 import { useCart } from "@/src/Context/cartContext";
 import { IoLocationSharp } from "react-icons/io5";
 

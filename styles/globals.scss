@@ -1,22 +1,8 @@
-///////////////////////////////////////////////
-//                Common Css Style           //
-/////////////////////////////////////////////*/
-/**
- * All Import 
- */
-//font**
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
 
-/**
-  * Tailwind CSS
-*/
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/**
- * Custom Css (Common Css Style)
- */
 
 * {
   margin: 0;
@@ -64,8 +50,6 @@ input[type="number"]::-webkit-outer-spin-button {
 
 img {
   max-width: 100%;
-  // height: auto;
-  // object-fit: cover
 }
 
 @layer base {
@@ -166,14 +150,6 @@ img {
 }
 
 
-///////      End of Common Css Style  ////////
-
-
-///////////////////////////////////////////////
-//                 Slider Section           //
-/////////////////////////////////////////////*/
-
-
 .swiper {
   width: 100%;
   height: 100%;
@@ -203,8 +179,6 @@ img {
   height: 100% !important;
   object-fit: cover;
 }
-
-///////       End of Slider Section     ////////
 
 .card {
   .book {

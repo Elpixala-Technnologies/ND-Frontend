@@ -1,7 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import useCommonApiData from "@/src/Hooks/useCommonApiData";
-import { Layout, Menu, Button } from "antd";
 import {
   MdLocalOffer,
   MdOutlineAccountBox,
@@ -17,7 +15,6 @@ import { IoIosLogOut } from "react-icons/io";
 import { MainLogo } from "../Assets";
 import Image from "next/image";
 import Footer from "../Shared/Footer/Footer";
-const { Content } = Layout;
 
 const UserdashboardLayout = ({ children }) => {
   const { handleLogout } = useCommonApiData();

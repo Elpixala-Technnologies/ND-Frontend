@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-} from "@ant-design/icons";
-import useCommonApiData from '@/src/Hooks/useCommonApiData';
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
+import useCommonApiData from "@/src/Hooks/useCommonApiData";
 import { Layout, Menu, Button } from "antd";
 import { MdLocalOffer } from "react-icons/md";
 import Link from "next/link";
@@ -15,14 +13,14 @@ import {
   FaThLarge,
 } from "react-icons/fa";
 import { AiOutlineIdcard } from "react-icons/ai";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 const { Header, Sider, Content } = Layout;
 
 const DashboardLayout = ({ children }) => {
-  const { handleLogout } = useCommonApiData()
+  const { handleLogout } = useCommonApiData();
   const [collapsed, setCollapsed] = useState(false); // Start with the sidebar open on desktop devices
   const [sideNavVisible, setSideNavVisible] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
   const handleResize = () => {
     setCollapsed(window.innerWidth < 768);
     // Hide the sidebar on mobile devices by default
@@ -66,13 +64,12 @@ const DashboardLayout = ({ children }) => {
           collapsed={collapsed}
           className="text-white"
           style={{
-            position: "sticky", top: 0, height: "100vh",
-            zIndex: 999
-
+            position: "sticky",
+            top: 0,
+            height: "100vh",
+            zIndex: 999,
           }}
         >
-
-
           <Menu
             theme="dark"
             mode="inline"
@@ -96,8 +93,13 @@ const DashboardLayout = ({ children }) => {
             <Menu.Item key="/dashboard/category" icon={<MdLocalOffer />}>
               <Link href="/dashboard/category">Category</Link>
             </Menu.Item>
-            <Menu.Item key="/dashboard/popular-category/manage-popular-category" icon={<MdLocalOffer />}>
-              <Link href="/dashboard/popular-category/manage-popular-category">Popular Category</Link>
+            <Menu.Item
+              key="/dashboard/popular-category/manage-popular-category"
+              icon={<MdLocalOffer />}
+            >
+              <Link href="/dashboard/popular-category/manage-popular-category">
+                Popular Category
+              </Link>
             </Menu.Item>
             <Menu.Item key="/dashboard/copuon" icon={<FaDiceD6 />}>
               <Link href="/dashboard/copuon">Coupon</Link>
@@ -109,9 +111,7 @@ const DashboardLayout = ({ children }) => {
               <Link href="/dashboard/blog">Blog</Link>
             </Menu.Item>
             <Menu.Item key="9" icon={<FaPowerOff />}>
-              <button
-                onClick={() => handleLogout()}
-              >Logout</button>
+              <button onClick={() => handleLogout()}>Logout</button>
             </Menu.Item>
           </Menu>
         </Sider>
@@ -123,12 +123,12 @@ const DashboardLayout = ({ children }) => {
             padding: 0,
             position: "sticky",
             top: 0,
-            zIndex: 999
+            zIndex: 999,
           }}
         >
           <Button
             type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            icon={collapsed ? <MenuIcon /> : <CloseIcon />}
             onClick={() => {
               toggleCollapsed();
               toggleSideNav(); // Toggle the sideNavVisible state when the button is clicked

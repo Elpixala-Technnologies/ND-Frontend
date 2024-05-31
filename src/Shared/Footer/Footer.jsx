@@ -1,5 +1,7 @@
 import useBook from '@/src/Hooks/useBook';
-import { Facebook, LinkedIn, WhatsApp } from '@material-ui/icons';
+import Facebook from "@mui/icons-material/Facebook";
+import LinkedIn from "@mui/icons-material/LinkedIn";
+import WhatsApp from "@mui/icons-material/WhatsApp";
 import Link from 'next/link';
 import React from 'react';
 import { FaDiscord } from 'react-icons/fa';
