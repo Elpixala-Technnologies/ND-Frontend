@@ -1,4 +1,5 @@
 import Home from '@/src/Components/Home/Home/Home'
+import { CartProvider } from '@/src/Context/cartContext'
 import RootLayout from '@/src/Layouts/RootLayout'
 import Head from 'next/head'
 
@@ -11,11 +12,16 @@ export default function HomePage() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <RootLayout>
-        <main>
-         <Home/> 
-        </main> 
-      </RootLayout>
+      <CartProvider>
+        <RootLayout>
+
+          <main>
+            <Home />
+          </main>
+
+        </RootLayout>
+      </CartProvider>
+
     </>
   )
 }

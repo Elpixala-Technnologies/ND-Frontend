@@ -44,7 +44,7 @@ const Footer = () => {
                             <span className="font-[400]">Address</span>
                             <br />
                             <small>
-                                Padma Chand Marg Darynganj
+                                Padma Chand Marg Daryaganj
                             </small> <br />
                             <small>
                                 Delhi-110002
@@ -53,12 +53,13 @@ const Footer = () => {
                         <li className='mt-6 font-[300]'>
                             <span className="font-[400] ">Office / Mobile</span>
                             <br />
-                            <small>+919210612996</small>
+                            <small>+91 98111 60149</small>
                         </li>
                         <li className='mt-6 font-[300]'>
                             <span className="font-[400] ">Email</span>
                             <br />
-                            <small>support@nldr.in / outreach@nldr.in</small>
+                            <small>helpdesk@nandlaldayaram.com</small><br/>
+                            <small>support@nandlaldayaram.com</small>
                         </li>
                     </ul>
                 </div>
@@ -69,22 +70,17 @@ const Footer = () => {
                             <Link href="">Follow Us</Link>
                         </li>
                         <li className='mt-3 font-[300]'>
-                            <Link href="" className='flex items-center gap-2 '>
+                            <Link href="https://www.facebook.com/nandlal.dayaram.9/" className='flex items-center gap-2 '>
                                 <Facebook className='text-2xl ' /> Facebook
                             </Link>
                         </li>
                         <li className='mt-6 font-[300]'>
-                            <Link href="https://www.linkedin.com/in/nand-lal-daya-ram-94510a282" className='flex items-center gap-2 '>
+                            <Link href="https://www.linkedin.com/in/nand-lal-daya-ram-94510a282/?originalSubdomain=in" className='flex items-center gap-2 '>
                                 <LinkedIn className='text-2xl ' /> LinkedIn
                             </Link>
                         </li>
                         <li className='mt-6 font-[300]'>
-                            <Link href="" className='flex items-center gap-2 '>
-                                <FaDiscord className='text-2xl ' /> Discord
-                            </Link>
-                        </li>
-                        <li className='mt-6 font-[300]'>
-                            <Link href="" className='flex items-center gap-2 '>
+                            <Link href="https://api.whatsapp.com/send/?phone=9811160149&text&type=phone_number&app_absent=0" className='flex items-center gap-2 '>
                                 <WhatsApp className='text-2xl ' /> WhatsApp
                             </Link>
                         </li>

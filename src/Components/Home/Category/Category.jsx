@@ -1,42 +1,70 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import usePopularCategory from '@/src/Hooks/usePopularCategory';
-import Skeleton from 'react-loading-skeleton';  
+import Skeleton from 'react-loading-skeleton';
+import { FaCartPlus } from 'react-icons/fa';
+import { IoPricetagOutline } from "react-icons/io5";
+import { Rating } from '@mui/material';
+
 const Category = () => {
-    const { popularCategoryData, isLoading } = usePopularCategory();  
+    const { popularCategoryData, isLoading } = usePopularCategory();
+    console.log(popularCategoryData, "popularCategoryData")
     return (
-        <div className='grid md:grid-cols-3 md:gap-12 gap-2 mt-6 '>
-            {isLoading ? (
-                <>
-                    <Skeleton width={400} height={500} />
-                    <Skeleton width={400} height={500} />
-                    <Skeleton width={400} height={500} />
-                </>
-            ) : (
-                popularCategoryData?.slice(0, 6)?.map((itm) => (
-                    <Link
-                        key={itm?._id}
-                        // href={`/product?CategoryName=${itm?.popularCategory}`}
-                        href={`/product?categoryName=${encodeURIComponent(itm?.popularCategory)}`}
-                        className="c-card border border-[#80808057] pb-6 rounded cursor-pointer hover:animate-pulse transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-100"
-                    >
-                        <Image
-                            src={itm?.popularCategoryImage}
-                            className='md:h-[500px] object-cover h-[200] w-full rounded'
-                            width={400}
-                            height={500}
-                        />
-                        <div className="md:px-3 px-2 mt-3">
-                            <h3 className="font-[600] pb-2">{itm?.popularCategory?.slice(0, 50)}</h3>
-                            <span className='sp-1 md:block hidden text-gray-500 md:text-md '>
-                                {itm?.popularCategoryDetail.slice(0, 70) + '...'}
-                            </span>
-                            <span className='sp-2 hidden cursor-pointer text-[#2c91af]  '>Shop Now</span>
-                        </div>
-                    </Link>
-                ))
-            )}
+        <div className='grid grid-cols-3 md:gap-12 gap-2 mt-6 w-full h-full max-w-[1440px]'>
+  {isLoading ? (
+    <>
+      <div className='flex items-center justify-center'>
+        <Skeleton width={400} height={500} />
+      </div>
+      <div className='flex items-center justify-center'>
+        <Skeleton width={400} height={500} />
+      </div>
+      <div className='flex items-center justify-center'>
+        <Skeleton width={400} height={500} />
+      </div>
+    </>
+  ) : (
+    popularCategoryData?.slice(0, 8)?.map((itm) => (
+      <div className='w-full h-full flex items-center justify-center' key={itm?._id}>
+        <div className='card w-fit'>
+          <div className='book'>
+            <div className='text-center pl-10 flex flex-col items-center justify-center gap-8 w-full'>
+              <span className='sp-1 md:block hidden text-gray-500 md:text-md font-semibold'>
+                {itm?.popularCategoryDetail}
+              </span>
+              <button
+                className='cta'
+                onClick={() =>
+                  window.location.href = `/product?categoryName=${encodeURIComponent(itm?.popularCategory)}`
+                }
+              >
+                <span>Read More</span>
+              </button>
+            </div>
+            <div className='cover flex flex-col overflow-hidden items-start justify-start'>
+              <Image
+                src={itm?.popularCategoryImage}
+                className='object-fill h-[80%] rounded-lg w-full'
+                width={500}
+                height={500}
+              />
+              <div className='md:px-3 px-2 pt-1 w-full'>
+                <h3 className='font-[600] lg:text-lg text-sm line-clamp-2 w-full leading-none'>
+                  {itm?.popularCategory?.slice(0, 50)}
+                </h3>
+                <div className='flex items-center justify-between'>
+                  <Rating name='half-rating' defaultValue={2.5} precision={0.5} readOnly />
+                  <span className='flex gap-2 items-center'>({"300 "} Reviews)</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+    ))
+  )}
+</div>
+
     );
 };
 
