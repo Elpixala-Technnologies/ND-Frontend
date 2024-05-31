@@ -53,12 +53,13 @@ const Footer = () => {
                         <li className='mt-6 font-[300]'>
                             <span className="font-[400] ">Office / Mobile</span>
                             <br />
-                            <small>+919210612996</small>
+                            <small>+91 98111 60149</small>
                         </li>
                         <li className='mt-6 font-[300]'>
                             <span className="font-[400] ">Email</span>
                             <br />
-                            <small>support@nldr.in / outreach@nldr.in</small>
+                            <small>helpdesk@nandlaldayaram.com</small><br/>
+                            <small>support@nandlaldayaram.com</small>
                         </li>
                     </ul>
                 </div>
