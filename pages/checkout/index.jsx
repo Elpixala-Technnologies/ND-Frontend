@@ -87,8 +87,6 @@ const CheckoutPage = () => {
     }
   };
 
-  
-
   const updateCartItemQuantity = async (id, newQuantity) => {
     const res = await fetch(updateCartUrl(id), {
       method: "PATCH",
@@ -215,10 +213,21 @@ const CheckoutPage = () => {
 
   const getSessionId = async () => {
     try {
-      let res = await axios.get("http://localhost:8080/api/v1/payment/create-payment");
+      const dataRes = {
+        amount: totalPrice,
+        customerId: user?.email,
+        customerPhone: "9999999999",
+        customerName: user?.displayName,
+        customerEmail: user?.email,
+      };
 
-      console.log(res?.data?.data, "res")
- 
+      let res = await axios.post(
+        "http://localhost:8080/api/v1/payment/create-payment",
+        dataRes
+      );
+
+      console.log(res?.data?.data, "res");
+
       if (res?.data?.data && res?.data?.data?.payment_session_id) {
         console.log(res?.data?.data);
         setOrderId(res?.data?.data?.order_id);
@@ -237,11 +246,17 @@ const CheckoutPage = () => {
         "http://localhost:8080/api/v1/payment/verify-payment",
         {
           orderId: orderId,
+          email: user?.email,
+          clientName: user?.displayName,
+          book: cartData?.map((book) => book),
+          quantity: totalQuantity,
         }
       );
 
+      console.log(res , 'res=========')
+
       if (res && res.data) {
-        alert("payment verified");
+        handelOrderNow()
       }
     } catch (error) {
       console.log(error);
@@ -251,7 +266,7 @@ const CheckoutPage = () => {
   const handleClick = async () => {
     try {
       let sessionId = await getSessionId();
-      console.log(sessionId, "sessionId")
+      console.log(sessionId, "sessionId");
       let checkoutOptions = {
         paymentSessionId: sessionId,
         redirectTarget: "_modal",
@@ -266,6 +281,7 @@ const CheckoutPage = () => {
     }
   };
 
+ 
   return (
     <RootLayout>
       <div className="container mx-auto py-6 px-4">
@@ -441,16 +457,7 @@ const CheckoutPage = () => {
               </div>
             </>
           ) : (
-            <>
-              <div className="px-4 pt-8 w-full">
-                <p className="text-xl font-medium">No Product Added</p>
-                <div>
-                  <button className="mt-4 mb-2 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white">
-                    <Link href="/product">Add Products</Link>
-                  </button>
-                </div>
-              </div>
-            </>
+            <></>
           )}
           {currentStep === 1 && (
             <>
@@ -522,7 +529,7 @@ const CheckoutPage = () => {
 
           {currentStep === 2 && (
             <>
-              <div className="mt-10 bg-gray-50 px-4 pt-8 lg:mt-0">
+              {/* <div className="mt-10 bg-gray-50 px-4 pt-8 lg:mt-0">
                 <p className="text-xl font-medium">Payment Details</p>
                 <p className="text-gray-400">
                   Complete your order by providing your payment details.
@@ -532,7 +539,7 @@ const CheckoutPage = () => {
                   onClick={handleClick}
                   className={`mt-4 mb-8 text-black rounded-md border px-6 py-3 font-medium `}
                 >
-                  pay now
+                 Pay Now 
                 </button>
 
                 <div className="my-4 w-1/2">
@@ -544,6 +551,47 @@ const CheckoutPage = () => {
                   >
                     <option value="">Select Method</option>
                     <option value="Cash On Delivery">Cash On Delivery</option>
+                  </select>
+                </div>
+
+                <button
+                  onClick={handelOrderNow}
+                  className={`mt-4 mb-8 text-black rounded-md border px-6 py-3 font-medium ${
+                    !paymentMethod
+                      ? "bg-gray-300 cursor-not-allowed"
+                      : "bg-green-500"
+                  }`}
+                  disabled={!paymentMethod}
+                >
+                  Place Order
+                </button>
+              </div> */}
+
+              <div className="mt-10 bg-gray-50 px-4 pt-8 lg:mt-0">
+                <p className="text-xl font-medium">Payment Details</p>
+                <p className="text-gray-400">
+                  Complete your order by providing your payment details.
+                </p>
+
+                {paymentMethod === "Cashfree" && (
+                  <button
+                    onClick={handleClick}
+                    className={`mt-4 mb-8 text-black rounded-md border px-6 py-3 font-medium `}
+                  >
+                    Pay Now
+                  </button>
+                )}
+
+                <div className="my-4 w-1/2">
+                  <p className="text-xl font-medium">Select Payment Method</p>
+
+                  <select
+                    className="my-2 border p-2 w-1/2 "
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                  >
+                    <option value="">Select Method</option>
+                    <option value="Cash On Delivery">Cash On Delivery</option>
+                    <option value="Cashfree">Cashfree</option>
                   </select>
                 </div>
 
