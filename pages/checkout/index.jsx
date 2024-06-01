@@ -87,28 +87,7 @@ const CheckoutPage = () => {
     }
   };
 
-  const addToCart = async (book) => {
-    const res = await fetch(addToCartUrl(user?.email), {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        bookId: book?._id,
-        quantity: 1, // You can start with a quantity of 1
-      }),
-    });
-    const data = await res.json();
-    console.log(data);
-    if (data?.success) {
-      Swal.fire({
-        icon: "success",
-        title: "Item added to cart",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-    }
-  };
+  
 
   const updateCartItemQuantity = async (id, newQuantity) => {
     const res = await fetch(updateCartUrl(id), {
@@ -236,27 +215,30 @@ const CheckoutPage = () => {
 
   const getSessionId = async () => {
     try {
-    const dataRes = {
+      let res = await axios.get("http://localhost:8080/api/v1/payment/create-payment");
 
-    }
-
-      let res = await axios.post("http://localhost:8080/payment");
-
-      if (res.data && res.data.payment_session_id) {
-        console.log(res.data);
-        setOrderId(res.data.order_id);
-        return res.data.payment_session_id;
+      console.log(res?.data?.data, "res")
+ 
+      if (res?.data?.data && res?.data?.data?.payment_session_id) {
+        console.log(res?.data?.data);
+        setOrderId(res?.data?.data?.order_id);
+        return res?.data?.data?.payment_session_id;
       }
     } catch (error) {
       console.log(error);
     }
   };
 
+  console.log(orderId , "orderId")
+
   const verifyPayment = async () => {
     try {
-      let res = await axios.post("http://localhost:8000/verify", {
-        orderId: orderId,
-      });
+      let res = await axios.post(
+        "http://localhost:8080/api/v1/payment/verify-payment",
+        {
+          orderId: orderId,
+        }
+      );
 
       if (res && res.data) {
         alert("payment verified");
@@ -269,6 +251,7 @@ const CheckoutPage = () => {
   const handleClick = async () => {
     try {
       let sessionId = await getSessionId();
+      console.log(sessionId, "sessionId")
       let checkoutOptions = {
         paymentSessionId: sessionId,
         redirectTarget: "_modal",
@@ -282,27 +265,6 @@ const CheckoutPage = () => {
       console.log(error);
     }
   };
-
-  //   const getSessionId = async () => {
-  //     try {
-  //       let res = await axios.get("http://localhost:3000/payment");
-  //       if (res.data && res.data.payment_session_id) {
-  //         console.log(res.data);
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-
-  //   const handelClick = async (e) => {
-  //     e.preventDefault();
-
-  //     try {
-  //       let sessionId = await getSessionId();
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
 
   return (
     <RootLayout>
