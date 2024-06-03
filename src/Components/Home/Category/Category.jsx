@@ -8,7 +8,6 @@ import { Rating } from '@mui/material';
 
 const Category = () => {
     const { popularCategoryData, isLoading } = usePopularCategory();
-    console.log(popularCategoryData, "popularCategoryData")
     return (
         <div className='grid grid-cols-3 md:gap-12 gap-2 mt-6 w-full h-full max-w-[1440px]'>
   {isLoading ? (

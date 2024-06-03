@@ -2,14 +2,10 @@ import UserdashboardLayout from "@/src/Layouts/UserDashboardLayout";
 import { AuthContext } from "@/src/Context/UserContext";
 import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
-import { Welcome } from "@/src/Assets";
 import { useQuery } from "@tanstack/react-query";
 import { getAddressByEmailUrl } from "@/src/Utils/Urls/AddressUrl";
 import { MdVerified } from "react-icons/md";
 import useCommonApiData from "@/src/Hooks/useCommonApiData";
-import { FaPowerOff, FaRegEdit } from "react-icons/fa";
-import AddressModal from "@/src/Shared/Modal/AddressModal/AddressModal";
-import UpdateAddressModal from "@/src/Shared/Modal/AddressModal/UpdateAddressModal";
 import ProfileModal from "@/src/Shared/Modal/AddressModal/ProfileModal";
 
 const UserDashboard = () => {

@@ -19,7 +19,6 @@ const UserdashboardLayout = ({ children }) => {
   const { handleLogout } = useCommonApiData();
   const [collapsed, setCollapsed] = useState(false); 
   const [sideNavVisible, setSideNavVisible] = useState(false);
-  const router = useRouter();
   const [selected, setSelected] = useState(null);
 
   const handleResize = () => {
@@ -46,8 +45,6 @@ const UserdashboardLayout = ({ children }) => {
   const toggleSideNav = () => {
     setSideNavVisible(!sideNavVisible);
   };
-
-  const { user } = useContext(AuthContext);
 
   return (
     <div className="">

@@ -5,8 +5,8 @@ import { Modal } from 'antd';
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
-import TextField from "@material-ui/core/TextField";
-import InputAdornment from "@material-ui/core/InputAdornment";
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
 
 
 const UpdateAddressModal = ({
