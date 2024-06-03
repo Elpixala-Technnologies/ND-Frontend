@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from "react";
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import { useContext, useEffect, useState } from "react";``
 import useCommonApiData from "@/src/Hooks/useCommonApiData";
 import { Layout, Menu, Button } from "antd";
 import {
@@ -10,20 +9,16 @@ import {
 } from "react-icons/md";
 import Link from "next/link";
 import { FaShoppingCart } from "react-icons/fa";
-import { useRouter } from "next/router";
-import { AuthContext } from "../Context/UserContext";
 import { IoHomeOutline, IoLocationSharp } from "react-icons/io5";
 import { IoIosLogOut } from "react-icons/io";
 import { MainLogo } from "../Assets";
 import Image from "next/image";
 import Footer from "../Shared/Footer/Footer";
-const { Content } = Layout;
 
 const UserdashboardLayout = ({ children }) => {
   const { handleLogout } = useCommonApiData();
   const [collapsed, setCollapsed] = useState(false); // Start with the sidebar open on desktop devices
   const [sideNavVisible, setSideNavVisible] = useState(false);
-  const router = useRouter();
   const [selected, setSelected] = useState(null);
 
   const handleResize = () => {
@@ -51,50 +46,8 @@ const UserdashboardLayout = ({ children }) => {
     setSideNavVisible(!sideNavVisible);
   };
 
-  const { user } = useContext(AuthContext);
-
   return (
     <div className="">
-
-
-      {/* {sideNavVisible && (
-                <Sider
-                    trigger={null}
-                    collapsible
-                    collapsed={collapsed}
-                    className="text-white"
-                    style={{
-                        position: "sticky", top: 0, height: "100vh",
-                        zIndex: 999
-
-                    }}
-                >
-                    <Menu
-                        theme="dark"
-                        mode="inline"
-                        selectedKeys={[router.pathname]}
-                        defaultSelectedKeys={["1"]}
-
-                        className="text-white mt-16"
-                        style={{ height: "100%", width: "100%" }}
-                    >
-                        <Menu.Item key="/" icon={<FaThLarge />}>
-                            <Link href="/">Home</Link>
-                        </Menu.Item>
-                        <Menu.Item key="/userdashboard/address-book/manage-address-book" icon={<FaCalendarAlt />}>
-                            <Link href="/userdashboard/address-book/manage-address-book">Address Book</Link>
-                        </Menu.Item>
-                        <Menu.Item key="/userdashboard/order" icon={<MdLocalOffer />}>
-                            <Link href="/userdashboard/order">Order</Link>
-                        </Menu.Item>
-                        <Menu.Item key="8" icon={<FaPowerOff />}>
-                            <button
-                                onClick={() => handleLogout()}
-                            >Logout</button>
-                        </Menu.Item>
-                    </Menu>
-                </Sider>
-            )} */}
 
       <div className="bg-transparent flex">
         <div className="flex flex-col items-start justify-between gap-8 bg-gray-700 h-screen sticky top-0  px-5 w-56 py-10">

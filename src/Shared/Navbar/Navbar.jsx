@@ -2,19 +2,14 @@ import { MainLogo } from "@/src/Assets";
 import { AuthContext } from "@/src/Context/UserContext";
 import useAdmin from "@/src/Hooks/useAdmin";
 import useCommonApiData from "@/src/Hooks/useCommonApiData";
-import { Close, Search } from "@material-ui/icons";
+import CloseIcon from '@mui/icons-material/Close';
+import SearchIcon from '@mui/icons-material/Search';
 import Image from "next/image";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaMicrosoft, FaPowerOff, FaUserAlt } from "react-icons/fa";
 import { MdOutlineAccountBox, MdOutlineShoppingBag, MdProductionQuantityLimits } from "react-icons/md";
-import {
-  addToCartUrl,
-  getCartUrl,
-  removeFromCartUrl,
-  updateCartUrl,
-} from "@/src/Utils/Urls/BooksUrl";
 import { useCart } from "@/src/Context/cartContext";
 import { IoLocationSharp } from "react-icons/io5";
 
@@ -156,7 +151,7 @@ const Navbar = () => {
           } duration-300 w-full overflow-hidden fixed bg-[#172733] h-screen top-0 p-4 text-white z-10`}
         >
           <button className="float-right" onClick={() => setOpen(!open)}>
-            <Close className="text-5xl" />
+            <CloseIcon className="text-5xl" />
           </button>
           <br />
           <ul className="flex flex-col gap-6">
@@ -212,7 +207,7 @@ const Navbar = () => {
                 className="w-full pl-2 text-black"
                 placeholder="Search"
               />
-              <Search className="text-black" />
+              <SearchIcon className="text-black" />
             </li>
           </ul>
         </aside>
