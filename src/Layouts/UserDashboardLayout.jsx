@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";``
+import { useContext, useEffect, useState } from "react"; ``
 import useCommonApiData from "@/src/Hooks/useCommonApiData";
 import { Layout, Menu, Button } from "antd";
 import {
@@ -103,11 +103,11 @@ const UserdashboardLayout = ({ children }) => {
         </div>
 
         <div
-          className=" gap-10"
+          className=" gap-10 w-full flex flex-col justify-between"
         >
           {children}
           <div className="mt-20">
-          <Footer />
+            <Footer />
           </div>
         </div>
       </div>
