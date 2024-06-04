@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import useCommonApiData from "@/src/Hooks/useCommonApiData";
 import { Layout, Menu, Button } from "antd";
 import { MdLocalOffer } from "react-icons/md";
@@ -128,7 +128,7 @@ const DashboardLayout = ({ children }) => {
         >
           <Button
             type="text"
-            icon={collapsed ? <MenuIcon /> : <CloseIcon />}
+            icon={collapsed ? <MenuOpenIcon /> : <MenuIcon />}
             onClick={() => {
               toggleCollapsed();
               toggleSideNav(); // Toggle the sideNavVisible state when the button is clicked

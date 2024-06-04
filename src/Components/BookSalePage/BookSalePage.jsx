@@ -100,43 +100,43 @@ const BookComponent = () => {
                 <div className="flex flex-col items-center">
                     <div className="hoverCard p-4">
 
-                        <div class="container noselect">
-                            <div class="canvas">
-                                <div class="tracker tr-1"></div>
-                                <div class="tracker tr-2"></div>
-                                <div class="tracker tr-3"></div>
-                                <div class="tracker tr-4"></div>
-                                <div class="tracker tr-5"></div>
-                                <div class="tracker tr-6"></div>
-                                <div class="tracker tr-7"></div>
-                                <div class="tracker tr-8"></div>
-                                <div class="tracker tr-9"></div>
-                                <div class="tracker tr-10"></div>
-                                <div class="tracker tr-11"></div>
-                                <div class="tracker tr-12"></div>
-                                <div class="tracker tr-13"></div>
-                                <div class="tracker tr-14"></div>
-                                <div class="tracker tr-15"></div>
-                                <div class="tracker tr-16"></div>
-                                <div class="tracker tr-17"></div>
-                                <div class="tracker tr-18"></div>
-                                <div class="tracker tr-19"></div>
-                                <div class="tracker tr-20"></div>
-                                <div class="tracker tr-21"></div>
-                                <div class="tracker tr-22"></div>
-                                <div class="tracker tr-23"></div>
-                                <div class="tracker tr-24"></div>
-                                <div class="tracker tr-25"></div>
+                        <div className="container noselect">
+                            <div className="canvas">
+                                <div className="tracker tr-1"></div>
+                                <div className="tracker tr-2"></div>
+                                <div className="tracker tr-3"></div>
+                                <div className="tracker tr-4"></div>
+                                <div className="tracker tr-5"></div>
+                                <div className="tracker tr-6"></div>
+                                <div className="tracker tr-7"></div>
+                                <div className="tracker tr-8"></div>
+                                <div className="tracker tr-9"></div>
+                                <div className="tracker tr-10"></div>
+                                <div className="tracker tr-11"></div>
+                                <div className="tracker tr-12"></div>
+                                <div className="tracker tr-13"></div>
+                                <div className="tracker tr-14"></div>
+                                <div className="tracker tr-15"></div>
+                                <div className="tracker tr-16"></div>
+                                <div className="tracker tr-17"></div>
+                                <div className="tracker tr-18"></div>
+                                <div className="tracker tr-19"></div>
+                                <div className="tracker tr-20"></div>
+                                <div className="tracker tr-21"></div>
+                                <div className="tracker tr-22"></div>
+                                <div className="tracker tr-23"></div>
+                                <div className="tracker tr-24"></div>
+                                <div className="tracker tr-25"></div>
                                 <div id="card">
                                     <p id="prompt">
                                         <span className='w-full text-black'>{`${highestDiscountBook?.name.split(' ').join('\u00A0').slice(0, 20)}`}</span><br />
                                         <span className='w-full text-black'>{`${highestDiscountBook?.author.split(' ').join('\u00A0').slice(0, 20)}`}</span>
 
                                     </p>
-                                    <div class="title p-2">
+                                    <div className="title p-2">
 
                                     </div>
-                                    <div class="subtitle pb-20 p-4">
+                                    <div className="subtitle pb-20 p-4">
                                         <img src={highestDiscountBook?.image[0]} alt="book" className='rounded-3xl' />
 
                                     </div>
@@ -177,9 +177,9 @@ const BookComponent = () => {
                                     </div>
                                     <div className="w-full flex items-center justify-start mt-2 hoverButton">
                                         <button onClick={() => addToCart(book._id, book.price)}>
-                                            <span class="shadow"></span>
-                                            <span class="edge"></span>
-                                            <span class="front text"> Buy Now
+                                            <span className="shadow"></span>
+                                            <span className="edge"></span>
+                                            <span className="front text"> Buy Now
                                             </span>
                                         </button>
                                     </div>
