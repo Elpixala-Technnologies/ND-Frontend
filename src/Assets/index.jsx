@@ -39,6 +39,7 @@ import AddTOCart from "./Logo/addCart.svg"
 import Welcome from "./Logo/welcome.svg"
 
 import AuthLoginUser from "./Auth/user.png"
+import RightArrow from "./Svgs/arrow-narrow-right.svg"
 
 
 export {
@@ -77,11 +78,8 @@ export {
     MobileBannerTwelveImage,
     MobileBannerThirteenImage,
     MobileBannerFourteenImage,
-
     TransParentLogo,
-
+    RightArrow,
     AuthLoginUser
-
-
 }
 

@@ -4,6 +4,7 @@ import DataContext from "@/src/Context/DataContext";
 import "@/styles/globals.scss";
 import UserContext from "@/src/Context/UserContext";
 import Preloader from "@/src/Shared/Preloader/Preloader";
+import { ToastContainer } from "react-toastify";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ export default function App({ Component, pageProps }) {
             <Component {...pageProps} />
           </UserContext>
         </DataContext>
+        <ToastContainer />
       </QueryClientProvider>
     </>
   );

@@ -77,38 +77,51 @@ const HomeAddCard = () => {
                 {
                     bookData && bookData.slice(0, 2).map(book => {
                         return (
-                            <div className="cart bg-gray-100 rounded-2xl flex md:flex-row flex-col items-center gap-6 p-6 cursor-pointer  md:transform md:hover:-translate-y-1 md:hover:scale-100 hover shadow">
-                                <Image src={book?.image[0] || bookImg} className='md:w-[180px] rounded-xl md:h-[230px]' width={300} height={400} />
-                                <div className="info flex flex-col items-start">
-                                    <div className="flex items-center gap-2">
-                                        <BsJournalBookmark className='text-3xl' />
-                                        <h3 className="text-lg font-semibold">
-                                            {book?.name}
-                                        </h3>
-                                    </div>
-                                    <h6 className=" font-semibold mt-2">
-                                        {book?.author}
-                                    </h6>
-                                    <small className="mt-2 text-gray-600 w-auto flex">
-                                        {book?.description.slice(0, 300)}
-                                    </small>
+                          <div className="cart bg-gray-100 rounded-2xl flex md:flex-row flex-col items-center gap-6 p-6 cursor-pointer  md:transform md:hover:-translate-y-1 md:hover:scale-100 hover shadow" key={book?._id}>
+                            <Image
+                              src={book?.image[0] || bookImg}
+                              className="md:w-[180px] rounded-xl md:h-[230px]"
+                              alt={book?.name}
+                              width={300}
+                              height={400}
+                            />
+                            <div className="info flex flex-col items-start">
+                              <div className="flex items-center gap-2">
+                                <BsJournalBookmark className="text-3xl" />
+                                <h3 className="text-lg font-semibold">
+                                  {book?.name}
+                                </h3>
+                              </div>
+                              <h6 className=" font-semibold mt-2">
+                                {book?.author}
+                              </h6>
+                              <small className="mt-2 text-gray-600 w-auto flex">
+                                {book?.description.slice(0, 300)}
+                              </small>
 
-
-
-
-                                    <div className="flex items-center mt-8 justify-between">
-                                        <h2 className="text xl font-semibold">₹ {book?.price}</h2>
-                                        <div className='flex gap-2 items-center'>
-                                        <button class="btn" onClick={() => addToCart(book._id, book.price)}>Add to cart</button>
-                                        <Link href={`/product/${book?._id}`}>
-                                            <button className='px-12 py-2 rounded-lg text-white bg-[#1e89d1]'>Details</button>
-                                        </Link>
-                                        </div>
-                                        
-                                    </div>
+                              <div className="flex items-center mt-8 justify-between">
+                                <h2 className="text xl font-semibold">
+                                  ₹ {book?.price}
+                                </h2>
+                                <div className="flex gap-2 items-center">
+                                  <button
+                                    className="btn"
+                                    onClick={() =>
+                                      addToCart(book._id, book.price)
+                                    }
+                                  >
+                                    Add to cart
+                                  </button>
+                                  <Link href={`/product/${book?._id}`}>
+                                    <button className="px-12 py-2 rounded-lg text-white bg-[#1e89d1]">
+                                      Details
+                                    </button>
+                                  </Link>
                                 </div>
+                              </div>
                             </div>
-                        )
+                          </div>
+                        );
                     })
                 }
             </div>

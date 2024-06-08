@@ -10,6 +10,8 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import { AuthBannerImage,AuthLoginUser } from "@/src/Assets";
 import RootLayout from "@/src/Layouts/RootLayout";
+import { toast } from "react-toastify";
+import { showErrorToast, showSuccessToast } from "@/src/Hoc/Toastify/Toast";
 
 const LoginPage = () => {
   const {
@@ -28,65 +30,20 @@ const LoginPage = () => {
 
   const onSubmit = async (data) => {
     try {
-      signIn(data.email, data.password).then((result) => {
-        Swal.fire({
-          position: "center",
-          timerProgressBar: true,
-          title: "Successfully Login Done !",
-          iconColor: "#ED1C24",
-          toast: true,
-          icon: "success",
-          showClass: {
-            popup: "animate__animated animate__fadeInRight",
-          },
-          hideClass: {
-            popup: "animate__animated animate__fadeOutRight",
-          },
-          showConfirmButton: false,
-          timer: 3500,
-        });
-
-        if (redirect) {
-          router.push(`/${redirect}`);
-        } else {
-          router.push("/");
-        }
-      })
+      signIn(data.email, data.password)
+        .then((result) => {
+          showSuccessToast("Login Successful");
+          if (redirect) {
+            router.push(`/${redirect}`);
+          } else {
+            router.push("/");
+          }
+        })
         .catch((err) => {
-          Swal.fire({
-            position: "center",
-            timerProgressBar: true,
-            title: err.message,
-            iconColor: "#ED1C24",
-            toast: true,
-            icon: "error",
-            showClass: {
-              popup: "animate__animated animate__fadeInRight",
-            },
-            hideClass: {
-              popup: "animate__animated animate__fadeOutRight",
-            },
-            showConfirmButton: false,
-            timer: 3500,
-          });
+          showErrorToast(err.message);
         });
     } catch (error) {
-      Swal.fire({
-        position: "center",
-        timerProgressBar: true,
-        title: error.message,
-        iconColor: "#ED1C24",
-        toast: true,
-        icon: "error",
-        showClass: {
-          popup: "animate__animated animate__fadeInRight",
-        },
-        hideClass: {
-          popup: "animate__animated animate__fadeOutRight",
-        },
-        showConfirmButton: false,
-        timer: 3500,
-      });
+      showErrorToast(error.message);
     }
   };
 
@@ -94,44 +51,24 @@ const LoginPage = () => {
     signInWithGoogle()
       .then(() => {
         router.push("/");
-        Swal.fire({
-          position: "center",
-          timerProgressBar: true,
-          title: "Successfully Login!",
-          iconColor: "#ED1C24",
-          toast: true,
-          icon: "success",
-          showClass: {
-            popup: "animate__animated animate__fadeInRight",
-          },
-          hideClass: {
-            popup: "animate__animated animate__fadeOutRight",
-          },
-          showConfirmButton: false,
-          timer: 3500,
-        });
+        showSuccessToast("Signup Succesfully");
       })
       .catch((error) => {
-        Swal.fire({
-          icon: "error",
-          title: error.message,
-          text: "User already registered!",
-          confirmButtonColor: "#ED1C24",
-        });
+        showErrorToast(error.message);
       });
   };
-
-
-
-
 
   return (
     <RootLayout>
       <div className="my-6 container">
         <div className="w-full bg-white md:py-20 md:px-16  flex justify-center items-center md:flex-row flex-col gap-6">
           <div className="items-center justify-center  lg:flex hidden md:block">
-            <Image className="" src={AuthBannerImage} alt="userLogin"
-              width={800} height={600}
+            <Image
+              className=""
+              src={AuthBannerImage}
+              alt="userLogin"
+              width={800}
+              height={600}
             />
           </div>
           <div className="shadow-[0_8px_30px_rgb(0,0,0,0.12)] p-6 md:w-[80%]">
@@ -165,7 +102,7 @@ const LoginPage = () => {
                     <FaLock />
                   </span>
                   <input
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     className=" border-[1px] border-[#ddd] text-[15px] font-[500] text-gray-700 outline-none w-full rounded-lg shadow-md pl-10 pr-2.5 py-3 "
                     placeholder="Password"
                     name="password"
@@ -202,14 +139,14 @@ const LoginPage = () => {
                     </span>
                   </div>
                   <button className="mb-5 flex items-center gap-3 justify-center common-btn w-full">
-                  <Image
-                    src={AuthLoginUser}
-                    alt={"user"}
-                    width={40}
-                    height={40}
-                    className=''
-                  />
-                  <span>Sign In</span>
+                    <Image
+                      src={AuthLoginUser}
+                      alt={"user"}
+                      width={40}
+                      height={40}
+                      className=""
+                    />
+                    <span>Sign In</span>
                   </button>
                 </div>
               </form>
@@ -242,7 +179,6 @@ const LoginPage = () => {
                     Sign in with Google
                   </span>
                 </div>
-
               </div>
             </div>
           </div>

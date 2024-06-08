@@ -144,27 +144,31 @@ const RecomendationProduct = () => {
                         {bookData &&
                             bookData.map((book) => {
                                 return (
-                                    <SwiperSlide className="" key={book._id}>
+                                  <SwiperSlide className="" key={book._id}>
+                                    <div className="card w-full bg-gradient-to-tr from-gray-50 to-gray-300 p-6 my-4 mx-2 shadow-lg hover rounded-3xl">
+                                      <div className="bg-[#e1e6e9]  ">
+                                        <Image
+                                          src={book?.image[0] || NotFoundImage}
+                                          width={300}
+                                          height={400}
+                                          alt={book?.name}
+                                          className="md:h-[360px] h-[350px] rounded"
+                                        />
+                                      </div>
 
-                                        <div className="card w-full bg-gradient-to-tr from-gray-50 to-gray-300 p-6 my-4 mx-2 shadow-lg hover rounded-3xl">
-                                            <div className="bg-[#e1e6e9]  ">
-                                                <Image
-                                                    src={book?.image[0] || NotFoundImage}
-                                                    width={300}
-                                                    height={400}
-                                                    alt={book?.name}
-                                                    className='md:h-[360px] h-[350px] rounded'
-                                                />
-                                            </div>
-
-                                            <div className="pb-4 text-left">
-                                                <Link href={`/product/${book?._id}`} className="cursor-pointer">
-                                                    <h4 className='font-bold mt-2'>
-                                                        {book.category}
-                                                    </h4>
-                                                    <h4 className="text-lg">{book?.name?.slice(0, 28) + ".."}</h4>
-                                                </Link>
-                                                {/* <div className='flex items-center gap-4'>
+                                      <div className="pb-4 text-left">
+                                        <Link
+                                          href={`/product/${book?._id}`}
+                                          className="cursor-pointer"
+                                        >
+                                          <h4 className="font-bold mt-2">
+                                            {book.category}
+                                          </h4>
+                                          <h4 className="text-lg">
+                                            {book?.name?.slice(0, 28) + ".."}
+                                          </h4>
+                                        </Link>
+                                        {/* <div className='flex items-center gap-4'>
                                                         <h1 className="text-xl font-bold text-slate-900">
                                                             {
                                                                 book?.discountPercentage
@@ -180,37 +184,46 @@ const RecomendationProduct = () => {
                                                         </span>
                                                     </div> */}
 
-                                                <div className="flex items-center md:flex-row gap-2 md:gap-4">
-                                                    <h1 className="text-lg md:text-xl font-bold text-slate-900">
-                                                        {book?.discountPercentage
-                                                            ? `₹ ${book?.price - (book?.price * book?.discountPercentage) / 100}`
-                                                            : `₹ ${book?.price}`}
-                                                    </h1>
-                                                    {book?.discountPercentage !== "0" && (
-                                                        <>
-                                                            <span className="text-sm md:text-base text-slate-900 line-through mt-1">
-                                                                ₹ {book?.price}
-                                                            </span>
-                                                            <span className="text-[#eec75b] text-sm md:text-base">
-                                                                {book?.discountPercentage} % off
-                                                            </span>
-                                                        </>
-                                                    )}
-                                                </div>
-
-                                                <div className="w-full flex items-center justify-start mt-2 hoverButton">
-                                                    <button onClick={() => addToCart(book._id, book.price)}>
-                                                        <span class="shadow"></span>
-                                                        <span class="edge"></span>
-                                                        <span class="front text"> Buy Now
-                                                        </span>
-                                                    </button>
-                                                </div>
-
-                                            </div>
+                                        <div className="flex items-center md:flex-row gap-2 md:gap-4">
+                                          <h1 className="text-lg md:text-xl font-bold text-slate-900">
+                                            {book?.discountPercentage
+                                              ? `₹ ${
+                                                  book?.price -
+                                                  (book?.price *
+                                                    book?.discountPercentage) /
+                                                    100
+                                                }`
+                                              : `₹ ${book?.price}`}
+                                          </h1>
+                                          {book?.discountPercentage !== "0" && (
+                                            <>
+                                              <span className="text-sm md:text-base text-slate-900 line-through mt-1">
+                                                ₹ {book?.price}
+                                              </span>
+                                              <span className="text-[#eec75b] text-sm md:text-base">
+                                                {book?.discountPercentage} % off
+                                              </span>
+                                            </>
+                                          )}
                                         </div>
 
-                                    </SwiperSlide>
+                                        <div className="w-full flex items-center justify-start mt-2 hoverButton">
+                                          <button
+                                            onClick={() =>
+                                              addToCart(book._id, book.price)
+                                            }
+                                          >
+                                            <span className="shadow"></span>
+                                            <span className="edge"></span>
+                                            <span className="front text">
+                                              {" "}
+                                              Buy Now
+                                            </span>
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </SwiperSlide>
                                 );
                             })}
                     </div>

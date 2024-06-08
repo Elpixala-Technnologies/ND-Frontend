@@ -21,11 +21,6 @@ const UserContext = ({ children }) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Sign Up
-  // const signUp = (email, password) => {
-  //   setLoading(true);
-  //   return createUserWithEmailAndPassword(auth, email, password);
-  // };
 
 
 
@@ -33,20 +28,13 @@ const UserContext = ({ children }) => {
     return updateProfile(auth.currentUser, userInfo);
   };
 
-  // Sign In
-  // const signIn = (email, password) => {
-  //   setLoading(true);
-  //   return signInWithEmailAndPassword(auth, email, password);
-  // };
-
   const signIn = async (email, password) => {
     setLoading(true);
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       // Check if email is verified
       if (!userCredential.user.emailVerified) {
-        // Email not verified, display a message and sign out the user
-        signOut(auth); // Make sure to import signOut from Firebase auth
+        signOut(auth);
         Swal.fire({
           icon: 'error',
           title: 'Email Not Verified',
@@ -54,7 +42,6 @@ const UserContext = ({ children }) => {
         });
         throw new Error('Email not verified');
       }
-      // Email is verified, proceed with login
       setUser(userCredential.user);
       setLoading(false);
     } catch (error) {
@@ -62,8 +49,6 @@ const UserContext = ({ children }) => {
     }
   };
   
-
-  // Sign Out
   const logOut = () => {
     setLoading(true);
     return signOut(auth);
@@ -75,20 +60,16 @@ const UserContext = ({ children }) => {
  
   const signUp = async (email, password) => {
     setLoading(true);
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    // Send verification email after signing up
-   
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);   
     sendEmailVerification(userCredential.user)
       .then(() => {
         console.log("Verification email sent.");
-        
       })
       .catch((error) => {
         setError(error.message);
       });
   };
-
-  // watch user state change
+  
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {

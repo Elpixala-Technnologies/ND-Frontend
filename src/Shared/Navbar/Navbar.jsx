@@ -6,12 +6,16 @@ import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
 import Image from "next/image";
 import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaMicrosoft, FaPowerOff, FaUserAlt } from "react-icons/fa";
-import { MdOutlineAccountBox, MdOutlineShoppingBag, MdProductionQuantityLimits } from "react-icons/md";
+import { MdOutlineShoppingBag } from "react-icons/md";
 import { useCart } from "@/src/Context/cartContext";
-import { IoLocationSharp } from "react-icons/io5";
+import { CiSearch } from "react-icons/ci";
+import { LiaUserSolid } from "react-icons/lia";
+import { CartItem } from "@/src/Hoc/Material-Ui/cartItems";
+import DropdownMenu from "@/src/Hoc/Material-Ui/DropdownMenu";
+import { useHover } from "usehooks-ts";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -20,111 +24,94 @@ const Navbar = () => {
   const userEmail = user?.email;
   const [isAdmin] = useAdmin();
   const { cartData } = useCart();
-  const [isHovered, setIsHovered] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const hoverRef = useRef(null)
+  const isHover = useHover(hoverRef)
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
+  const handleSearch = () => {
+    console.log(inputValue);
   };
 
-  const handleMouseLeave = () => {
-    setIsHovered(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const handleShowDropdown = () => {
+    setShowDropdown(!showDropdown);
   };
 
   return (
-    <nav className="bg-[#ffffff] md:px-4 border-b py-2 flex items-center text-black container">
-      <div className="container flex items-center justify-between mx-auto">
-        <div className="flex items-center gap-4">
-          <Link className="text-2xl font-bold text-black" href="/">
-            <Image
-              src={MainLogo}
-              alt="logo"
-              width={50}
-              height={40}
-              className="cursor-pointer hover:scale-105 duration-300 transform"
+    <nav className="bg-[#ffffff] md:px-4 pt-3 pb-3 flex items-center text-black border-b-2 border-gray-200">
+      <div className="flex items-center justify-between mx-auto w-full">
+        <div className="flex gap-x-8 items-center w-2/5">
+          <div className="">
+            <Link className="text-2xl font-bold text-black" href="/">
+              <Image
+                src={MainLogo}
+                alt="logo"
+                width={50}
+                height={40}
+                className="cursor-pointer hover:scale-105 duration-300 transform"
+              />
+            </Link>
+          </div>
+          {/* Search Bar */}
+
+          <div className="relative flex-1 bg-gray-50 rounded-full">
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Search..."
+              className="px-4 text-sm py-2 focus:outline-none bg-gray-50 rounded-l-full"
             />
-          </Link>
+            <button onClick={handleSearch} className="absolute right-3 top-2">
+              <CiSearch className="text-lg" />
+            </button>
+          </div>
         </div>
 
-        <ul className="items-center hidden gap-4 md:flex">
-          <li className="border-r px-2 h-full border-[gray]">
-            <Link href="/">Home</Link>
-          </li>
-          <li className="border-r px-2 h-full border-[gray] ">
-            <Link href="/product">Shop</Link>
-          </li>
-
-          <li className="border-r px-2 h-full border-[gray]">
+        <ul className="items-center hidden gap-2 md:flex">
+          <li className="">
             {!userEmail ? (
               <>
                 <Link
                   href="/auth/login"
-                  className="flex items-center justify-center gap-2 border border-gray-300 p-2 rounded-lg"
+                  className="flex items-center justify-center gap-1 font-inter"
                 >
-                  <FaUserAlt /> Sign In
+                  <LiaUserSolid className="text-2xl" />
+                  <span className="pt-0.5"> Login</span>
                 </Link>
               </>
             ) : (
               <div
-                className="relative flex justify-center items-center gap-2"
-                onMouseEnter={handleMouseEnter}
+                className="relative flex justify-center items-center "
+                onClick={handleShowDropdown}
+                ref={hoverRef}
               >
                 <img
                   src={user?.photoURL}
                   alt="User"
-                  className="w-8 h-8 rounded-full mr-4"
+                  className="w-9 h-9 rounded-full mr-2 cursor-pointer"
                 />
 
-                {isHovered && (
-                  <div
-                    className="absolute top-full mt-2 w-48 bg-white shadow-lg rounded-md z-10"
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                  >
-                    {isAdmin ? (
-                      <Link href="/admin">
-                        <div className=" px-4 py-2 flex items-center hover:bg-blue-200">
-                          <FaMicrosoft /> Profile
-                        </div>
-                      </Link>
-                    ) : (
-                      <Link href="/userdashboard">
-                        <div className=" px-4 py-2  flex items-center gap-2 hover:bg-gray-200">
-                        <MdOutlineAccountBox className="text-2xl" /> Profile
-                        </div>
-                      </Link>
-                    )}
-                    <Link href="/userdashboard/address-book/manage-address-book">
-                      <div className="px-4 py-2 flex  hover:bg-gray-200 items-center gap-2">
-                      <MdProductionQuantityLimits className="text-2xl" />
-                        Orders
-                      </div>
-                    </Link>
-                    <Link href="/userdashboard/order">
-                      <div className="px-4 py-2 hover:bg-gray-200 flex items-center gap-2">
-                      <IoLocationSharp className="text-2xl" />
-                        Address
-                      </div>
-                    </Link>
-                    <button
-                      className="w-full text-left px-5 py-2 flex items-center gap-2 hover:bg-gray-200"
-                      onClick={handleLogout}
-                    >
-                      <FaPowerOff /> Logout
-                    </button>
-                  </div>
-                )}
+                <div className="absolute top-8 right-0 !z-50">
+                  <DropdownMenu
+                    showDropdown={showDropdown || isHover}
+                    handleLogout={handleLogout}
+                    user={user}
+                    isAdmin={isAdmin}
+                  />
+                </div>
               </div>
             )}
           </li>
 
+          <div className="w-[2px] h-5 bg-gray-300 mt-0.5"></div>
+
           <Link
             href="/cart"
-            className="bg-[#9cb3dd43] w-[40px] rounded-full flex items-center justify-center h-[40px] common-hover relative"
+            className="flex items-center justify-center common-hover relative gap-1"
           >
-            <MdOutlineShoppingBag className="text-2xl text-[#335187] " />
-            <p className="absolute -top-2 -right-3 text-xs bg-red-500 text-white p-1 px-2 rounded-full">
-              {cartData.length}
-            </p>
+            <CartItem cartItem={cartData?.length} />
           </Link>
         </ul>
 

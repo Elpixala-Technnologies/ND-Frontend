@@ -46,7 +46,7 @@ const HeroSection = () => {
                                 key={book.id}
                                 className={`group p-8 ${index === 0 ? 'bg-gradient-to-tr from-blue-50 via-white  to-blue-900' : 'bg-gradient-to-tr from-gray-200 via-white to-gray-400'} relative h-48 flex flex-col justify-between rounded-md`}>
                                 <div className='flex flex-col items-start justify-start'>
-                                    <img src={book?.image[0] || bookImg} alt={book.title} className="w-28 h-28 absolute top-5 right-5 shadow-lg shadow-gray-600 transform transition-transform duration-300 group-hover:scale-150" />
+                                    <img src={book?.image[0]} alt={book.title} className="w-28 h-28 absolute top-5 right-5 shadow-lg shadow-gray-600 transform transition-transform duration-300 group-hover:scale-150" />
                                     <h2 className="text-lg font-bold mt-2 ">{book?.name.slice(0, 20)}</h2>
                                     <div className="flex items-center md:flex-row gap-2 md:gap-4">
                                         <span>Prizing at </span>

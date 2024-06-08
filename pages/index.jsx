@@ -14,14 +14,11 @@ export default function HomePage() {
       </Head>
       <CartProvider>
         <RootLayout>
-
           <main>
             <Home />
           </main>
-
         </RootLayout>
       </CartProvider>
-
     </>
-  )
+  );
 }
