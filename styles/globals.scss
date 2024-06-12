@@ -66,8 +66,6 @@ img {
   .container {
     @apply mx-auto;
     max-width: 1440px;
-    padding-right: 80px;
-    padding-left: 80px;
 
     @screen sm {
       max-width: 720px;
@@ -430,20 +428,20 @@ img {
     height: 100%;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    border: 1px solid coral;
+    border: 1px solid rgb(130, 129, 128);
     border-radius: 1rem;
   }
 
   .flip-card-front {
-    background: linear-gradient(120deg, bisque 60%, rgb(255, 231, 222) 88%,
-        rgb(255, 211, 195) 40%, rgba(255, 127, 80, 0.603) 48%);
-    color: coral;
+    background: linear-gradient(120deg, rgb(226, 225, 224) 60%, rgb(15, 15, 15) 88%,
+        rgb(0, 0, 0) 100%, rgba(0, 0, 0, 0.603) 48%);
+    color: rgb(0, 0, 0);
   }
 
   .flip-card-back {
-    background: linear-gradient(120deg, rgb(255, 174, 145) 30%, coral 88%,
-        bisque 40%, rgb(255, 185, 160) 78%);
-    color: white;
+    background: linear-gradient(120deg, rgb(226, 225, 224) 60%, rgb(15, 15, 15) 88%,
+    rgb(0, 0, 0) 100%, rgba(0, 0, 0, 0.603) 48%);
+color: rgb(0, 0, 0);
     transform: rotateY(180deg);
   }
 }
@@ -1358,7 +1356,53 @@ img {
 }
 
 
+/* CustomSwiper.css */
+// .swiper-pagination-bullet {
+//   width: 20px !important;
+//   height: 20px !important;
+//   background: #bcbcbc !important; /* Default inner circle color */
+//   border: 2px solid transparent !important; /* Default outer circle border color (invisible) */
+//   border-radius: 50% !important;
+//   position: relative !important;
+//   margin: 0 10px !important;
+// }
+
+// .swiper-pagination-bullet.swiper-pagination-bullet-active {
+//   width: 40px !important;
+//   height: 40px !important;
+//   border: 2px solid #ff4d4d !important; /* Active outer circle color */
+//   background: transparent !important; /* Transparent background for the outer circle */
+// }
+
+// .swiper-pagination-bullet.swiper-pagination-bullet-active::after {
+//   content: '' !important;
+//   display: block !important;
+//   width: 10px !important;
+//   height: 10px !important;
+//   background: #ff4d4d !important; /* Active inner circle color */
+//   border-radius: 50% !important;
+//   position: absolute !important;
+//   top: 50% !important;
+//   left: 50% !important;
+//   transform: translate(-50%, -50%) !important;
+// }
 
 
+.customStyle {
+  .swiper-pagination-bullet-active {
+    position: relative;
+  }
+  .swiper-pagination-bullet-active::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #2764dd;
+    z-index: 10;
+  }
+}
 
 

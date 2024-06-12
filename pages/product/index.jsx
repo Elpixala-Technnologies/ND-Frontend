@@ -19,6 +19,8 @@ import { useRouter } from "next/router";
 import { AuthContext } from "@/src/Context/UserContext";
 import { addToCartUrl } from "@/src/Utils/Urls/BooksUrl";
 import Swal from "sweetalert2";
+import { ImCross } from "react-icons/im";
+import { FaPlus } from "react-icons/fa";
 
 const sortOptions = [
   { name: "Price: Low to High", href: "#", current: false },
@@ -45,7 +47,6 @@ const ProductPage = () => {
   const router = useRouter();
   const [show, setShow] = useState(false);
   const { bookData, categoryData } = useBook();
-  const itemsPerPage = 9;
   const [currentPage, setCurrentPage] = useState(1);
   const [isCloups, setIsCloups] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -61,16 +62,14 @@ const ProductPage = () => {
   //     }
   // }, [router.query]);
 
+
   const handleToggleFilter = (filter) => {
-    if (activeFilter === filter) {
-      setActiveFilter(null);
-    } else {
-      setActiveFilter(filter);
-    }
+    setActiveFilter(activeFilter === filter ? null : filter);
   };
 
   useEffect(() => {
     if (router?.query?.categoryName) {
+      // @ts-ignore
       setSelectedCategory(router?.query?.categoryName);
     }
   }, [router.query]);
@@ -97,6 +96,7 @@ const ProductPage = () => {
     }
 
     if (selectedSortOption) {
+      // @ts-ignore
       const { sortBy, order } = selectedSortOption;
       filtered = filtered?.sort((a, b) => {
         if (order === "asc") return a[sortBy] - b[sortBy];
@@ -116,11 +116,10 @@ const ProductPage = () => {
     setCurrentPage(1);
     setIsCloups(true);
   };
+  const [itemsPerPage, setItemsPerPage] = useState(9);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-
-  const currentBooks = filteredBooks?.slice(startIndex, endIndex);
 
   const totalPages = Math.ceil(filteredBooks?.length / itemsPerPage);
 
@@ -185,6 +184,62 @@ const ProductPage = () => {
       });
     }
   };
+
+
+  const [categories, setCategories] = useState([]);
+  const [sortType, setSortType] = useState('alphabetical'); // 'alphabetical' or 'price'
+
+  const [currentBooks, setCurrentBooks] = useState(filteredBooks?.slice(startIndex, endIndex));  // Filtered and paginated books
+  const [totalBooks, setTotalBooks] = useState(0); // Total number of books
+
+
+
+  useEffect(() => {
+    setCategories(categoryData);
+  }, [categoryData]);
+
+  const handleSelectCategory = (category) => {
+    setSelectedCategory(category);
+  };
+
+  useEffect(() => {
+    let filteredBooks = bookData;
+  
+    if (selectedCategory) {
+      filteredBooks = filteredBooks.filter((book) => book.category === selectedCategory);
+    }
+  
+    if (searchQuery) {
+      filteredBooks = filteredBooks.filter(
+        (book) =>
+          book.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          book.category.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+  
+    const sortedBooks = [...filteredBooks];
+    if (sortType === 'alphabetical') {
+      sortedBooks.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortType === 'price') {
+      sortedBooks.sort((a, b) => {
+        const priceA = a.discountPercentage 
+          ? a.price - (a.price * a.discountPercentage / 100) 
+          : a.price;
+        const priceB = b.discountPercentage 
+          ? b.price - (b.price * b.discountPercentage / 100) 
+          : b.price;
+        return priceA - priceB;
+      });
+    }
+  
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const paginatedBooks = sortedBooks.slice(startIndex, startIndex + itemsPerPage);
+  
+    setCurrentBooks(paginatedBooks);
+    setTotalBooks(sortedBooks.length);
+  }, [sortType, currentPage, itemsPerPage, bookData, selectedCategory, searchQuery]);
+  
+
 
   return (
     <RootLayout>
@@ -350,19 +405,27 @@ const ProductPage = () => {
             </h2>
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
-              <div className="hidden lg:block">
-                <div className="py-6 w-full ">
-                  <button
-                    className=" font-semibold w-full flex gap-4 border p-2 rounded-lg justify-between items-center"
-                    onClick={() => selectedCategory && clearFilter()}
-                  >
-                    Reset Filters
-                  </button>
-                </div>
-                <div className="p-4 px-2 border border-gray-300 rounded-2xl">
+              <div className="hidden lg:block mt-3">
+                {/* <div className="py-6 w-full">
+    <button
+      className="font-semibold w-full flex gap-4 border p-2 rounded-lg justify-between items-center"
+      onClick={() => selectedCategory && clearFilter()}
+    >
+      Reset Filters
+    </button>
+  </div> */}
+                {selectedCategory && (
+                  <div className="p-2 w-full border border-gray-300 rounded-lg shadow-md shadow-gray-500">
+                    <div className="flex justify-between items-center">
+                      <span className="font-semibold">{selectedCategory}</span>
+                      <button onClick={() => setSelectedCategory(null)}><ImCross /></button>
+                    </div>
+                  </div>
+                )}
+                <div className="p-4 px-2 rounded-2xl mt-4">
                   <button
                     onClick={() => handleToggleFilter("category")}
-                    className="font-semibold w-full flex gap-4 justify-between items-center"
+                    className="font-semibold w-full flex gap-4 justify-between items-center  border-2 border-gray-300 rounded-lg p-3"
                   >
                     Category
                     {activeFilter === "category" ? (
@@ -372,30 +435,24 @@ const ProductPage = () => {
                     )}
                   </button>
                   {activeFilter === "category" && (
-                    <div className="space-y-6 border-t-2 border-gray-400 pt-2 mt-2">
-                      {categoryData && categoryData.length > 0 ? (
-                        categoryData.map((category) => (
-                          <li
-                            key={category._id}
-                            className="cursor-pointer mt-2 flex items-center gap-2"
-                          >
-                            <input
-                              type="checkbox"
-                              id={category?.category}
-                              className="form-checkbox h-3 w-3 text-blue-600 p-2"
-                              checked={selectedCategory === category?.category}
-                              onChange={() =>
-                                setSelectedCategory(category?.category)
-                              }
-                            />
-                            <label
-                              htmlFor={category?.category}
-                              className="text-gray-700 cursor-pointer pl-2"
+                    <div className="space-y-6 border-gray-400 pt-2 mt-2">
+                      {categories && categories.length > 0 ? (
+                        categories
+                          .filter((category) => category.category !== selectedCategory)
+                          .map((category) => (
+                            <li
+                              key={category._id}
+                              className="cursor-pointer mt-2 flex items-center gap-2"
+                              onClick={() => handleSelectCategory(category.category)}
                             >
-                              {category?.category}
-                            </label>
-                          </li>
-                        ))
+                              <label
+                                className={`text-gray-700 cursor-pointer pl-2 flex items-center justify-between w-full ${selectedCategory === category.category ? 'font-semibold' : ''}`}
+                              >
+                                {category.category}
+                                <span><FaPlus className="text-sm" /></span>
+                              </label>
+                            </li>
+                          ))
                       ) : (
                         <div>Loading categories...</div>
                       )}
@@ -404,9 +461,42 @@ const ProductPage = () => {
                 </div>
               </div>
 
+
               {/* Product grid */}
               <div className="lg:col-span-3">
-                <li className="flex items-center my-4 rounded-xl border border-[#999] relative  gap-2 w-full">
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {/* Alphabetical Sort Button */}
+                  <button
+                    onClick={() => setSortType('alphabetical')}
+                    className={`px-4 py-2 rounded-full ${sortType === 'alphabetical' ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300 text-gray-800'}`}
+                  >
+                    Alphabetical
+                  </button>
+                  {/* Price Sort Button */}
+                  <button
+                    onClick={() => setSortType('price')}
+                    className={`px-4 py-2 rounded-full ${sortType === 'price' ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300 text-gray-800'}`}
+                  >
+                    Price
+                  </button>
+                  {/* Items Per Page Dropdown */}
+                  <select
+                    value={itemsPerPage}
+                    onChange={(e) => setItemsPerPage(Number(e.target.value))}
+                    className="px-4 py-2 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-800"
+                  >
+                    {[10, 20, 30, 50].map((num) => (
+                      <option key={num} value={num}>
+                        {num} items per page
+                      </option>
+                    ))}
+                  </select>
+                  {/* Showing Books Out of Total */}
+                  <div className="px-4 py-2 text-gray-800">
+                    Showing {currentBooks.length} out of {totalBooks} books
+                  </div>
+                </div>
+                <li className="flex items-center my-4 rounded-xl border border-[#999] relative gap-2 w-full">
                   <AiOutlineSearch className="text-black text-2xl mx-6" />
                   <input
                     type="text"
@@ -419,87 +509,55 @@ const ProductPage = () => {
                 <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
                   <div className="lg:col-span-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3">
-                      {currentBooks &&
-                        currentBooks.map((book) => {
-                          return (
-                            <div className="card w-full bg-gradient-to-r from-slate-100 to-slate-200 p-4 shadow-lg transform hover:-translate-y-1 hover:scale-100  rounded-3xl flex flex-col justify-between">
-                              <div className="bg-[#ebeef0]">
-                                <Image
-                                  src={book?.image[0]}
-                                  width={400}
-                                  height={500}
-                                  alt={book?.name}
-                                  className=" rounded-3xl w-full h-full"
-                                />
-                              </div>
+                      {currentBooks.map((book) => (
+                        <div key={book.id} className=" w-full transform hover:-translate-y-1 hover:scale-100 rounded-3xl flex flex-col justify-between ">
+                          <div className="bg-white shadow-xl shadow-gray-300 p-5 rounded-md">
+                            <Image
+                              src={book.image[0]}
+                              width={400}
+                              height={500}
+                              alt={book.name}
+                              className="rounded-md fit h-64"
+                            />
+                          </div>
+                          <div className="pb-4 flex flex-col items-center rounded-3xl">
+                            <Link href={`/product/${book.id}`} className="flex flex-col items-center justify-center">
+                              <h4 className="text-lg line-clamp-1 font-bold ">{book.name.slice(0, 28) + ".."}</h4>
+                              <h4 className="">{book.category.slice(0, 28) + ".."}</h4>
 
-                              <div className="pb-4 mt-2">
-                                <Link
-                                  key={book?.id}
-                                  href={`/product/${book?.id}`}
-                                >
-                                  <h4 className="font-bold line-clamp-1">
-                                    {book.category}
-                                  </h4>
-
-                                  <h4 className="text-lg line-clamp-1">
-                                    {book?.name?.slice(0, 28) + ".."}
-                                  </h4>
-                                </Link>
-                                <div className="flex items-center md:flex-row gap-2 md:gap-4">
-                                  <h1 className="text-lg md:text-xl font-bold text-slate-900">
-                                    {book?.discountPercentage
-                                      ? `₹ ${
-                                          book?.price -
-                                          (book?.price *
-                                            book?.discountPercentage) /
-                                            100
-                                        }`
-                                      : `₹ ${book?.price}`}
-                                  </h1>
-                                  {book?.discountPercentage !== "0" && (
-                                    <>
-                                      <span className="text-sm md:text-base text-slate-900 line-through mt-1">
-                                        ₹ {book?.price}
-                                      </span>
-                                      <span className="text-red-500 text-sm md:text-base">
-                                        {book?.discountPercentage} % off
-                                      </span>
-                                    </>
-                                  )}
-                                </div>
-
-                                <div className="w-full flex items-center justify-start mt-2 hoverButton">
-                                  <button
-                                    onClick={() =>
-                                      addToCart(book._id, book.price)
-                                    }
-                                  >
-                                    <span className="shadow"></span>
-                                    <span className="edge"></span>
-                                    <span className="front text"> Buy Now</span>
-                                  </button>
-                                </div>
-                              </div>
+                            </Link>
+                            <div className="flex items-center md:flex-row gap-2 md:gap-4">
+                              <h1 className="text-lg md:text-xl font-bold text-slate-900">
+                                {book.discountPercentage ? `₹ ${book.price - (book.price * book.discountPercentage) / 100}` : `₹ ${book.price}`}
+                              </h1>
+                              {book.discountPercentage !== "0" && (
+                                <>
+                                  <span className="text-sm md:text-base text-slate-900 line-through mt-1">₹ {book.price}</span>
+                                  <span className="text-red-500 text-sm md:text-base">{book.discountPercentage} % off</span>
+                                </>
+                              )}
                             </div>
-                          );
-                        })}
+                            <div className="w-fit  flex items-center justify-center mt-2 bg-[#1e89d1] p-2 rounded-full ">
+                              <button onClick={() => addToCart(book._id, book.price)}>
+                                <span className="shadow"></span>
+                                <span className="edge"></span>
+                                <span className="front text-white"> Buy Now</span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
-
                 <div>
                   {/* Pagination controls */}
                   <div className="flex justify-center mt-4">
                     {Array.from({ length: totalPages }, (_, i) => (
                       <button
                         key={i}
-                        onClick={() => changePage(i + 1)}
-                        className={`mx-2 px-4 py-2 rounded-full ${
-                          currentPage === i + 1
-                            ? "bg-blue-500 text-white"
-                            : "bg-gray-200 hover:bg-gray-300 text-gray-800"
-                        }`}
+                        onClick={() => setCurrentPage(i + 1)}
+                        className={`mx-2 px-4 py-2 rounded-full ${currentPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300 text-gray-800'}`}
                       >
                         {i + 1}
                       </button>
@@ -507,6 +565,7 @@ const ProductPage = () => {
                   </div>
                 </div>
               </div>
+
             </div>
           </section>
         </main>

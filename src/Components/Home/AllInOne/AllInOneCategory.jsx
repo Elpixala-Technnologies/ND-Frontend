@@ -4,7 +4,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { TbArrowBigLeft, TbArrowBigRight } from "react-icons/tb";
 import Link from "next/link";
 import useBook from "@/src/Hooks/useBook";
-import bookImg from '@/public/banner 07.png';
 import Skeleton from 'react-loading-skeleton'; // Import the Skeleton component
 import Image from "next/image";
 import { addToCartUrl } from '@/src/Utils/Urls/BooksUrl';
@@ -89,7 +88,7 @@ const AllInOneCategory = () => {
 
     return (
       <section className="mx-2 my-10 relative h-full">
-        <div className="title my-6 flex justify-between items-center">
+        <div className="title my-6 flex sm:flex-row flex-col justify-between items-center">
           <h2 className="text-3xl text-center md:text-left lg:text-3xl xxs:text-2xl text-black font-bold">
             All In One (KINDERGARTEN)
           </h2>
@@ -169,7 +168,7 @@ const AllInOneCategory = () => {
                         <div className="card bg-white pt-2  pb-6 my-4 shadow-lg cursor-pointer flex flex-col items-start rounded">
                           <div className="bg-transparent  w-full h-2/3 rounded-3xl flex items-start">
                             <Image
-                              src={book?.image[0] || bookImg}
+                              src={book?.image[0]}
                               width={1200}
                               height={1200}
                               alt="Description"

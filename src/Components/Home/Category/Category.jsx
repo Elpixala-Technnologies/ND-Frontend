@@ -1,10 +1,13 @@
 import Image from "next/image";
 import usePopularCategory from "@/src/Hooks/usePopularCategory";
 import Skeleton from "react-loading-skeleton";
-import { SwiperSlide } from "swiper/react";
 import Slider from "@/src/Hoc/Swiper/Slider";
 import { Childern, RightArrow } from "@/src/Assets";
-
+import Link from "next/link";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { Pagination } from 'swiper';
 const Category = () => {
   const { popularCategoryData, isLoading } = usePopularCategory();
   return (
@@ -68,21 +71,24 @@ const Category = () => {
             {popularCategoryData?.map((itm, index) => (
               <SwiperSlide
                 key={index}
-                className="max-w-full max-h-auto cursor-pointer"
+                className="max-w-full max-h-auto"
+                
+                
               >
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3 items-start w-full h-full">
                   <Image
                     src={itm?.popularCategoryImage}
-                    className="!object-fill !object-center rounded-xl !w-[360px] !h-[260px]"
+                    className="!object-fill !object-center rounded-xl !w-3/4 !h-3/4 "
                     width={1000}
                     height={1000}
                     alt="name"
                   />
-                  <p>
-                    <h3 className="font-inter font-medium text-lg text-center line-clamp-1 text-secondary">
+                  
+                  <Link href={`/product?categoryName=${encodeURIComponent(itm?.popularCategory)}`}>
+                  <h3 className="font-inter font-medium text-lg text-center line-clamp-1 text-secondary">
                       {itm?.popularCategory?.slice(0, 50)}
                     </h3>
-                  </p>
+                  </Link>
                 </div>
               </SwiperSlide>
             ))}

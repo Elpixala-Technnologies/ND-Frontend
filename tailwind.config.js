@@ -12,6 +12,8 @@ module.exports = {
     extend: {
       fontFamily: {
         inter: ['Inter', 'sans-serif'],
+        'serif': ['Playfair Display', 'serif'],
+        'body': ['Merriweather', 'serif'],
       },
       colors: {
         primary: '#ED553B',

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import UserdashboardLayout from "@/src/Layouts/UserDashboardLayout";
 import { AuthContext } from "@/src/Context/UserContext";
 import React, { useContext, useEffect, useState } from "react";

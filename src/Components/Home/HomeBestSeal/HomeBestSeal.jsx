@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import bookImg from '@/public/banner 07.png';
 import Link from 'next/link';
 import useBook from '@/src/Hooks/useBook';
 import Skeleton from 'react-loading-skeleton';
@@ -69,7 +68,7 @@ const HomeBestSeal = () => {
     };
 
     return (
-    <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-4">
+    <div className="sm:grid flex overflow-x-scroll sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-4 sm:mx-0 mx-4">
     {isLoading ? (
       // Render loading skeletons while data is loading
       Array.from({ length: 8 }).map((_, index) => (
@@ -87,7 +86,7 @@ const HomeBestSeal = () => {
                 <div className="card bg-white shadow-lg rounded cursor-pointer flip-card-front overflow-hidden">
                   <div className="bg-[#e1e6e9]">
                     <Image
-                      src={book.image[0] || bookImg}
+                      src={book.image[0]}
                       width={400}
                       height={600}
                       alt="Description"
@@ -112,8 +111,8 @@ const HomeBestSeal = () => {
                           <span className="text-sm md:text-base text-slate-900 line-through mt-1">
                             ₹ {book.price}
                           </span>
-                          <span className="text-red-500 text-sm md:text-base">
-                            {book.discountPercentage} % off
+                          <span className=" text-sm md:text-base text-white">
+                            {book.discountPercentage} % OFF
                           </span>
                         </>
                       )}
@@ -122,9 +121,9 @@ const HomeBestSeal = () => {
                 </div>
                 <div className="flip-card-back flex flex-col items-center justify-center gap-2 relative">
                   <span className="px-2 underline text-black font-semibold">{book.name}</span>
-                  <span className="text-start line-clamp-5 px-2">{book?.description}</span>
-                  <span className="text-start px-2 bg-gray-600 rounded-md">Author: {book?.author}</span>
-                  <div className="w-full addcart flex items-center justify-center">
+                  <span className="text-start line-clamp-5 px-2 font-serif leading-8">{book?.description}</span>
+                  <span className="text-start px-2 bg-gray-50 rounded-md">Author: {book?.author}</span>
+                  <div className="w-full addcart flex items-center justify-center ">
                     <button className="CartBtn" onClick={() => addToCart(book._id, book.price)}>
                       <span className="IconContainer">
                         <svg

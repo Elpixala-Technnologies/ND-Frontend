@@ -8,10 +8,10 @@ const RootLayout = ({ children }) => {
     return (
       <CartProvider>
         <main className="">
-          <div className="max-w-[1440px] xl:mx-20">
+          <div className="max-w-[1440px] xl:mx-auto">
             <Navbar />
           </div>
-          <section className="max-w-[1440px] xl:mx-20">{children}</section>
+          <section className="">{children}</section>
           <div className="">
             <Footer />
           </div>
